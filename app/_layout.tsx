@@ -12,16 +12,20 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
+    <>
+      <Stack screenOptions={{
+        headerShown: false,
+      }}>
+      <Stack.Screen name="authScreen" options={{ headerShown: false }} />
+
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
           name="modal"
           options={{ presentation: 'modal', title: 'Modal', animation: 'slide_from_bottom' }}
         />
-        <Stack.Screen name="authScreen" options={{ headerShown: false }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+        {/* <Stack.Screen name="index" options={{ headerShown: false }} /> */}
+        </Stack>
+
+    </>
   );
 }

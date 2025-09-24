@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 const authStyles = StyleSheet.create({
   container: {
     flex: 1,
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
@@ -11,6 +12,16 @@ const authStyles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    textAlign: 'center',
+  },
+  inputContainer: {
+    width: '100%',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  inputWrapper: {
+    width: '100%',
+    alignItems: 'center',
   },
   input: {
     width: '80%',
@@ -20,6 +31,11 @@ const authStyles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
     marginBottom: 12,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 8,
+    textAlign: 'center',
   },
   button: {
     backgroundColor: '#007AFF',

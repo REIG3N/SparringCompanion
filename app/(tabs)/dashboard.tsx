@@ -1,7 +1,7 @@
 import { Text, StyleSheet,ScrollView } from 'react-native';
 import { Link } from 'expo-router';
 
-export default function HomeScreen() {
+export default function DashboardScreen() {
   return (
     <ScrollView style={styles.container} >
       <Text>Dashboard</Text>
@@ -14,10 +14,10 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 12,
+    marginTop: 22,
   },
   link: {
-    marginTop: 12,
+    marginTop: 22,
 
   }
 });
