@@ -1,11 +1,23 @@
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet,ScrollView } from 'react-native';
+import { Link } from 'expo-router';
 
 export default function HomeScreen() {
   return (
-    <Text></Text>
+    <ScrollView style={styles.container} >
+      <Text>Dashboard</Text>
+      <Link href="/modal" style={styles.link}>
+        <Text>Open modal</Text>
+      </Link>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  
+  container: {
+    marginTop: 12,
+  },
+  link: {
+    marginTop: 12,
+
+  }
 });
