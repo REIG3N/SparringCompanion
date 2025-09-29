@@ -1,6 +1,4 @@
 import { StyleSheet } from 'react-native';
-
-// Design tokens
 export const COLORS = {
   background: '#2a2e51',
   primary: '#fa2d2d',
@@ -86,7 +84,6 @@ export const TEXT_STYLES = StyleSheet.create({
   },
 });
 
-// Reusable UI styles (cross-screens)
 export const globalStyles = StyleSheet.create({
   appScreen: {
     flex: 1,
@@ -94,7 +91,6 @@ export const globalStyles = StyleSheet.create({
     padding: SPACING.lg,
   },
 
-  // Cards
   card: {
     backgroundColor: `rgba(255,255,255,${OPACITY.o05})`,
     borderColor: `rgba(255,255,255,${OPACITY.o10})`,
@@ -141,7 +137,6 @@ export const globalStyles = StyleSheet.create({
   statScoreAverage: { borderLeftWidth: 4, borderLeftColor: COLORS.secondary },
   statScoreExcellent: { borderLeftWidth: 4, borderLeftColor: COLORS.success },
 
-  // Buttons
   buttonPrimary: {
     backgroundColor: COLORS.primary,
     borderRadius: RADIUS.sm,
@@ -190,7 +185,6 @@ export const globalStyles = StyleSheet.create({
     fontWeight: '500',
   },
 
-  // Radio pills
   radioPills: {
     flexDirection: 'row',
     backgroundColor: `rgba(255,255,255,${OPACITY.o05})`,
@@ -217,7 +211,6 @@ export const globalStyles = StyleSheet.create({
     color: COLORS.text,
   },
 
-  // Inputs
   inputField: {
     backgroundColor: `rgba(255,255,255,${OPACITY.o05})`,
     borderColor: `rgba(255,255,255,${OPACITY.o10})`,
@@ -235,7 +228,6 @@ export const globalStyles = StyleSheet.create({
     marginBottom: SPACING.xs,
   },
 
-  // Tabs
   tabContainer: {
     flexDirection: 'row',
     backgroundColor: `rgba(255,255,255,${OPACITY.o05})`,
@@ -261,7 +253,6 @@ export const globalStyles = StyleSheet.create({
     color: COLORS.text,
   },
 
-  // Progress bar
   progressBar: {
     width: '100%',
     height: 6,
@@ -273,7 +264,6 @@ export const globalStyles = StyleSheet.create({
   progressFillMedium: { height: '100%', backgroundColor: COLORS.secondary },
   progressFillHigh: { height: '100%', backgroundColor: COLORS.success },
 
-  // Sessions list
   sessionItem: {
     backgroundColor: `rgba(255,255,255,${OPACITY.o05})`,
     borderColor: `rgba(255,255,255,${OPACITY.o10})`,
@@ -289,7 +279,6 @@ export const globalStyles = StyleSheet.create({
   sessionSubtitle: { fontSize: 14, color: COLORS.accent, opacity: OPACITY.o80 },
   sessionMeta: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm },
 
-  // Calendar
   calendarWeek: { flexDirection: 'row', gap: SPACING.xs },
   calendarDay: {
     width: 44,
@@ -302,7 +291,6 @@ export const globalStyles = StyleSheet.create({
   calendarDaySelected: { backgroundColor: COLORS.primary },
   calendarDayHasSession: { borderWidth: 2, borderColor: COLORS.secondary },
 
-  // SWOT
   swotSection: {
     backgroundColor: `rgba(255,255,255,${OPACITY.o05})`,
     borderRadius: RADIUS.md,

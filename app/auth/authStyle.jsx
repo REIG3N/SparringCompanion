@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 import { COLORS, SPACING, RADIUS, globalStyles, TEXT_STYLES } from '../../utils/globalStyles';
 
 const authStyles = StyleSheet.create({
-  // Containers
   container: {
     ...globalStyles.appScreen,
     alignItems: 'center',
@@ -13,8 +12,6 @@ const authStyles = StyleSheet.create({
     maxWidth: 400,
     paddingHorizontal: SPACING.md,
   },
-
-  // Header
   header: {
     alignItems: 'center',
     marginBottom: SPACING.xl,
@@ -29,8 +26,6 @@ const authStyles = StyleSheet.create({
     color: COLORS.secondary,
     textAlign: 'center',
   },
-
-  // Radio pills
   radioPills: {
     ...globalStyles.radioPills,
     marginBottom: SPACING.xl,
@@ -39,21 +34,15 @@ const authStyles = StyleSheet.create({
   radioPillText: globalStyles.radioPillText,
   radioPillSelected: globalStyles.radioPillSelected,
   radioPillTextSelected: globalStyles.radioPillTextSelected,
-
-  // Form
   formSection: { marginBottom: SPACING.lg },
   formGroup: { marginBottom: SPACING.md },
   label: globalStyles.labelText,
   input: globalStyles.inputField,
-
-  // Button
   buttonPrimary: {
     ...globalStyles.buttonPrimary,
     marginBottom: SPACING.md,
   },
   buttonPrimaryText: globalStyles.buttonPrimaryTextAlt,
-
-  // Bottom link
   bottomLinkContainer: { alignItems: 'center' },
   bottomLinkText: {
     fontSize: 14,
