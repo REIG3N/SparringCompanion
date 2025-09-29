@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Ionicons } from '@expo/vector-icons';
+import { Icons } from '@/constants/icons';
 
 export default function TabLayout() {
 
@@ -14,7 +14,7 @@ export default function TabLayout() {
         options={{
           title: 'Dashboard',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons size={size ?? 24} name="speedometer" color={color} />
+            <Icons.Home size={size ?? 24} color={color as string} />
           ),
         }}
       />
@@ -23,7 +23,7 @@ export default function TabLayout() {
         options={{
           title: 'Goals',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons size={size ?? 24} name="flag" color={color} />
+            <Icons.Target size={size ?? 24} color={color as string} />
           ),
         }}
       />
@@ -32,7 +32,7 @@ export default function TabLayout() {
         options={{
           title: 'Settings',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons size={size ?? 24} name="settings" color={color} />
+            <Icons.Settings size={size ?? 24} color={color as string} />
           ),
         }}
       />

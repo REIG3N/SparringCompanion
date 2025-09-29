@@ -152,7 +152,7 @@ export const globalStyles = StyleSheet.create({
     fontWeight: '600',
   },
   buttonPrimaryTextAlt: {
-    color: '#FFFF',
+    color: COLORS.text,
     fontSize: 16,
     fontWeight: '600',
   },
