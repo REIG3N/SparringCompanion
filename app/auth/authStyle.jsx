@@ -51,7 +51,7 @@ const authStyles = StyleSheet.create({
     ...globalStyles.buttonPrimary,
     marginBottom: SPACING.md,
   },
-  buttonPrimaryText: globalStyles.buttonPrimaryText,
+  buttonPrimaryText: globalStyles.buttonPrimaryTextAlt,
 
   // Bottom link
   bottomLinkContainer: { alignItems: 'center' },

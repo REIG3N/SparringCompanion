@@ -156,6 +156,11 @@ export const globalStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  buttonPrimaryTextAlt: {
+    color: '#FFFF',
+    fontSize: 16,
+    fontWeight: '600',
+  },
   buttonSecondary: {
     backgroundColor: COLORS.secondary,
     borderRadius: RADIUS.sm,
