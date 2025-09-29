@@ -147,11 +147,6 @@ export const globalStyles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   buttonPrimaryText: {
-    color: '#000000',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  buttonPrimaryTextAlt: {
     color: COLORS.text,
     fontSize: 16,
     fontWeight: '600',

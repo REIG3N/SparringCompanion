@@ -1,13 +1,15 @@
 import { Link } from 'expo-router';
-import { StyleSheet,Text,View } from 'react-native';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
 import React from 'react';
 
 export default function ModalScreen() {
   return (
     <View style={styles.container}>
       <Text>This is a modal</Text>
-      <Link href="/" dismissTo style={styles.link}>
-        <Text>Go to home screen</Text>
+      <Link href={{ pathname: '/(tabs)/dashboard/DashboardScreen' }} asChild>
+        <Pressable style={styles.link}>
+          <Text>Back to dashboard</Text>
+        </Pressable>
       </Link>
     </View>
   );

@@ -1,16 +1,8 @@
 import { AppState, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import authStyles from './authStyle'
 import { useRouter } from 'expo-router'
 import { supabase } from "../../utils/supabase"
-
-AppState.addEventListener('change', (state) => {
-  if (state === 'active') {
-    supabase.auth.startAutoRefresh()
-  } else {
-    supabase.auth.stopAutoRefresh()
-  }
-})
 
 const AuthScreen = () => {
   const [email, setEmail] = useState('')
@@ -18,6 +10,26 @@ const AuthScreen = () => {
   const [loading, setLoading] = useState(false)
   const [showRegisterOrLogin, setShowRegisterOrLogin] = useState(false)
   const router = useRouter();
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (state) => {
+      if (state === 'active') {
+        supabase.auth.startAutoRefresh()
+      } else {
+        supabase.auth.stopAutoRefresh()
+      }
+    });
+
+    // Clean up the event listener on unmount
+    return () => {
+      if (subscription && typeof subscription.remove === 'function') {
+        subscription.remove();
+      } else if (AppState.removeEventListener) {
+        // For React Native < 0.65
+        AppState.removeEventListener('change', () => {});
+      }
+    };
+  }, []);
 
   async function LogInWithEmail() {
     setLoading(true)
@@ -32,7 +44,7 @@ const AuthScreen = () => {
     }
     setLoading(false)
     if (data && data.session) {
-      router.replace('/dashboard')
+      router.replace('/(tabs)/dashboard/DashboardScreen')
     }
   }
 
@@ -40,7 +52,7 @@ const AuthScreen = () => {
     setLoading(true)
 
     const {
-      data: { session },
+      data: { session } = {},
       error,
     } = await supabase.auth.signUp({
       email: email,
@@ -61,7 +73,7 @@ const AuthScreen = () => {
     setLoading(false)
 
     if (session) {
-      router.replace('/dashboard');
+      router.replace('/(tabs)/dashboard/DashboardScreen');
     }
   }
 
@@ -72,14 +84,12 @@ const AuthScreen = () => {
 
   return (
     <View style={authStyles.container}>
-      
       <View style={authStyles.inner}>
-      <View style={authStyles.card}>
-
-        <View style={authStyles.header}>
-          <Text style={authStyles.headerTitle}>SparringCompanion</Text>
-          <Text style={authStyles.headerSubtitle}>Deviens ton propre coach en sports de combat</Text>
-        </View>
+        <View style={authStyles.card}>
+          <View style={authStyles.header}>
+            <Text style={authStyles.headerTitle}>SparringCompanion</Text>
+            <Text style={authStyles.headerSubtitle}>Deviens ton propre coach en sports de combat</Text>
+          </View>
 
           <View style={authStyles.radioPills}>
             <TouchableOpacity
@@ -98,30 +108,30 @@ const AuthScreen = () => {
 
           {!showRegisterOrLogin ? (
             <View style={authStyles.formSection}>
-            <View style={authStyles.formGroup}>
-              <Text style={authStyles.label}>Email</Text>
-              <TextInput
-                style={authStyles.input}
-                onChangeText={(text) => setEmail(text)}
-                value={email}
-                placeholder="votre@email.com"
-                placeholderTextColor={'#757575'}
-                autoCapitalize={'none'}
-                keyboardType="email-address"
-              />
-            </View>
-            <View style={authStyles.formGroup}>
-              <Text style={authStyles.label}>Mot de passe</Text>
-              <TextInput
-                style={authStyles.input}
-                onChangeText={(text) => setPassword(text)}
-                value={password}
-                secureTextEntry={true}
-                placeholder="••••••••"
-                placeholderTextColor={'#757575'}
-                autoCapitalize={'none'}
-              />
-            </View>
+              <View style={authStyles.formGroup}>
+                <Text style={authStyles.label}>Email</Text>
+                <TextInput
+                  style={authStyles.input}
+                  onChangeText={(text) => setEmail(text)}
+                  value={email}
+                  placeholder="votre@email.com"
+                  placeholderTextColor={'#757575'}
+                  autoCapitalize={'none'}
+                  keyboardType="email-address"
+                />
+              </View>
+              <View style={authStyles.formGroup}>
+                <Text style={authStyles.label}>Mot de passe</Text>
+                <TextInput
+                  style={authStyles.input}
+                  onChangeText={(text) => setPassword(text)}
+                  value={password}
+                  secureTextEntry={true}
+                  placeholder="••••••••"
+                  placeholderTextColor={'#757575'}
+                  autoCapitalize={'none'}
+                />
+              </View>
               <TouchableOpacity style={authStyles.buttonPrimary} disabled={loading} onPress={() => LogInWithEmail()}>
                 <Text style={authStyles.buttonPrimaryText}>Se connecter</Text>
               </TouchableOpacity>
@@ -133,30 +143,30 @@ const AuthScreen = () => {
             </View>
           ) : (
             <View style={authStyles.formSection}>
-            <View style={authStyles.formGroup}>
-              <Text style={authStyles.label}>Email</Text>
-              <TextInput
-                style={authStyles.input}
-                onChangeText={(text) => setEmail(text)}
-                value={email}
-                placeholder="votre@email.com"
-                placeholderTextColor={'#757575'}
-                autoCapitalize={'none'}
-                keyboardType="email-address"
-              />
-            </View>
-            <View style={authStyles.formGroup}>
-              <Text style={authStyles.label}>Mot de passe</Text>
-              <TextInput
-                style={authStyles.input}
-                onChangeText={(text) => setPassword(text)}
-                value={password}
-                secureTextEntry={true}
-                placeholder="••••••••"
-                placeholderTextColor={'#757575'}
-                autoCapitalize={'none'}
-              />
-            </View>
+              <View style={authStyles.formGroup}>
+                <Text style={authStyles.label}>Email</Text>
+                <TextInput
+                  style={authStyles.input}
+                  onChangeText={(text) => setEmail(text)}
+                  value={email}
+                  placeholder="votre@email.com"
+                  placeholderTextColor={'#757575'}
+                  autoCapitalize={'none'}
+                  keyboardType="email-address"
+                />
+              </View>
+              <View style={authStyles.formGroup}>
+                <Text style={authStyles.label}>Mot de passe</Text>
+                <TextInput
+                  style={authStyles.input}
+                  onChangeText={(text) => setPassword(text)}
+                  value={password}
+                  secureTextEntry={true}
+                  placeholder="••••••••"
+                  placeholderTextColor={'#757575'}
+                  autoCapitalize={'none'}
+                />
+              </View>
               <TouchableOpacity style={authStyles.buttonPrimary} disabled={loading} onPress={() => RegisterWithEmail()}>
                 <Text style={authStyles.buttonPrimaryText}>Créer un compte</Text>
               </TouchableOpacity>
@@ -173,5 +183,3 @@ const AuthScreen = () => {
   )
 }
 export default AuthScreen
-
-
