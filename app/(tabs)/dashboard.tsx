@@ -1,5 +1,6 @@
 import { Text, StyleSheet,ScrollView } from 'react-native';
 import { Link } from 'expo-router';
+import React from 'react';
 
 export default function DashboardScreen() {
   return (
