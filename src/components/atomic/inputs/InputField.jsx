@@ -8,6 +8,7 @@ export const InputField = ({
   onChangeText,
   placeholder,
   keyboardType = 'default',
+  secureTextEntry = false,
   error = false,
   errorMessage = '',
   editable = true
@@ -25,6 +26,7 @@ export const InputField = ({
       placeholder={placeholder}
       placeholderTextColor={`rgba(117,117,117,${OPACITY.o60})`}
       keyboardType={keyboardType}
+      secureTextEntry={secureTextEntry}
       editable={editable}
     />
     {error && errorMessage ? (

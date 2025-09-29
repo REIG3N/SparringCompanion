@@ -72,29 +72,32 @@ const AuthScreen = () => {
 
   return (
     <View style={authStyles.container}>
+      
       <View style={authStyles.inner}>
+      <View style={authStyles.card}>
+
         <View style={authStyles.header}>
           <Text style={authStyles.headerTitle}>SparringCompanion</Text>
           <Text style={authStyles.headerSubtitle}>Deviens ton propre coach en sports de combat</Text>
         </View>
 
-        <View style={authStyles.radioPills}>
-          <TouchableOpacity
-            style={[authStyles.radioPill, !showRegisterOrLogin && authStyles.radioPillSelected]}
-            onPress={() => handleSwitch(false)}
-          >
-            <Text style={[authStyles.radioPillText, !showRegisterOrLogin && authStyles.radioPillTextSelected]}>Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[authStyles.radioPill, showRegisterOrLogin && authStyles.radioPillSelected]}
-            onPress={() => handleSwitch(true)}
-          >
-            <Text style={[authStyles.radioPillText, showRegisterOrLogin && authStyles.radioPillTextSelected]}>Register</Text>
-          </TouchableOpacity>
-        </View>
+          <View style={authStyles.radioPills}>
+            <TouchableOpacity
+              style={[authStyles.radioPill, !showRegisterOrLogin && authStyles.radioPillSelected]}
+              onPress={() => handleSwitch(false)}
+            >
+              <Text style={[authStyles.radioPillText, !showRegisterOrLogin && authStyles.radioPillTextSelected]}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[authStyles.radioPill, showRegisterOrLogin && authStyles.radioPillSelected]}
+              onPress={() => handleSwitch(true)}
+            >
+              <Text style={[authStyles.radioPillText, showRegisterOrLogin && authStyles.radioPillTextSelected]}>Register</Text>
+            </TouchableOpacity>
+          </View>
 
-        {!showRegisterOrLogin ? (
-          <View style={authStyles.formSection}>
+          {!showRegisterOrLogin ? (
+            <View style={authStyles.formSection}>
             <View style={authStyles.formGroup}>
               <Text style={authStyles.label}>Email</Text>
               <TextInput
@@ -119,17 +122,17 @@ const AuthScreen = () => {
                 autoCapitalize={'none'}
               />
             </View>
-            <TouchableOpacity style={authStyles.buttonPrimary} disabled={loading} onPress={() => LogInWithEmail()}>
-              <Text style={authStyles.buttonPrimaryText}>Se connecter</Text>
-            </TouchableOpacity>
-            <View style={authStyles.bottomLinkContainer}>
-              <Text style={authStyles.bottomLinkText} onPress={() => handleSwitch(true)}>
-                Pas encore de compte ? Créer un compte
-              </Text>
+              <TouchableOpacity style={authStyles.buttonPrimary} disabled={loading} onPress={() => LogInWithEmail()}>
+                <Text style={authStyles.buttonPrimaryText}>Se connecter</Text>
+              </TouchableOpacity>
+              <View style={authStyles.bottomLinkContainer}>
+                <Text style={authStyles.bottomLinkText} onPress={() => handleSwitch(true)}>
+                  Pas encore de compte ? Créer un compte
+                </Text>
+              </View>
             </View>
-          </View>
-        ) : (
-          <View style={authStyles.formSection}>
+          ) : (
+            <View style={authStyles.formSection}>
             <View style={authStyles.formGroup}>
               <Text style={authStyles.label}>Email</Text>
               <TextInput
@@ -154,16 +157,17 @@ const AuthScreen = () => {
                 autoCapitalize={'none'}
               />
             </View>
-            <TouchableOpacity style={authStyles.buttonPrimary} disabled={loading} onPress={() => RegisterWithEmail()}>
-              <Text style={authStyles.buttonPrimaryText}>Créer un compte</Text>
-            </TouchableOpacity>
-            <View style={authStyles.bottomLinkContainer}>
-              <Text style={authStyles.bottomLinkText}>
-                Mot de passe oublié ?
-              </Text>
+              <TouchableOpacity style={authStyles.buttonPrimary} disabled={loading} onPress={() => RegisterWithEmail()}>
+                <Text style={authStyles.buttonPrimaryText}>Créer un compte</Text>
+              </TouchableOpacity>
+              <View style={authStyles.bottomLinkContainer}>
+                <Text style={authStyles.bottomLinkText}>
+                  Mot de passe oublié ?
+                </Text>
+              </View>
             </View>
-          </View>
-        )}
+          )}
+        </View>
       </View>
     </View>
   )

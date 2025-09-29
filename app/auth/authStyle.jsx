@@ -12,6 +12,10 @@ const authStyles = StyleSheet.create({
     maxWidth: 400,
     paddingHorizontal: SPACING.md,
   },
+  card: {
+    ...globalStyles.card,
+    padding: SPACING.lg,
+  },
   header: {
     alignItems: 'center',
     marginBottom: SPACING.xl,
