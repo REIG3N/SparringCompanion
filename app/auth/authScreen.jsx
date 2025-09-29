@@ -1,4 +1,4 @@
-import { AppState, View, Text, TextInput, Button, Alert } from 'react-native'
+import { AppState, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native'
 import React, { useState } from 'react'
 import authStyles from './authStyle'
 import { useRouter } from 'expo-router'
@@ -72,74 +72,102 @@ const AuthScreen = () => {
 
   return (
     <View style={authStyles.container}>
-      <Text style={authStyles.title}>SparringCompanion</Text>
-
-      <View style={authStyles.inputContainer}>
-        <Text style={authStyles.label}>Entrez votre email :</Text>
-        <View style={authStyles.inputWrapper}>
-          <TextInput
-            style={authStyles.input}
-            label="Email"
-            leftIcon={{ type: 'font-awesome', name: 'envelope' }}
-            onChangeText={(text) => setEmail(text)}
-            value={email}
-            placeholder="email@address.com"
-            autoCapitalize={'none'}
-          />
+      <View style={authStyles.inner}>
+        <View style={authStyles.header}>
+          <Text style={authStyles.headerTitle}>SparringCompanion</Text>
+          <Text style={authStyles.headerSubtitle}>Deviens ton propre coach en sports de combat</Text>
         </View>
-        <View style={authStyles.inputWrapper} >
-          <Text style={authStyles.label}>Entrez votre mot de passe :</Text>
-          <View style={authStyles.inputWrapper}>
-            <TextInput
-              label="Password"
-              leftIcon={{ type: 'font-awesome', name: 'lock' }}
-              onChangeText={(text) => setPassword(text)}
-              value={password}
-              secureTextEntry={false}
-              placeholder="Password"
-              autoCapitalize={'none'}
-            />
+
+        <View style={authStyles.radioPills}>
+          <TouchableOpacity
+            style={[authStyles.radioPill, !showRegisterOrLogin && authStyles.radioPillSelected]}
+            onPress={() => handleSwitch(false)}
+          >
+            <Text style={[authStyles.radioPillText, !showRegisterOrLogin && authStyles.radioPillTextSelected]}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[authStyles.radioPill, showRegisterOrLogin && authStyles.radioPillSelected]}
+            onPress={() => handleSwitch(true)}
+          >
+            <Text style={[authStyles.radioPillText, showRegisterOrLogin && authStyles.radioPillTextSelected]}>Register</Text>
+          </TouchableOpacity>
+        </View>
+
+        {!showRegisterOrLogin ? (
+          <View style={authStyles.formSection}>
+            <View style={authStyles.formGroup}>
+              <Text style={authStyles.label}>Email</Text>
+              <TextInput
+                style={authStyles.input}
+                onChangeText={(text) => setEmail(text)}
+                value={email}
+                placeholder="votre@email.com"
+                placeholderTextColor={'#757575'}
+                autoCapitalize={'none'}
+                keyboardType="email-address"
+              />
+            </View>
+            <View style={authStyles.formGroup}>
+              <Text style={authStyles.label}>Mot de passe</Text>
+              <TextInput
+                style={authStyles.input}
+                onChangeText={(text) => setPassword(text)}
+                value={password}
+                secureTextEntry={true}
+                placeholder="••••••••"
+                placeholderTextColor={'#757575'}
+                autoCapitalize={'none'}
+              />
+            </View>
+            <TouchableOpacity style={authStyles.buttonPrimary} disabled={loading} onPress={() => LogInWithEmail()}>
+              <Text style={authStyles.buttonPrimaryText}>Se connecter</Text>
+            </TouchableOpacity>
+            <View style={authStyles.bottomLinkContainer}>
+              <Text style={authStyles.bottomLinkText} onPress={() => handleSwitch(true)}>
+                Pas encore de compte ? Créer un compte
+              </Text>
+            </View>
           </View>
-        </View>
-        {/* <Button title="Log in" disabled={loading} onPress={() => LogInWithEmail()} />
-        <Button title="Register" disabled={loading} onPress={() => RegisterWithEmail()} /> */}
-
-        {/* Switch between login/register without animation */}
-        {showRegisterOrLogin ? (
-          <>
-            <Button title="Register" disabled={loading} onPress={() => RegisterWithEmail()} />
-            <Text
-              style={{
-                color: 'grey',
-                fontSize: 14,
-                marginTop: 10,
-                textAlign: 'center',
-                textDecorationLine: 'underline'
-              }}
-              onPress={() => handleSwitch(false)}
-            >
-              Already have an account? Log in
-            </Text>
-          </>
         ) : (
-          <>
-            <Button title="Log in" disabled={loading} onPress={() => LogInWithEmail()} />
-            <Text
-              style={{
-                color: 'grey',
-                fontSize: 14,
-                marginTop: 10,
-                textAlign: 'center',
-                textDecorationLine: 'underline'
-              }}
-              onPress={() => handleSwitch(true)}
-            >
-              Don't have an account? Register
-            </Text>
-          </>
+          <View style={authStyles.formSection}>
+            <View style={authStyles.formGroup}>
+              <Text style={authStyles.label}>Email</Text>
+              <TextInput
+                style={authStyles.input}
+                onChangeText={(text) => setEmail(text)}
+                value={email}
+                placeholder="votre@email.com"
+                placeholderTextColor={'#757575'}
+                autoCapitalize={'none'}
+                keyboardType="email-address"
+              />
+            </View>
+            <View style={authStyles.formGroup}>
+              <Text style={authStyles.label}>Mot de passe</Text>
+              <TextInput
+                style={authStyles.input}
+                onChangeText={(text) => setPassword(text)}
+                value={password}
+                secureTextEntry={true}
+                placeholder="••••••••"
+                placeholderTextColor={'#757575'}
+                autoCapitalize={'none'}
+              />
+            </View>
+            <TouchableOpacity style={authStyles.buttonPrimary} disabled={loading} onPress={() => RegisterWithEmail()}>
+              <Text style={authStyles.buttonPrimaryText}>Créer un compte</Text>
+            </TouchableOpacity>
+            <View style={authStyles.bottomLinkContainer}>
+              <Text style={authStyles.bottomLinkText}>
+                Mot de passe oublié ?
+              </Text>
+            </View>
+          </View>
         )}
       </View>
     </View>
   )
 }
 export default AuthScreen
+
+
