@@ -33,7 +33,6 @@ const mockSessions: Session[] = [
   { title: '4 days ago', subtitle: 'Sparring session', duration: '30 min' },
 ];
 
-// using extracted components above
 
 type UIState = 'normal' | 'loading' | 'empty' | 'error';
 
@@ -69,6 +68,7 @@ export default function DashboardScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ paddingBottom: SPACING.xl }} style={globalStyles.appScreen}>
+      
       <View style={[globalStyles.card, { marginTop: SPACING.xl }]}>
         <View style={styles.cardHeaderRow}>
           <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>Last 7 Days</Text>
