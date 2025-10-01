@@ -52,7 +52,7 @@ export default function DashboardScreen() {
           </View>
         )}
         {mode === 'normal' && (
-          (sessions ?? []).map((s, i) => (
+          (sessions ?? []).slice(0, 2).map((s, i) => (
             <SessionItem key={i} title={s.title} subtitle={s.subtitle} duration={s.duration} />
           ))
         )}

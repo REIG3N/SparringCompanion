@@ -15,7 +15,19 @@ export type CalendarWeekProps = {
 export default function CalendarWeek({ days, mode = 'normal', containerStyle }: CalendarWeekProps) {
   if (mode === 'error') {
     return (
-      <View style={[styles.errorBox, containerStyle]}>
+      <View
+        style={[
+          globalStyles.card,
+          containerStyle,
+          {
+            marginTop: SPACING.xl,
+            backgroundColor: 'rgba(250,45,45,0.10)',
+            borderColor: COLORS.primary,
+            borderWidth: 1,
+          },
+        ]}
+      >
+        <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text, marginBottom: SPACING.md }]}>Last 7 Days</Text>
         <Text style={styles.errorText}>Impossible de charger les données du calendrier</Text>
       </View>
     );
@@ -24,34 +36,30 @@ export default function CalendarWeek({ days, mode = 'normal', containerStyle }: 
   const renderDays = mode === 'empty' ? days.map(d => ({ ...d, hasSession: false })) : days;
 
   return (
-    <View>
-      <View style={[globalStyles.card, containerStyle, { marginTop: SPACING.xl }]}>
-        <View style={[containerStyle]}>
-          <Text
-            style={[
-              TEXT_STYLES.headerLG,
-              { color: COLORS.text, marginBottom: SPACING.md }
-            ]}
-          >
-            Last 7 Days
-          </Text>
-          <View style={globalStyles.cardHeaderRow}>
-            {renderDays.map((d, idx) => {
-              const dayStyle = [
-                globalStyles.calendarDay,
-                d.hasSession && globalStyles.calendarDayHasSession,
-                d.selected && globalStyles.calendarDaySelected,
-                mode === 'loading' && { opacity: 0.5 },
-              ];
-              const textColor = d.selected ? '#000000' : COLORS.text;
-              return (
-                <View key={`${d.label}-${idx}`} style={dayStyle}>
-                  <Text style={{ color: textColor }}>{d.label}</Text>
-                </View>
-              );
-            })}
-          </View>
-        </View>
+    <View style={[globalStyles.card, containerStyle, { marginTop: SPACING.xl }]}>
+      <Text
+        style={[
+          TEXT_STYLES.headerLG,
+          { color: COLORS.text, marginBottom: SPACING.md }
+        ]}
+      >
+        Last 7 Days
+      </Text>
+      <View style={globalStyles.cardHeaderRow}>
+        {renderDays.map((d, idx) => {
+          const dayStyle = [
+            globalStyles.calendarDay,
+            d.hasSession && globalStyles.calendarDayHasSession,
+            d.selected && globalStyles.calendarDaySelected,
+            mode === 'loading' && { opacity: 0.5 },
+          ];
+          const textColor = d.selected ? '#000000' : COLORS.text;
+          return (
+            <View key={`${d.label}-${idx}`} style={dayStyle}>
+              <Text style={{ color: textColor }}>{d.label}</Text>
+            </View>
+          );
+        })}
       </View>
     </View>
   );
