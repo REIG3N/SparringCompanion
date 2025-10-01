@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { SPACING, COLORS } from '../../../src/styles';
+import { SPACING, COLORS } from '../../styles';
 
 export const styles = StyleSheet.create({
   cardHeaderRow: {
@@ -46,5 +46,6 @@ export const styles = StyleSheet.create({
     color: COLORS.text,
   },
 });
+
 
 

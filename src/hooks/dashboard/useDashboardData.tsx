@@ -1,8 +1,6 @@
 import { useState, useMemo } from 'react';
 
-// Types for dashboard data
 export type ChangeType = 'positive' | 'negative';
-
 export type Stat = { title: string; value: string; change?: string; changeType?: ChangeType };
 export type Session = { title: string; subtitle: string; duration: string };
 export type Day = { label: string; hasSession?: boolean; selected?: boolean };
@@ -33,11 +31,10 @@ const DEFAULT_SESSIONS: Session[] = [
 ];
 
 // Helper to derive UI state from data
-// Note: After testing, you can remove "| null | undefined" from the types to activate different UI states for the user.
 function deriveStateFromData(
-  stats: Stat[] | null | undefined,
-  sessions: Session[] | null | undefined,
-  days: Day[] | null | undefined,
+  stats: Stat[],
+  sessions: Session[],
+  days: Day[],
   isLoading: boolean,
 ): UIState {
   if (isLoading) return 'loading';
@@ -64,17 +61,15 @@ function deriveStateFromData(
 export default function useDashboardData() {
   // In a real app, these would be fetched from an API or sub-hooks
   const [isLoading, setIsLoading] = useState(false);
-  const [stats, setStats] = useState<Stat[] | null>([...DEFAULT_STATS]);
-  const [sessions, setSessions] = useState<Session[] | null>([...DEFAULT_SESSIONS]);
-  const [days, setDays] = useState<Day[] | null>([...DEFAULT_DAYS]);
+  const [stats, setStats] = useState<Stat[]>([...DEFAULT_STATS]);
+  const [sessions, setSessions] = useState<Session[]>([...DEFAULT_SESSIONS]);
+  const [days, setDays] = useState<Day[]>([...DEFAULT_DAYS]);
 
-  // Derive UI state based on data and loading
   const mode: UIState = useMemo(
     () => deriveStateFromData(stats, sessions, days, isLoading),
     [stats, sessions, days, isLoading]
   );
 
-  // Transition helpers for testing/demo
   const toNormal = () => {
     setIsLoading(false);
     setStats([...DEFAULT_STATS]);
@@ -84,15 +79,14 @@ export default function useDashboardData() {
 
   const toEmpty = () => {
     setIsLoading(false);
-    setStats(prev => (prev ? prev.map(s => ({ ...s, value: '', change: undefined })) : []));
+    setStats(prev => prev.map(s => ({ ...s, value: '', change: undefined })));
     setSessions([]);
-    setDays(prev => (prev ? prev.map(d => ({ ...d, hasSession: false })) : []));
+    setDays(prev => prev.map(d => ({ ...d, hasSession: false })));
   };
 
   const toError = () => {
     setIsLoading(false);
-    // Intentionally set invalid data shape to trigger 'error'
-    setStats([{ title: null as unknown as string, value: 'x' } as unknown as Stat]);
+    setStats([{ title: '' as string, value: 'x' } as Stat]);
   };
 
   // This hook returns the dashboard data, UI state, and setters so that screens/components can consume and update them.
@@ -125,4 +119,3 @@ Explanation:
 - The hook returns the current mode, data, and setters, so the UI can both display and manipulate dashboard state.
 - This structure makes it easy to later replace the mock data with real API calls or split out sub-hooks for each data type.
 */
-

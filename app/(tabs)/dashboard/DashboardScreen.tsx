@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, View, Text, Pressable } from 'react-native';
 import { globalStyles, SPACING, TEXT_STYLES, COLORS } from '../../../src/styles';
-import { styles } from './DashboardStyle';
+import { styles } from '../../../src/screens/dashboard/DashboardStyle';
 import { StatCard, SessionItem, CalendarWeek } from '../../../src/components/dashboard';
 import useDashboardData from '../../../src/hooks/dashboard/useDashboardData'
 
