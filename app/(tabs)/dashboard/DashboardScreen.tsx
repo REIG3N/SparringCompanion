@@ -33,6 +33,7 @@ const mockSessions: Session[] = [
   { title: '4 days ago', subtitle: 'Sparring session', duration: '30 min' },
 ];
 
+// using extracted components above
 
 type UIState = 'normal' | 'loading' | 'empty' | 'error';
 
@@ -68,13 +69,9 @@ export default function DashboardScreen() {
 
   return (
     <ScrollView contentContainerStyle={{ paddingBottom: SPACING.xl }} style={globalStyles.appScreen}>
-      
-      <View style={[globalStyles.card, { marginTop: SPACING.xl }]}>
-        <View style={styles.cardHeaderRow}>
-          <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>Last 7 Days</Text>
-        </View>
-        <CalendarWeek days={daysToRender} mode={mode} />
-      </View>
+
+      <CalendarWeek days={daysToRender} mode={mode} />
+
 
       <View style={[styles.statsGrid, { marginTop: SPACING.lg }]}>
         {(statsToRender || mockStats).map((s, i) => (
@@ -88,7 +85,7 @@ export default function DashboardScreen() {
         <Text style={globalStyles.buttonPrimaryText}>Nouvelle Session</Text>
       </Pressable>
 
-      <View style={[globalStyles.card, { marginTop: SPACING.lg }]}> 
+      <View style={[globalStyles.card, { marginTop: SPACING.lg }]}>
         <View style={styles.cardHeaderRow}>
           <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>Recent Sessions</Text>
           <Text style={{ color: COLORS.secondary, fontSize: 18 }}>☰</Text>
