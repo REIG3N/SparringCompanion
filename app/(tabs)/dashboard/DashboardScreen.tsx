@@ -2,68 +2,13 @@ import React from 'react';
 import { ScrollView, View, Text, Pressable } from 'react-native';
 import { globalStyles, SPACING, TEXT_STYLES, COLORS } from '../../../src/styles';
 import { styles } from './DashboardStyle';
-import StatCard from '../../../src/components/dashboard/StatCard';
-import SessionItem from '../../../src/components/dashboard/SessionItem';
-import CalendarWeek from '../../../src/components/dashboard/CalendarWeek';
-
-const mockCalendarDays = [
-  { label: 'M', hasSession: false, selected: false },
-  { label: 'T', hasSession: true, selected: false },
-  { label: 'W', hasSession: false, selected: false },
-  { label: 'T', hasSession: true, selected: false },
-  { label: 'F', hasSession: false, selected: false },
-  { label: 'S', hasSession: true, selected: true },
-  { label: 'S', hasSession: false, selected: false },
-];
-
-type ChangeType = 'positive' | 'negative';
-
-type Stat = { title: string; value: string; change?: string; changeType?: ChangeType };
-const mockStats: Stat[] = [
-  { title: 'Weekly Avg', value: '3.2', change: '+0.5', changeType: 'positive' },
-  { title: 'Fun Score', value: '4.5', change: '+0.3', changeType: 'positive' },
-  { title: 'Progression', value: '78%', change: '+12%', changeType: 'positive' },
-  { title: 'Readiness', value: '85%', change: '-5%', changeType: 'negative' },
-];
-
-type Session = { title: string; subtitle: string; duration: string };
-const mockSessions: Session[] = [
-  { title: 'Today', subtitle: 'Head movement & defense', duration: '45 min' },
-  { title: '2 days ago', subtitle: 'Combinations practice', duration: '60 min' },
-  { title: '4 days ago', subtitle: 'Sparring session', duration: '30 min' },
-];
-
-// using extracted components above
-
-type UIState = 'normal' | 'loading' | 'empty' | 'error';
-
-function deriveStateFromData(
-  stats: Stat[] | null | undefined,
-  sessions: Session[] | null | undefined,
-  days: typeof mockCalendarDays | null | undefined,
-  isLoading: boolean,
-): UIState {
-  if (isLoading) return 'loading';
-
-  const statsInvalid = !Array.isArray(stats) || stats.some(s => typeof s.title !== 'string' || typeof s.value !== 'string');
-  const sessionsInvalid = !Array.isArray(sessions) || sessions.some(s => typeof s.title !== 'string' || typeof s.subtitle !== 'string');
-  const daysInvalid = !Array.isArray(days) || days.some(d => typeof d.label !== 'string');
-  if (statsInvalid || sessionsInvalid || daysInvalid) return 'error';
-
-  const isAllEmpty = (stats.length === 0 || stats.every(s => !s.value))
-    && (sessions.length === 0)
-    && (days.length === 0 || days.every(d => !d.hasSession));
-  if (isAllEmpty) return 'empty';
-  return 'normal';
-}
+import { StatCard, SessionItem, CalendarWeek } from '../../../src/components/dashboard';
+import useDashboardData from '../../../src/hooks/dashboard/useDashboardData'
 
 export default function DashboardScreen() {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [stats, setStats] = React.useState<Stat[] | null>(mockStats);
-  const [sessions, setSessions] = React.useState<Session[] | null>(mockSessions);
-  const [days, setDays] = React.useState<typeof mockCalendarDays | null>(mockCalendarDays);
+  const { mode, stats, sessions, days, isLoading, setIsLoading, toNormal, toEmpty, toError } = useDashboardData();
 
-  const mode: UIState = deriveStateFromData(stats, sessions, days, isLoading);
+  // const mode: UIState = deriveStateFromData(stats, sessions, days, isLoading);
   const statsToRender = mode === 'empty' && stats ? stats.map(s => ({ ...s, value: '--', change: undefined })) : (stats ?? []);
   const daysToRender = mode === 'empty' && days ? days.map(d => ({ ...d, hasSession: false })) : (days ?? []);
 
@@ -74,7 +19,7 @@ export default function DashboardScreen() {
 
 
       <View style={[styles.statsGrid, { marginTop: SPACING.lg }]}>
-        {(statsToRender || mockStats).map((s, i) => (
+        {(statsToRender || stats).map((s, i) => (
           <View key={i} style={styles.statsGridItem}>
             <StatCard title={s.title} value={s.value} change={s.change} changeType={s.changeType} mode={mode} />
           </View>
@@ -121,22 +66,17 @@ export default function DashboardScreen() {
           <Text style={globalStyles.buttonOutlineText}>Loading</Text>
         </Pressable>
         <Pressable style={[globalStyles.buttonOutline, { flex: 1 }]} onPress={() => {
-          setStats(stats => stats ? stats.map(s => ({ ...s, value: '' })) : []);
-          setSessions([]);
-          setDays(days => days ? days.map(d => ({ ...d, hasSession: false })) : []);
+          toEmpty();
         }}>
           <Text style={globalStyles.buttonOutlineText}>Empty</Text>
         </Pressable>
         <Pressable style={[globalStyles.buttonOutline, { flex: 1 }]} onPress={() => {
-          setStats([{ title: null as unknown as string, value: 'x' } as unknown as Stat]);
+          toError();
         }}>
           <Text style={globalStyles.buttonOutlineText}>Error</Text>
         </Pressable>
         <Pressable style={[globalStyles.buttonSecondary, { flex: 1 }]} onPress={() => {
-          setStats(mockStats);
-          setSessions(mockSessions);
-          setDays(mockCalendarDays);
-          setIsLoading(false);
+          toNormal();
         }}>
           <Text style={globalStyles.buttonSecondaryText}>Normal</Text>
         </Pressable>
