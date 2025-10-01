@@ -9,7 +9,7 @@ export type Day = { label: string; hasSession?: boolean; selected?: boolean };
 export type UIState = 'normal' | 'loading' | 'empty' | 'error';
 
 // Default/mock data (could be replaced by API data in the future)
-const DEFAULT_DAYS:  Day[] = [
+const DEFAULT_DAYS: Day[] = [
   { label: 'M', hasSession: false, selected: false },
   { label: 'T', hasSession: true, selected: false },
   { label: 'W', hasSession: false, selected: false },
@@ -42,9 +42,15 @@ function deriveStateFromData(
 ): UIState {
   if (isLoading) return 'loading';
 
-  const statsInvalid = !Array.isArray(stats) || stats.some(s => typeof s.title !== 'string' || typeof s.value !== 'string');
-  const sessionsInvalid = !Array.isArray(sessions) || sessions.some(s => typeof s.title !== 'string' || typeof s.subtitle !== 'string');
-  const daysInvalid = !Array.isArray(days) || days.some(d => typeof d.label !== 'string');
+  const statsInvalid = !Array.isArray(stats) 
+    || stats.some(s => typeof s.title !== 'string' 
+    || typeof s.value !== 'string');
+  const sessionsInvalid = !Array.isArray(sessions) 
+    || sessions.some(s => typeof s.title !== 'string' 
+    || typeof s.subtitle !== 'string');
+  const daysInvalid = !Array.isArray(days)
+    || days.some(d => typeof d.label !== 'string')
+    || days.filter(d => d.selected === true).length !== 1;
   if (statsInvalid || sessionsInvalid || daysInvalid) return 'error';
 
   const isAllEmpty = (stats.length === 0 || stats.every(s => !s.value))

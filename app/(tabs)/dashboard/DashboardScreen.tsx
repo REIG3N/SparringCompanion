@@ -27,7 +27,7 @@ export default function DashboardScreen() {
       </View>
 
       <Pressable style={globalStyles.buttonPrimary} onPress={() => { }}>
-        <Text style={globalStyles.buttonPrimaryText}>Nouvelle Session</Text>
+        <Text style={globalStyles.buttonPrimaryText}>Live Session</Text>
       </Pressable>
 
       <View style={[globalStyles.card, { marginTop: SPACING.lg }]}>
