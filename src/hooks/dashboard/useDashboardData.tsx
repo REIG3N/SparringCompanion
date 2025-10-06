@@ -1,4 +1,8 @@
 import { useState, useMemo } from 'react';
+import useCalendarData from './useCalendarData';
+import { getDefaultCalendarDays } from './useCalendarData';
+import useStatsData, { getDefaultStats } from './useStatsData';
+import useSessionData,{getDefaultSessions} from './useSessionData';
 
 export type ChangeType = 'positive' | 'negative';
 export type Stat = { title: string; value: string; change?: string; changeType?: ChangeType };
@@ -7,28 +11,7 @@ export type Day = { label: string; hasSession?: boolean; selected?: boolean };
 export type UIState = 'normal' | 'loading' | 'empty' | 'error';
 
 // Default/mock data (could be replaced by API data in the future)
-const DEFAULT_DAYS: Day[] = [
-  { label: 'M', hasSession: false, selected: false },
-  { label: 'T', hasSession: true, selected: false },
-  { label: 'W', hasSession: false, selected: false },
-  { label: 'T', hasSession: true, selected: false },
-  { label: 'F', hasSession: false, selected: false },
-  { label: 'S', hasSession: true, selected: true },
-  { label: 'S', hasSession: false, selected: false },
-];
 
-const DEFAULT_STATS: Stat[] = [
-  { title: 'Weekly Avg', value: '3.2', change: '+0.5', changeType: 'positive' },
-  { title: 'Fun Score', value: '4.5', change: '+0.3', changeType: 'positive' },
-  { title: 'Progression', value: '78%', change: '+12%', changeType: 'positive' },
-  { title: 'Readiness', value: '85%', change: '-5%', changeType: 'negative' },
-];
-
-const DEFAULT_SESSIONS: Session[] = [
-  { title: 'Today', subtitle: 'Head movement & defense', duration: '45 min' },
-  { title: '2 days ago', subtitle: 'Combinations practice', duration: '60 min' },
-  { title: '4 days ago', subtitle: 'Sparring session', duration: '30 min' },
-];
 
 // Helper to derive UI state from data
 function deriveStateFromData(
@@ -57,13 +40,12 @@ function deriveStateFromData(
   return 'normal';
 }
 
-// Main dashboard hook - Orchestrator
 export default function useDashboardData() {
   // In a real app, these would be fetched from an API or sub-hooks
   const [isLoading, setIsLoading] = useState(false);
-  const [stats, setStats] = useState<Stat[]>([...DEFAULT_STATS]);
-  const [sessions, setSessions] = useState<Session[]>([...DEFAULT_SESSIONS]);
-  const [days, setDays] = useState<Day[]>([...DEFAULT_DAYS]);
+  const { stats, setStats } = useStatsData();
+  const {sessions, setSessions} = useSessionData();
+  const { days, setDays } = useCalendarData();
 
   const mode: UIState = useMemo(
     () => deriveStateFromData(stats, sessions, days, isLoading),
@@ -72,9 +54,9 @@ export default function useDashboardData() {
 
   const toNormal = () => {
     setIsLoading(false);
-    setStats([...DEFAULT_STATS]);
-    setSessions([...DEFAULT_SESSIONS]);
-    setDays([...DEFAULT_DAYS]);
+    setStats(getDefaultStats());
+    setSessions(getDefaultSessions());
+    setDays(getDefaultCalendarDays());
   };
 
   const toEmpty = () => {
@@ -86,7 +68,7 @@ export default function useDashboardData() {
 
   const toError = () => {
     setIsLoading(false);
-    setStats([{ title: '' as string, value: 'x' } as Stat]);
+    setDays(prev => prev.map(d => ({ ...d, selected: false })));
   };
 
   // This hook returns the dashboard data, UI state, and setters so that screens/components can consume and update them.

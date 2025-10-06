@@ -37,7 +37,9 @@ export default function StatCard({ title, value, change, changeType, mode = 'nor
   const displayChange = mode === 'empty' ? undefined : change;
 
   return (
-    <View style={[styles.card, containerStyle]}>
+  <>
+  
+  <View style={[styles.card, containerStyle]}>
       <Text style={globalStyles.statCardTitle}>{title}</Text>
       <Text style={globalStyles.statCardValue}>{displayValue}</Text>
       {!!displayChange && (
@@ -46,6 +48,8 @@ export default function StatCard({ title, value, change, changeType, mode = 'nor
         </Text>
       )}
     </View>
+  
+  </>
   );
 }
 
