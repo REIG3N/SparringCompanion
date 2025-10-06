@@ -20,15 +20,11 @@ export function getDefaultCalendarDays(): CalendarDay[] {
 }
 
 export default function useCalendarData() {
-  const [days, setDays] = useState<CalendarDay[]>([]);
+  const [days, setDays] = useState<CalendarDay[]>(getDefaultCalendarDays());
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    // Initialize with mock data for now. 
-    // Replace with API call later.
-    setDays(getDefaultCalendarDays());
-  }, []);
+  // In case we later fetch from an API, we'll control loading here.
 
   return { days, setDays, isLoading, error };
 }
