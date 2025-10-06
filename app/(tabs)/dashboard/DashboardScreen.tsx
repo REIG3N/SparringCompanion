@@ -1,10 +1,11 @@
 import React from 'react';
 import { ScrollView, View, Text, Pressable } from 'react-native';
-import { globalStyles, SPACING, TEXT_STYLES, COLORS } from '../../../src/styles';
-import { styles } from '../../../src/screens/dashboard/DashboardStyle';
-import { StatGrid, SessionItem, CalendarWeek, SessionHistory } from '../../../src/components/dashboard';
-import useDashboardData from '../../../src/hooks/dashboard/useDashboardData'
-import DashboardDebugPanel from '../../../src/components/debug/DashboardDebugPanel';
+import { globalStyles, SPACING, TEXT_STYLES, COLORS } from '@/src/styles';
+import { styles } from '@/src/screens/dashboard/DashboardStyle';
+import { StatGrid, SessionItem, CalendarWeek, SessionHistory } from '@/src/components/dashboard';
+import useDashboardData from '@/src/hooks/dashboard/useDashboardData'
+import DashboardDebugPanel from '@/src/components/debug/DashboardDebugPanel';
+import { Link } from 'expo-router'
 
 export default function DashboardScreen() {
   const { mode, stats, sessions, days, isLoading, setIsLoading, toNormal, toEmpty, toError } = useDashboardData();
@@ -19,14 +20,17 @@ export default function DashboardScreen() {
       
       <StatGrid stats={statsToRender} mode={mode} />
 
-      <Pressable style={globalStyles.buttonPrimary} onPress={() => { }}>
-        <Text style={globalStyles.buttonPrimaryText}>Live Session</Text>
-      </Pressable>
+      <Link href="/modals/modal" asChild>
+        <Pressable style={globalStyles.buttonPrimary}>
+          <Text style={globalStyles.buttonPrimaryText}>
+            Add New Session
+          </Text>
+        </Pressable>
+      </Link>
 
       <SessionHistory mode={mode} sessions={sessions} />
 
       {/* Debug panel (comment out to hide) */}
-
       {/* <DashboardDebugPanel
         mode={mode}
         onMode={(m) => {
@@ -40,5 +44,3 @@ export default function DashboardScreen() {
     </ScrollView>
   );
 }
-
-
