@@ -13,6 +13,27 @@ import { TypeSelector } from './postSession/TypeSelector';
 import { FocusInput } from './postSession/FocusInput';
 import { GoalProgress } from './postSession/GoalProgress';
 
+// Mock data for testing
+export const mockSessionData = {
+  date: '2024-06-01',
+  duration: '60',
+  environment: 1, // 0: Solo, 1: Group
+  type: 1, // 0: Practice, 1: Sparring
+  fatigue: 4,
+  fun: 5,
+  successType: 2,
+  successDomain: 1,
+  successDescription: 'Great takedown defense and quick transitions.',
+  difficultyType: 1,
+  difficultyDomain: 0,
+  difficultyDescription: 'Struggled with guard passing against heavier opponents.',
+  notes: 'Felt strong today, but need to work on breathing under pressure.',
+  executionSuccess: 1,
+  oppositionLevel: 3,
+  consistency: 2,
+  confidence: 4,
+};
+
 export const PostSessionForm = ({ onSubmit, initialData = {} }) => {
   const [activeTab, setActiveTab] = useState(0);
   const [formData, setFormData] = useState({
