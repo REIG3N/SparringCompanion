@@ -98,6 +98,12 @@ export const globalStyles = StyleSheet.create({
     borderRadius: RADIUS.md,
     padding: SPACING.md,
   },
+  cardHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: SPACING.md,
+  },
   statCardTitle: {
     fontSize: 14,
     color: COLORS.text,
@@ -147,11 +153,6 @@ export const globalStyles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   buttonPrimaryText: {
-    color: '#000000',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  buttonPrimaryTextAlt: {
     color: COLORS.text,
     fontSize: 16,
     fontWeight: '600',

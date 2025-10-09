@@ -10,7 +10,7 @@ export default function TabLayout() {
         headerShown: false,
       }}>
       <Tabs.Screen
-        name="dashboard"
+        name="dashboard/DashboardScreen"
         options={{
           title: 'Dashboard',
           tabBarIcon: ({ color, size }) => (
@@ -19,7 +19,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="Goals/goalScreen"
         options={{
           title: 'Goals',
           tabBarIcon: ({ color, size }) => (
@@ -28,7 +28,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="settings"
+        name="Settings/settings"
         options={{
           title: 'Settings',
           tabBarIcon: ({ color, size }) => (
