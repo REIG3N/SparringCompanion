@@ -61,8 +61,8 @@ export const PostSessionForm = ({ onSubmit, initialData = {} }) => {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: COLORS.background }}>
-      <View style={{ padding: SPACING.lg }}>
+    <ScrollView style={{ flex: 1 }}>
+      <View style={{  }}>
         <TabNavigation tabs={['Basic', 'Focus', 'Notes']} activeTab={activeTab} onTabPress={setActiveTab} />
 
         <View style={{ marginTop: SPACING.lg }}>

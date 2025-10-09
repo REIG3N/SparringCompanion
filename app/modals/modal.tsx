@@ -1,32 +1,70 @@
-import { Link } from 'expo-router';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
-import React from 'react';
+import { Link, useLocalSearchParams } from 'expo-router';
+import { Text, View, Pressable, ScrollView } from 'react-native';
+import React,{useState} from 'react';
 import { PostSessionForm } from '@/src/components/forms/PostSessionForm';
+import { COLORS, globalStyles, SPACING, TEXT_STYLES } from '@/src/styles';
+import { Icons } from '@/constants/icons';
 
-export default function ModalScreen() {
+export type ModalScreenProps = {
+  mode?: 'empty' | 'edit' | 'error';
+};
+
+export default function ModalScreen(props: ModalScreenProps) {
+  const params = useLocalSearchParams();
+  const mode = props.mode ?? (typeof params.mode === 'string' ? params.mode : 'empty');
+
   return (
-    <View style={styles.container}>
-      <Link href={{ pathname: '/(tabs)/dashboard/DashboardScreen' }} asChild>
-        <Pressable style={styles.link}>
-          <Text>Back to dashboard</Text>
-        </Pressable>
-      </Link>
+    <View style={{ flex: 1, backgroundColor: COLORS.background, marginTop: 50, padding: SPACING.lg }}>
+      <View style={{ flexDirection: "row", justifyContent: 'space-between', alignItems: 'center', paddingBottom: 16 }}>
+        <Text style={[TEXT_STYLES.headerLG]}>New Session</Text>
 
+        <View>
+          {mode === "empty" && (
+            <Link href={{ pathname: '/(tabs)/dashboard/DashboardScreen' }} asChild>
+              <Pressable style={globalStyles.buttonOutline}>
+                <Icons.X size={16} color={COLORS.text} />
+              </Pressable>
+            </Link>
+          )
+        }
+          {
+            mode === "edit" && (() => {
+              const [selected, setSelected] = useState<'view' | 'edit'>('edit');
+              return (
+                <View style={globalStyles.radioPills}>
+                  <Pressable
+                    style={[
+                      globalStyles.radioPill,
+                      { marginRight: 8 },
+                      selected === 'view' && { backgroundColor: COLORS.secondary, borderColor: COLORS.secondary, borderWidth: 1 }
+                    ]}
+                    onPress={() => setSelected('view')}
+                  >
+                    <Icons.FileText size={16} color={selected === 'view' ? COLORS.background : COLORS.text} />
+                  </Pressable>
+                  <Pressable
+                    style={[
+                      globalStyles.radioPill,
+                      { marginRight: 8 },
+                      selected === 'edit' && { backgroundColor: COLORS.secondary, borderColor: COLORS.secondary, borderWidth: 1 }
+                    ]}
+                    onPress={() => setSelected('edit')}
+                  >
+                    <Icons.Edit size={16} color={selected === 'edit' ? COLORS.background : COLORS.text} />
+                  </Pressable>
+                  <Link href={{ pathname: '/(tabs)/dashboard/DashboardScreen' }} asChild>
+                    <Pressable style={globalStyles.radioPill}>
+                      <Icons.Trash2 size={16} color={COLORS.primary} />
+                    </Pressable>
+                  </Link>
+                </View>
+              );
+            })()
+          }
+          
+        </View>
+      </View>
       <PostSessionForm onSubmit={(data: any) => { console.log('Submitted session:', data); }} />
-
-
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-});

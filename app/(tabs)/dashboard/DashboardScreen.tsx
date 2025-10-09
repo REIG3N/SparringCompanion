@@ -20,14 +20,20 @@ export default function DashboardScreen() {
       
       <StatGrid stats={statsToRender} mode={mode} />
 
-      <Link href="/modals/modal" asChild>
+      <Link href={{ pathname: "/modals/modal", params: { mode: "empty" } }} asChild>
         <Pressable style={globalStyles.buttonPrimary}>
           <Text style={globalStyles.buttonPrimaryText}>
             Add New Session
           </Text>
         </Pressable>
       </Link>
-
+      <Link href={{ pathname: "/modals/modal", params: { mode: "edit" } }} asChild>
+        <Pressable style={globalStyles.buttonPrimary}>
+          <Text style={globalStyles.buttonPrimaryText}>
+            Add New Session
+          </Text>
+        </Pressable>
+      </Link>
       <SessionHistory mode={mode} sessions={sessions} />
 
       {/* Debug panel (comment out to hide) */}
