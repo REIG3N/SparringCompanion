@@ -30,7 +30,7 @@ export default function DashboardScreen() {
       <Link href={{ pathname: "/modals/modal", params: { mode: "edit" } }} asChild>
         <Pressable style={globalStyles.buttonPrimary}>
           <Text style={globalStyles.buttonPrimaryText}>
-            Add New Session
+            Test Edit Session
           </Text>
         </Pressable>
       </Link>

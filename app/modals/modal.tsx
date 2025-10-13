@@ -4,6 +4,7 @@ import React,{useState} from 'react';
 import { PostSessionForm } from '@/src/components/forms/PostSessionForm';
 import { COLORS, globalStyles, SPACING, TEXT_STYLES } from '@/src/styles';
 import { Icons } from '@/constants/icons';
+import { ButtonPrimary } from '@/src/components/atomic/buttons/ButtonPrimary';
 
 export type ModalScreenProps = {
   mode?: 'empty' | 'edit' | 'error';
@@ -12,6 +13,13 @@ export type ModalScreenProps = {
 export default function ModalScreen(props: ModalScreenProps) {
   const params = useLocalSearchParams();
   const mode = props.mode ?? (typeof params.mode === 'string' ? params.mode : 'empty');
+  const [isAllTabsComplete, setIsAllTabsComplete] = useState(false);
+
+
+  
+  function CompletedForm(isAllTabsComplete: boolean) {
+    setIsAllTabsComplete(isAllTabsComplete);
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.background, marginTop: 50, padding: SPACING.lg }}>
@@ -64,7 +72,10 @@ export default function ModalScreen(props: ModalScreenProps) {
           
         </View>
       </View>
-      <PostSessionForm onSubmit={(data: any) => { console.log('Submitted session:', data); }} />
+      <PostSessionForm onCompletionChange={CompletedForm} onSubmit={(data: any) => { console.log('Submitted session:', data); }} />
+
+      <ButtonPrimary title="Enregistrer Session" disabled={!isAllTabsComplete} onPress={undefined}          // onPress={handleSubmit} 
+      />
     </View>
   );
 }
