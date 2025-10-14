@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView, View } from "react-native";
-import { COLORS, SPACING } from "../../styles";
+import { COLORS, SPACING, TEXT_STYLES } from "../../styles";
+import { Icons } from "@/constants/icons";
 import { ButtonPrimary } from "../atomic/buttons/ButtonPrimary";
 import { TabNavigation } from "../atomic/navigation/TabNavigation";
 import { InputField } from "../atomic/inputs/InputField";
@@ -44,12 +45,12 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
     environment: initialData.environment || null,
 
     groupProgress: {
-      executionSuccess: initialData.groupProgress?.executionSuccess ?? 1,
-      oppositionLevel: initialData.groupProgress?.oppositionLevel ?? 0,
-      consistency: initialData.groupProgress?.consistency ?? 0,
+      executionSuccess: initialData.groupProgress?.executionSuccess ?? null,
+      oppositionLevel: initialData.groupProgress?.oppositionLevel ?? null,
+      consistency: initialData.groupProgress?.consistency ?? null,
     },
     soloProgress: {
-      confidence: initialData.soloProgress?.confidence ?? 0,
+      confidence: initialData.soloProgress?.confidence ?? null,
     },
     
     type: initialData.type || null,
@@ -62,10 +63,10 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
     difficultyDomain: initialData.difficultyDomain || null,
     difficultyDescription: initialData.difficultyDescription || "",
     notes: initialData.notes || "",
-    executionSuccess: initialData.executionSuccess || 1,
-    oppositionLevel: initialData.oppositionLevel || 0,
-    consistency: initialData.consistency || 0,
-    confidence: initialData.confidence || 0,
+    executionSuccess: initialData.executionSuccess ?? null,
+    oppositionLevel: initialData.oppositionLevel ?? null,
+    consistency: initialData.consistency ?? null,
+    confidence: initialData.confidence ?? null,
 
   });
 
@@ -118,6 +119,42 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
 
   const isAllTabsComplete = isBasicTabComplete() && isFocusTabComplete();
 
+  const requiredMap = {
+    date: true,
+    duration: true,
+    environment: true,
+    type: true,
+    fatigue: true,
+    fun: true,
+    successType: true,
+    successDomain: true,
+    difficultyType: true,
+    difficultyDomain: true,
+    executionSuccess: true,
+    oppositionLevel: formData.environment === 1,
+    consistency: true,
+    confidence: true,
+    notes: false,
+  };
+
+  const invalidMap = {
+    date: !(typeof formData.date === 'string' && formData.date.trim().length > 0),
+    duration: !(typeof formData.duration === 'string' && formData.duration.trim().length > 0),
+    environment: formData.environment === null || formData.environment === undefined,
+    type: formData.type === null || formData.type === undefined,
+    fatigue: formData.fatigue === null,
+    fun: formData.fun === null,
+    successType: formData.successType === null,
+    successDomain: formData.successDomain === null,
+    difficultyType: formData.difficultyType === null,
+    difficultyDomain: formData.difficultyDomain === null,
+    executionSuccess: formData.executionSuccess === null,
+    oppositionLevel: formData.environment === 1 ? formData.oppositionLevel === null : false,
+    consistency: formData.consistency === null,
+    confidence: formData.confidence === null,
+    notes: false,
+  };
+
   console.log("isBasicTabComplete:", isBasicTabComplete());
   console.log("isFocusTabComplete:", isFocusTabComplete());
   console.log("isAllTabsComplete:", isAllTabsComplete);
@@ -149,6 +186,9 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
                 }
                 placeholder="YYYY-MM-DD"
                 editable={!readOnly}
+                required={requiredMap.date}
+                optional={!requiredMap.date}
+                isInvalid={invalidMap.date}
               />
               <InputField
                 label="Duration (minutes)"
@@ -159,6 +199,9 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
                 placeholder="45"
                 keyboardType="numeric"
                 editable={!readOnly}
+                required={requiredMap.duration}
+                optional={!requiredMap.duration}
+                isInvalid={invalidMap.duration}
               />
               <EnvironmentSelector
                 value={formData.environment}
@@ -166,11 +209,17 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
                   setFormData({ ...formData, environment: value })
                 }
                 disabled={readOnly}
+                required={requiredMap.environment}
+                optional={!requiredMap.environment}
+                isInvalid={invalidMap.environment}
               />
               <TypeSelector
                 value={formData.type}
                 onChange={(value) => setFormData({ ...formData, type: value })}
                 disabled={readOnly}
+                required={requiredMap.type}
+                optional={!requiredMap.type}
+                isInvalid={invalidMap.type}
               />
               <RatingSelector
                 label="Fatigue (1-5)"
@@ -179,12 +228,18 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
                   setFormData({ ...formData, fatigue: value })
                 }
                 disabled={readOnly}
+                required={requiredMap.fatigue}
+                optional={!requiredMap.fatigue}
+                isInvalid={invalidMap.fatigue}
               />
               <RatingSelector
                 label="Fun (1-5)"
                 value={formData.fun}
                 onChange={(value) => setFormData({ ...formData, fun: value })}
                 disabled={readOnly}
+                required={requiredMap.fun}
+                optional={!requiredMap.fun}
+                isInvalid={invalidMap.fun}
               />
             </FormSection>
           )}
@@ -206,6 +261,15 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
                   setFormData({ ...formData, successDescription: text })
                 }
                 disabled={readOnly}
+                required={requiredMap.successType || requiredMap.successDomain}
+                optional={!(requiredMap.successType || requiredMap.successDomain)}
+                isInvalid={invalidMap.successType || invalidMap.successDomain}
+                requiredType={requiredMap.successType}
+                optionalType={!requiredMap.successType}
+                isInvalidType={invalidMap.successType}
+                requiredDomain={requiredMap.successDomain}
+                optionalDomain={!requiredMap.successDomain}
+                isInvalidDomain={invalidMap.successDomain}
               />
               <FocusInput
                 type="difficulty"
@@ -222,6 +286,15 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
                   setFormData({ ...formData, difficultyDescription: text })
                 }
                 disabled={readOnly}
+                required={requiredMap.difficultyType || requiredMap.difficultyDomain}
+                optional={!(requiredMap.difficultyType || requiredMap.difficultyDomain)}
+                isInvalid={invalidMap.difficultyType || invalidMap.difficultyDomain}
+                requiredType={requiredMap.difficultyType}
+                optionalType={!requiredMap.difficultyType}
+                isInvalidType={invalidMap.difficultyType}
+                requiredDomain={requiredMap.difficultyDomain}
+                optionalDomain={!requiredMap.difficultyDomain}
+                isInvalidDomain={invalidMap.difficultyDomain}
               />
               <GoalProgress
                 executionSuccess={formData.executionSuccess}
@@ -257,6 +330,9 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
                 placeholder="Observations sur votre performance, points à retenir..."
                 numberOfLines={6}
                 editable={!readOnly}
+                required={requiredMap.notes}
+                optional={!requiredMap.notes}
+                isInvalid={false}
               />
             </FormSection>
           )}

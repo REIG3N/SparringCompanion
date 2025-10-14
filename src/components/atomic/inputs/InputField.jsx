@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput } from 'react-native';
 import { COLORS, OPACITY, SPACING, globalStyles } from '../../../styles';
+import { Icons } from '../../../../constants/icons';
 
 export const InputField = ({ 
   label,
@@ -11,10 +12,18 @@ export const InputField = ({
   secureTextEntry = false,
   error = false,
   errorMessage = '',
-  editable = true
+  editable = true,
+  required = false,
+  optional = false,
+  isInvalid = false,
 }) => (
   <View style={{ marginBottom: SPACING.md }}>
-    {label && <Text style={globalStyles.labelText}>{label}</Text>}
+    {label && (
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+        {required && isInvalid && <Icons.AlertTriangle size={14} color={COLORS.primary} />}
+        <Text style={globalStyles.labelText}>{label}{!required && optional ? ' (optional)' : ''}</Text>
+      </View>
+    )}
     <TextInput
       style={[
         globalStyles.inputField,

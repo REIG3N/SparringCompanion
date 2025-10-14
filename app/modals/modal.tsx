@@ -77,8 +77,10 @@ export default function ModalScreen(props: ModalScreenProps) {
         onSubmit={(data: any) => { console.log('Submitted session:', data); }}
         readOnly={mode === 'edit' && selected === 'view'}
       />
-
-      <ButtonPrimary title="Enregistrer Session" disabled={!isAllTabsComplete} onPress={undefined}          // onPress={handleSubmit} 
+      {!isAllTabsComplete && (
+        <Text style={{ color: COLORS.primary, marginTop: 8, marginBottom: 8 }}>Certaines données requises sont manquantes.</Text>
+      )}
+      <ButtonPrimary title="Enregistrer Session" disabled={!isAllTabsComplete || (mode === 'edit' && selected === 'view')} onPress={undefined}          // onPress={handleSubmit} 
       />
     </View>
   );
