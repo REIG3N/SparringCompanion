@@ -7,18 +7,20 @@ export const TextAreaField = ({
   value,
   onChangeText,
   placeholder,
-  numberOfLines = 4
+  numberOfLines = 4,
+  editable = true
 }) => (
   <View style={{ marginBottom: SPACING.md }}>
     {label && <Text style={globalStyles.labelText}>{label}</Text>}
     <TextInput
-      style={[globalStyles.inputField, { minHeight: 80, textAlignVertical: 'top' }]}
+      style={[globalStyles.inputField, { minHeight: 80, textAlignVertical: 'top' }, !editable && { opacity: OPACITY.o40 }]}
       value={value}
       onChangeText={onChangeText}
       placeholder={placeholder}
       placeholderTextColor={`rgba(117,117,117,${OPACITY.o60})`}
       multiline
       numberOfLines={numberOfLines}
+      editable={editable}
     />
   </View>
 );

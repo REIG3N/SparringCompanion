@@ -1,10 +1,10 @@
-import { Text, View } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import React from 'react'
 import { styles } from '@/src/screens/dashboard/DashboardStyle'
 import { globalStyles, SPACING, TEXT_STYLES, COLORS } from '@/utils/globalStyles'
 import SessionItem from './SessionItem'
-
 import type { SessionItemProps } from './SessionItem'
+import { Link } from 'expo-router'
 
 export type SessionHistoryProps = {
   mode: 'normal' | 'loading' | 'empty' | 'error';
@@ -17,7 +17,11 @@ export default function SessionHistory({ mode, sessions }: SessionHistoryProps) 
     <View style={[globalStyles.card, { marginTop: SPACING.lg }]}>
       <View style={styles.cardHeaderRow}>
         <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>Recent Sessions</Text>
-        <Text style={{ color: COLORS.secondary, fontSize: 18 }}>☰</Text>
+        <Link href={{ pathname: "/modals/sessionHistoryModal" }} asChild>
+          <Pressable >
+            <Text style={{ color: COLORS.secondary, fontSize: 18 }}>☰</Text>
+          </Pressable>
+        </Link>
       </View>
       {mode === 'error' && (
         <View style={[styles.errorBox, { marginTop: SPACING.sm }]}>

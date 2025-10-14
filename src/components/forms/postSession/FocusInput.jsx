@@ -11,6 +11,7 @@ export const FocusInput = ({
   onTypeChange,
   onDomainChange,
   onDescriptionChange,
+  disabled = false,
 }) => (
   <View style={{ backgroundColor: `rgba(255,255,255,${OPACITY.o05})`, borderRadius: RADIUS.md, padding: SPACING.md, marginBottom: SPACING.md }}>
     <Text style={{ fontSize: 16, fontWeight: '600', color: type === 'success' ? COLORS.success : COLORS.secondary, marginBottom: SPACING.sm }}>
@@ -22,13 +23,15 @@ export const FocusInput = ({
       <View style={{ flexDirection: 'row', gap: SPACING.xs }}>
         <TouchableOpacity
           style={{ flex: 1, padding: SPACING.sm, backgroundColor: focusType === 0 ? COLORS.primary : 'transparent', borderWidth: 1, borderColor: focusType === 0 ? COLORS.primary : `rgba(255,255,255,${OPACITY.o20})`, borderRadius: RADIUS.xs, alignItems: 'center' }}
-          onPress={() => onTypeChange(0)}
+          onPress={() => { if (!disabled) { onTypeChange(0); } }}
+          disabled={disabled}
         >
           <Text style={{ fontSize: 12, color: focusType === 0 ? COLORS.text : COLORS.accent }}>Proaction</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flex: 1, padding: SPACING.sm, backgroundColor: focusType === 1 ? COLORS.primary : 'transparent', borderWidth: 1, borderColor: focusType === 1 ? COLORS.primary : `rgba(255,255,255,${OPACITY.o20})`, borderRadius: RADIUS.xs, alignItems: 'center' }}
-          onPress={() => onTypeChange(1)}
+          onPress={() => { if (!disabled) { onTypeChange(1); } }}
+          disabled={disabled}
         >
           <Text style={{ fontSize: 12, color: focusType === 1 ? COLORS.text : COLORS.accent }}>Reaction</Text>
         </TouchableOpacity>
@@ -40,13 +43,15 @@ export const FocusInput = ({
       <View style={{ flexDirection: 'row', gap: SPACING.xs }}>
         <TouchableOpacity
           style={{ flex: 1, padding: SPACING.sm, backgroundColor: domain === 0 ? COLORS.primary : 'transparent', borderWidth: 1, borderColor: domain === 0 ? COLORS.primary : `rgba(255,255,255,${OPACITY.o20})`, borderRadius: RADIUS.xs, alignItems: 'center' }}
-          onPress={() => onDomainChange(0)}
+          onPress={() => { if (!disabled) { onDomainChange(0); } }}
+          disabled={disabled}
         >
           <Text style={{ fontSize: 12, color: domain === 0 ? COLORS.text : COLORS.accent }}>Technique</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flex: 1, padding: SPACING.sm, backgroundColor: domain === 1 ? COLORS.primary : 'transparent', borderWidth: 1, borderColor: domain === 1 ? COLORS.primary : `rgba(255,255,255,${OPACITY.o20})`, borderRadius: RADIUS.xs, alignItems: 'center' }}
-          onPress={() => onDomainChange(1)}
+          onPress={() => { if (!disabled) { onDomainChange(1); } }}
+          disabled={disabled}
         >
           <Text style={{ fontSize: 12, color: domain === 1 ? COLORS.text : COLORS.accent }}>Tactique</Text>
         </TouchableOpacity>
@@ -58,6 +63,7 @@ export const FocusInput = ({
       onChangeText={onDescriptionChange}
       placeholder={`Describe ${type}...`}
       numberOfLines={4}
+      editable={!disabled}
     />
   </View>
 );

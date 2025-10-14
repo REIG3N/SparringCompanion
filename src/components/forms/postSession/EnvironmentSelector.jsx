@@ -3,10 +3,10 @@ import { View, Text } from 'react-native';
 import { RadioPills } from '../../atomic/navigation/RadioPills';
 import { SPACING, globalStyles } from '../../../styles';
 
-export const EnvironmentSelector = ({ value, onChange }) => (
+export const EnvironmentSelector = ({ value, onChange, disabled = false }) => (
   <View style={{ marginBottom: SPACING.md }}>
     <Text style={globalStyles.labelText}>Environment</Text>
-    <RadioPills options={['Solo', 'Group']} selected={value} onSelect={onChange} />
+    <RadioPills options={['Solo', 'Group']} selected={value} onSelect={onChange} disabled={disabled} />
   </View>
 );
 

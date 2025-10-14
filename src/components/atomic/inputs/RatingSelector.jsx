@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { COLORS, OPACITY, RADIUS, SPACING, globalStyles } from '../../../styles';
 
-export const RatingSelector = ({ label, value, onChange }) => (
+export const RatingSelector = ({ label, value, onChange, disabled = false }) => (
   <View style={{ marginBottom: SPACING.md }}>
     {label && <Text style={globalStyles.labelText}>{label}</Text>}
     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -21,8 +21,10 @@ export const RatingSelector = ({ label, value, onChange }) => (
             justifyContent: 'center',
             marginLeft: rating !== 1 ? SPACING.sm / 2 : 0,
             marginRight: rating !== 5 ? SPACING.sm / 2 : 0,
+            opacity: disabled ? OPACITY.o40 : 1,
           }}
-          onPress={() => onChange(rating)}
+          onPress={() => { if (!disabled) { onChange(rating); } }}
+          disabled={disabled}
         >
           <Text style={{ fontSize: 16, fontWeight: '600', color: value === rating ? '#000000' : COLORS.text }}>
             {rating}

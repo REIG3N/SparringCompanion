@@ -35,7 +35,7 @@ export const mockSessionData = {
   confidence: 4,
 };
 
-export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {} }) => {
+export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}, readOnly = false }) => {
   const [activeTab, setActiveTab] = useState(0);
   // const [isAllTabsComplete, setIsAllTabsComplete] = useState(false);
   const [formData, setFormData] = useState({
@@ -148,6 +148,7 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
                   setFormData({ ...formData, date: text })
                 }
                 placeholder="YYYY-MM-DD"
+                editable={!readOnly}
               />
               <InputField
                 label="Duration (minutes)"
@@ -157,16 +158,19 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
                 }
                 placeholder="45"
                 keyboardType="numeric"
+                editable={!readOnly}
               />
               <EnvironmentSelector
                 value={formData.environment}
                 onChange={(value) =>
                   setFormData({ ...formData, environment: value })
                 }
+                disabled={readOnly}
               />
               <TypeSelector
                 value={formData.type}
                 onChange={(value) => setFormData({ ...formData, type: value })}
+                disabled={readOnly}
               />
               <RatingSelector
                 label="Fatigue (1-5)"
@@ -174,11 +178,13 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
                 onChange={(value) =>
                   setFormData({ ...formData, fatigue: value })
                 }
+                disabled={readOnly}
               />
               <RatingSelector
                 label="Fun (1-5)"
                 value={formData.fun}
                 onChange={(value) => setFormData({ ...formData, fun: value })}
+                disabled={readOnly}
               />
             </FormSection>
           )}
@@ -199,6 +205,7 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
                 onDescriptionChange={(text) =>
                   setFormData({ ...formData, successDescription: text })
                 }
+                disabled={readOnly}
               />
               <FocusInput
                 type="difficulty"
@@ -214,6 +221,7 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
                 onDescriptionChange={(text) =>
                   setFormData({ ...formData, difficultyDescription: text })
                 }
+                disabled={readOnly}
               />
               <GoalProgress
                 executionSuccess={formData.executionSuccess}
@@ -233,6 +241,7 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
                   setFormData({ ...formData, confidence: value })
                 }
                 isGroupSession={formData.environment === 1}
+                disabled={readOnly}
               />
             </FormSection>
           )}
@@ -247,12 +256,12 @@ export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}
                 }
                 placeholder="Observations sur votre performance, points à retenir..."
                 numberOfLines={6}
+                editable={!readOnly}
               />
             </FormSection>
           )}
         </View>
 
-        {/* Submit button removed from child; parent renders and controls it. */}
       </View>
     </ScrollView>
   );

@@ -14,25 +14,26 @@ export const GoalProgress = ({
   onConsistencyChange,
   onConfidenceChange,
   isGroupSession = true,
+  disabled = false,
 }) => (
   <View style={{ backgroundColor: `rgba(255,255,255,${OPACITY.o05})`, borderRadius: RADIUS.md, padding: SPACING.md, marginBottom: SPACING.md }}>
     <Text style={{ fontSize: 16, fontWeight: '600', color: COLORS.text, marginBottom: SPACING.md }}>Goal Progress</Text>
     {isGroupSession ? (
       <>
-        <RatingSelector label="Execution Success" value={executionSuccess} onChange={onExecutionChange} />
+        <RatingSelector label="Execution Success" value={executionSuccess} onChange={onExecutionChange} disabled={disabled} />
         <View style={{ marginBottom: SPACING.md }}>
           <Text style={globalStyles.labelText}>Opposition Level</Text>
-          <RadioPills options={['Less', 'Similar', 'More']} selected={oppositionLevel} onSelect={onOppositionChange} />
+          <RadioPills options={['Less', 'Similar', 'More']} selected={oppositionLevel} onSelect={onOppositionChange} disabled={disabled} />
         </View>
         <View style={{ marginBottom: SPACING.md }}>
           <Text style={globalStyles.labelText}>Consistency</Text>
-          <RadioPills options={['Difficult', 'Often', 'On Demand']} selected={consistency} onSelect={onConsistencyChange} />
+          <RadioPills options={['Difficult', 'Often', 'On Demand']} selected={consistency} onSelect={onConsistencyChange} disabled={disabled} />
         </View>
       </>
     ) : (
       <View style={{ marginBottom: SPACING.md }}>
         <Text style={globalStyles.labelText}>Confidence</Text>
-        <RadioPills options={['Unnatural', 'Natural', 'Ready for Sparring']} selected={confidence} onSelect={onConfidenceChange} />
+        <RadioPills options={['Unnatural', 'Natural', 'Ready for Sparring']} selected={confidence} onSelect={onConfidenceChange} disabled={disabled} />
       </View>
     )}
   </View>
