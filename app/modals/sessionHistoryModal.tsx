@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Pressable,ScrollView } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import React from "react";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter, Link } from "expo-router";
 import { COLORS, globalStyles, SPACING, TEXT_STYLES } from "@/src/styles";
 import { Icons } from "@/constants/icons";
 import { SessionItem } from "@/src/components/dashboard";
@@ -14,9 +14,9 @@ export default function SessionHistoryModal() {
 
   const displayMode: 'normal' | 'loading' | 'empty' | 'error' =
     routeMode === 'loading' ? 'loading' :
-    routeMode === 'error' ? 'error' :
-    routeMode === 'empty' ? 'empty' :
-    (error ? 'error' : (isLoading ? 'loading' : ((sessions?.length ?? 0) === 0 ? 'empty' : 'normal')));
+      routeMode === 'error' ? 'error' :
+        routeMode === 'empty' ? 'empty' :
+          (error ? 'error' : (isLoading ? 'loading' : ((sessions?.length ?? 0) === 0 ? 'empty' : 'normal')));
 
   return (
     <View style={[globalStyles.appScreen, styles.container]}>
@@ -45,7 +45,13 @@ export default function SessionHistoryModal() {
         )}
         {displayMode === 'normal' && (
           (sessions ?? []).map((s, i) => (
-            <SessionItem key={i} title={s.title} subtitle={s.subtitle} duration={s.duration} />
+            <Link
+              key={i}
+              href={{ pathname: "/modals/modal", params: { mode: 'edit', id: String((s as any).id ?? i) } }}
+              asChild
+            >
+              <SessionItem id={(s as any).id ?? i} title={s.title} subtitle={s.subtitle} duration={s.duration} />
+            </Link>
           ))
         )}
       </ScrollView>
@@ -69,10 +75,10 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     // backgroundColor: COLORS.surface,
   },
-  backText: { 
-    color: COLORS.primary, 
-    fontSize: 16, 
-    fontWeight: "bold" 
+  backText: {
+    color: COLORS.primary,
+    fontSize: 16,
+    fontWeight: "bold"
   },
   errorBox: {
     backgroundColor: 'rgba(250,45,45,0.10)',

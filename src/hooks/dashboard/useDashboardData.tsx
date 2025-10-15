@@ -1,8 +1,7 @@
 import { useState, useMemo } from 'react';
-import useCalendarData from './useCalendarData';
-import { getDefaultCalendarDays } from './useCalendarData';
+import useCalendarData, { getDefaultCalendarDays } from './useCalendarData';
 import useStatsData, { getDefaultStats } from './useStatsData';
-import useSessionData,{getDefaultSessions} from './useSessionData';
+import useSessionData from './useSessionData';
 
 export type ChangeType = 'positive' | 'negative';
 export type Stat = { title: string; value: string; change?: string; changeType?: ChangeType };
@@ -55,7 +54,7 @@ export default function useDashboardData() {
   const toNormal = () => {
     setIsLoading(false);
     setStats(getDefaultStats());
-    setSessions(getDefaultSessions());
+    setSessions([]);
     setDays(getDefaultCalendarDays());
   };
 

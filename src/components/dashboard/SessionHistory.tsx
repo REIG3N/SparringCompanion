@@ -18,7 +18,7 @@ export default function SessionHistory({ mode, sessions }: SessionHistoryProps) 
       <View style={styles.cardHeaderRow}>
         <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>Recent Sessions</Text>
         <Link href={{
-            pathname: "/modals/sessionHistoryModal", params: {
+          pathname: "/modals/sessionHistoryModal", params: {
             mode,
           }
         }} asChild >
@@ -46,7 +46,18 @@ export default function SessionHistory({ mode, sessions }: SessionHistoryProps) 
       )}
       {mode === 'normal' && (
         (sessions ?? []).slice(0, 2).map((s, i) => (
-          <SessionItem key={i} title={s.title} subtitle={s.subtitle} duration={s.duration} />
+          <Link
+            key={i}
+            href={{ pathname: "/modals/modal", params: { mode: 'edit', id: String(s.id ?? i) } }}
+            asChild
+          >
+            <SessionItem
+              id={s.id ?? i}
+              title={s.title}
+              subtitle={s.subtitle}
+              duration={s.duration}
+            />
+          </Link>
         ))
       )}
     </View>

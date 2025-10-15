@@ -5,24 +5,29 @@ import { globalStyles, SPACING, COLORS } from '../../styles';
 export type UIState = 'normal' | 'loading' | 'empty' | 'error';
 
 export type SessionItemProps = {
+  id?: number;
   title?: string;
   subtitle?: string;
   duration?: string;
   mode?: UIState;
   containerStyle?: ViewStyle;
+  onPress?: () => void;
 };
 
 export default function SessionItem({
+  id,
   title,
   subtitle,
   duration,
   mode = 'normal',
   containerStyle,
+  onPress,
 }: SessionItemProps) {
   // Handler for onPress
   const handlePress = () => {
     console.log(
       'SessionItem pressed:',
+      id || '[No id]',
       title || '[No title]',
       subtitle || '[No subtitle]',
       duration || '[No duration]'
@@ -45,7 +50,7 @@ export default function SessionItem({
           { marginBottom: SPACING.sm, opacity: 0.5 },
           containerStyle,
         ]}
-        onPress={handlePress}
+        onPress={onPress ?? handlePress}
       >
         <View style={globalStyles.sessionInfo}>
           <Text style={globalStyles.sessionTitle}>{' '}</Text>
@@ -66,7 +71,7 @@ export default function SessionItem({
         { marginBottom: SPACING.sm },
         containerStyle,
       ]}
-      onPress={handlePress}
+      onPress={onPress ?? handlePress}
     >
       <View style={globalStyles.sessionInfo}>
         <Text style={globalStyles.sessionTitle}>{title}</Text>

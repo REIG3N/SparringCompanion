@@ -1,0 +1,127 @@
+import { Session } from '@/src/types/session';
+
+export function createEmptySession(): Session {
+  return {
+    id: Date.now(),
+    date: new Date().toISOString().split("T")[0],
+    duration: "60",
+    environment: null as any,
+    type: null as any,
+    fatigue: null,
+    fun: null,
+    successType: null,
+    successDomain: null,
+    successDescription: "",
+    difficultyType: null,
+    difficultyDomain: null,
+    difficultyDescription: "",
+    notes: "",
+    executionSuccess: null,
+    oppositionLevel: null,
+    consistency: null,
+    confidence: null,
+  };
+}
+
+export const mockSessions: Session[] = [
+  {
+    id: 0,
+    date: "2024-06-01",
+    duration: "60",
+    environment: 1, // Group
+    type: 1, // Sparring
+    fatigue: 4,
+    fun: 5,
+    successType: 2,
+    successDomain: 1,
+    successDescription: "Great takedown defense and quick transitions.",
+    difficultyType: 1,
+    difficultyDomain: 0,
+    difficultyDescription: "Struggled with guard passing against heavier opponents.",
+    notes: "Felt strong today, but need to work on breathing under pressure.",
+    executionSuccess: 1,
+    oppositionLevel: 3,
+    consistency: 2,
+    confidence: 4,
+  },
+  {
+    id: 1,
+    date: "2024-05-30",
+    duration: "45",
+    environment: 0, // Solo
+    type: 0, // Practice
+    fatigue: 2,
+    fun: 4,
+    successType: 0,
+    successDomain: 0,
+    successDescription: "Perfect technique execution during drills.",
+    difficultyType: 0,
+    difficultyDomain: 1,
+    difficultyDescription: "Need to work on tactical positioning.",
+    notes: "Great focus session, technique feels more natural.",
+    executionSuccess: null,
+    oppositionLevel: null,
+    consistency: null,
+    confidence: 3,
+  },
+  {
+    id: 2,
+    date: "2024-05-28",
+    duration: "75",
+    environment: 1, // Group
+    type: 1, // Sparring
+    fatigue: 5,
+    fun: 3,
+    successType: 1,
+    successDomain: 1,
+    successDescription: "Good reaction time in sparring.",
+    difficultyType: 1,
+    difficultyDomain: 1,
+    difficultyDescription: "Tactical decisions under pressure were challenging.",
+    notes: "Exhausting session but learned a lot about endurance.",
+    executionSuccess: 2,
+    oppositionLevel: 2,
+    consistency: 1,
+    confidence: 3,
+  },
+  {
+    id: 3,
+    date: "2024-05-25",
+    duration: "30",
+    environment: 0, // Solo
+    type: 0, // Practice
+    fatigue: 1,
+    fun: 5,
+    successType: 0,
+    successDomain: 0,
+    successDescription: "Smooth technique flow during practice.",
+    difficultyType: 0,
+    difficultyDomain: 0,
+    difficultyDescription: "Minor issues with footwork timing.",
+    notes: "Short but effective practice session.",
+    executionSuccess: null,
+    oppositionLevel: null,
+    consistency: null,
+    confidence: 5,
+  },
+  {
+    id: 4,
+    date: "2024-05-23",
+    duration: "60",
+    environment: 1, // Group
+    type: 0, // Practice
+    fatigue: 3,
+    fun: 4,
+    successType: 1,
+    successDomain: 0,
+    successDescription: "Great group drilling session.",
+    difficultyType: 0,
+    difficultyDomain: 1,
+    difficultyDescription: "Tactical understanding needs improvement.",
+    notes: "Good team chemistry during practice.",
+    executionSuccess: 3,
+    oppositionLevel: 1,
+    consistency: 2,
+    confidence: 4,
+  },
+];

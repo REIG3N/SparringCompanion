@@ -1,10 +1,12 @@
 import { Link, useLocalSearchParams } from 'expo-router';
 import { Text, View, Pressable, ScrollView } from 'react-native';
-import React,{useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { PostSessionForm } from '@/src/components/forms/PostSessionForm';
 import { COLORS, globalStyles, SPACING, TEXT_STYLES } from '@/src/styles';
 import { Icons } from '@/constants/icons';
 import { ButtonPrimary } from '@/src/components/atomic/buttons/ButtonPrimary';
+import { createSession, fetchSessions, fetchSessionById, updateSession } from '@/src/repositories/sessionsRepository';
+import { useRouter } from 'expo-router';
 
 export type ModalScreenProps = {
   mode?: 'empty' | 'edit' | 'error';
@@ -15,9 +17,40 @@ export default function ModalScreen(props: ModalScreenProps) {
   const mode = props.mode ?? (typeof params.mode === 'string' ? params.mode : 'empty');
   const [isAllTabsComplete, setIsAllTabsComplete] = useState(false);
   const [selected, setSelected] = useState<'view' | 'edit'>('edit');
-  
+  const router = useRouter();
+
+  const [pendingData, setPendingData] = useState<any | null>(null);
+  const [initialData, setInitialData] = useState<any | null>(null);
+
+  const idParam = typeof params.id === 'string' ? Number(params.id) : undefined;
+
+  useEffect(() => {
+    const load = async () => {
+      if (mode === 'edit' && typeof idParam === 'number' && !Number.isNaN(idParam)) {
+        const s = await fetchSessionById(idParam);
+        if (s) setInitialData(s);
+      }
+    };
+    load();
+  }, [mode, idParam]);
+
   function CompletedForm(isAllTabsComplete: boolean) {
     setIsAllTabsComplete(isAllTabsComplete);
+  }
+
+  async function handleSave(sessionData: any) {
+    try {
+      if (mode === 'edit' && typeof idParam === 'number' && !Number.isNaN(idParam)) {
+        await updateSession(idParam, { ...sessionData, id: idParam });
+        console.log('Updated session:', idParam);
+      } else {
+        const created = await createSession(sessionData);
+        console.log('Created session:', created);
+      }
+      router.replace('/(tabs)/dashboard/DashboardScreen');
+    } catch (e) {
+      console.log('Save failed:', e);
+    }
   }
 
   return (
@@ -33,7 +66,7 @@ export default function ModalScreen(props: ModalScreenProps) {
               </Pressable>
             </Link>
           )
-        }
+          }
           {
             mode === "edit" && (
               <View style={globalStyles.radioPills}>
@@ -65,19 +98,25 @@ export default function ModalScreen(props: ModalScreenProps) {
               </View>
             )
           }
-          
+
         </View>
       </View>
-      <PostSessionForm 
+      <PostSessionForm
         onCompletionChange={CompletedForm}
-        onSubmit={(data: any) => { console.log('Submitted session:', data); }}
+        onFormDataChange={setPendingData}
+        initialData={initialData ?? {}}
         readOnly={mode === 'edit' && selected === 'view'}
       />
       {!isAllTabsComplete && (
         <Text style={{ color: COLORS.primary, marginTop: 8, marginBottom: 8 }}>Certaines données requises sont manquantes.</Text>
       )}
-      <ButtonPrimary title="Enregistrer Session" disabled={!isAllTabsComplete || (mode === 'edit' && selected === 'view')} onPress={undefined}          // onPress={handleSubmit} 
+      <ButtonPrimary
+        title={mode === 'edit' ? "Mettre à jour" : "Enregistrer Session"}
+        disabled={!isAllTabsComplete || (mode === 'edit' && selected === 'view')}
+        onPress={() => { if (pendingData) handleSave(pendingData); }}
       />
+
+
     </View>
   );
 }

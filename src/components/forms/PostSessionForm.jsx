@@ -13,66 +13,83 @@ import { EnvironmentSelector } from "./postSession/EnvironmentSelector";
 import { TypeSelector } from "./postSession/TypeSelector";
 import { FocusInput } from "./postSession/FocusInput";
 import { GoalProgress } from "./postSession/GoalProgress";
+import { getEmptySession } from '@/src/repositories/sessionsRepository';
 
-// Mock data for testing
-export const mockSessionData = {
-  date: "2024-06-01",
-  duration: "60",
-  environment: 1, // 0: Solo, 1: Group
-  type: 1, // 0: Practice, 1: Sparring
-  fatigue: 4,
-  fun: 5,
-  successType: 2,
-  successDomain: 1,
-  successDescription: "Great takedown defense and quick transitions.",
-  difficultyType: 1,
-  difficultyDomain: 0,
-  difficultyDescription:
-    "Struggled with guard passing against heavier opponents.",
-  notes: "Felt strong today, but need to work on breathing under pressure.",
-  executionSuccess: 1,
-  oppositionLevel: 3,
-  consistency: 2,
-  confidence: 4,
-};
-
-export const PostSessionForm = ({ onSubmit, onCompletionChange, initialData = {}, readOnly = false }) => {
+export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialData = {}, readOnly = false }) => {
   const [activeTab, setActiveTab] = useState(0);
   // const [isAllTabsComplete, setIsAllTabsComplete] = useState(false);
-  const [formData, setFormData] = useState({
-    date: initialData.date || new Date().toISOString().split("T")[0],
-    duration: initialData.duration || "60",
-    environment: initialData.environment || null,
-
-    groupProgress: {
-      executionSuccess: initialData.groupProgress?.executionSuccess ?? null,
-      oppositionLevel: initialData.groupProgress?.oppositionLevel ?? null,
-      consistency: initialData.groupProgress?.consistency ?? null,
-    },
-    soloProgress: {
-      confidence: initialData.soloProgress?.confidence ?? null,
-    },
-    
-    type: initialData.type || null,
-    fatigue: initialData.fatigue || null,
-    fun: initialData.fun || null,
-    successType: initialData.successType || null,
-    successDomain: initialData.successDomain || null,
-    successDescription: initialData.successDescription || "",
-    difficultyType: initialData.difficultyType || null,
-    difficultyDomain: initialData.difficultyDomain || null,
-    difficultyDescription: initialData.difficultyDescription || "",
-    notes: initialData.notes || "",
-    executionSuccess: initialData.executionSuccess ?? null,
-    oppositionLevel: initialData.oppositionLevel ?? null,
-    consistency: initialData.consistency ?? null,
-    confidence: initialData.confidence ?? null,
-
+  const [formData, setFormData] = useState(() => {
+    const emptySession = getEmptySession();
+    return {
+      date: initialData.date || emptySession.date,
+      duration: initialData.duration || emptySession.duration,
+      environment: initialData.environment ?? emptySession.environment,
+      groupProgress: {
+        executionSuccess: initialData.groupProgress?.executionSuccess ?? emptySession.executionSuccess,
+        oppositionLevel: initialData.groupProgress?.oppositionLevel ?? emptySession.oppositionLevel,
+        consistency: initialData.groupProgress?.consistency ?? emptySession.consistency,
+      },
+      soloProgress: {
+        confidence: initialData.soloProgress?.confidence ?? emptySession.confidence,
+      },
+      type: initialData.type ?? emptySession.type,
+      fatigue: initialData.fatigue ?? emptySession.fatigue,
+      fun: initialData.fun ?? emptySession.fun,
+      successType: initialData.successType ?? emptySession.successType,
+      successDomain: initialData.successDomain ?? emptySession.successDomain,
+      successDescription: initialData.successDescription || emptySession.successDescription,
+      difficultyType: initialData.difficultyType ?? emptySession.difficultyType,
+      difficultyDomain: initialData.difficultyDomain ?? emptySession.difficultyDomain,
+      difficultyDescription: initialData.difficultyDescription || emptySession.difficultyDescription,
+      notes: initialData.notes || emptySession.notes,
+      executionSuccess: initialData.executionSuccess ?? emptySession.executionSuccess,
+      oppositionLevel: initialData.oppositionLevel ?? emptySession.oppositionLevel,
+      consistency: initialData.consistency ?? emptySession.consistency,
+      confidence: initialData.confidence ?? emptySession.confidence,
+    };
   });
 
-  const handleSubmit = () => {
-    onSubmit?.(formData);
-  };
+  // When initialData changes (e.g., after fetch by id), repopulate the form
+  useEffect(() => {
+    const emptySession = getEmptySession();
+    const next = {
+      date: initialData.date || emptySession.date,
+      duration: initialData.duration || emptySession.duration,
+      environment: initialData.environment ?? emptySession.environment,
+      groupProgress: {
+        executionSuccess: initialData.groupProgress?.executionSuccess ?? emptySession.executionSuccess,
+        oppositionLevel: initialData.groupProgress?.oppositionLevel ?? emptySession.oppositionLevel,
+        consistency: initialData.groupProgress?.consistency ?? emptySession.consistency,
+      },
+      soloProgress: {
+        confidence: initialData.soloProgress?.confidence ?? emptySession.confidence,
+      },
+      type: initialData.type ?? emptySession.type,
+      fatigue: initialData.fatigue ?? emptySession.fatigue,
+      fun: initialData.fun ?? emptySession.fun,
+      successType: initialData.successType ?? emptySession.successType,
+      successDomain: initialData.successDomain ?? emptySession.successDomain,
+      successDescription: initialData.successDescription || emptySession.successDescription,
+      difficultyType: initialData.difficultyType ?? emptySession.difficultyType,
+      difficultyDomain: initialData.difficultyDomain ?? emptySession.difficultyDomain,
+      difficultyDescription: initialData.difficultyDescription || emptySession.difficultyDescription,
+      notes: initialData.notes || emptySession.notes,
+      executionSuccess: initialData.executionSuccess ?? emptySession.executionSuccess,
+      oppositionLevel: initialData.oppositionLevel ?? emptySession.oppositionLevel,
+      consistency: initialData.consistency ?? emptySession.consistency,
+      confidence: initialData.confidence ?? emptySession.confidence,
+    };
+    setFormData(next);
+  }, [initialData]);
+
+  useEffect(() => {
+    onCompletionChange?.(isAllTabsComplete);
+  }, [formData]);
+
+  useEffect(() => {
+    onFormDataChange?.(formData);
+  }, [formData]);
+
 
   const isBasicTabComplete = () => {
     return (
