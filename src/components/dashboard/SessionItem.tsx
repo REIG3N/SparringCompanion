@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, Pressable } from 'react-native';
 import { globalStyles, SPACING, COLORS } from '../../styles';
 
 export type UIState = 'normal' | 'loading' | 'empty' | 'error';
@@ -12,7 +12,23 @@ export type SessionItemProps = {
   containerStyle?: ViewStyle;
 };
 
-export default function SessionItem({ title, subtitle, duration, mode = 'normal', containerStyle }: SessionItemProps) {
+export default function SessionItem({
+  title,
+  subtitle,
+  duration,
+  mode = 'normal',
+  containerStyle,
+}: SessionItemProps) {
+  // Handler for onPress
+  const handlePress = () => {
+    console.log(
+      'SessionItem pressed:',
+      title || '[No title]',
+      subtitle || '[No subtitle]',
+      duration || '[No duration]'
+    );
+  };
+
   if (mode === 'error') {
     return (
       <View style={[globalStyles.sessionItem, styles.errorItem, containerStyle]}>
@@ -23,12 +39,19 @@ export default function SessionItem({ title, subtitle, duration, mode = 'normal'
 
   if (mode === 'loading') {
     return (
-      <View style={[globalStyles.sessionItem, { marginBottom: SPACING.sm, opacity: 0.5 }, containerStyle]}>
+      <Pressable
+        style={[
+          globalStyles.sessionItem,
+          { marginBottom: SPACING.sm, opacity: 0.5 },
+          containerStyle,
+        ]}
+        onPress={handlePress}
+      >
         <View style={globalStyles.sessionInfo}>
           <Text style={globalStyles.sessionTitle}>{' '}</Text>
           <Text style={globalStyles.sessionSubtitle}>{' '}</Text>
         </View>
-      </View>
+      </Pressable>
     );
   }
 
@@ -37,7 +60,14 @@ export default function SessionItem({ title, subtitle, duration, mode = 'normal'
   }
 
   return (
-    <View style={[globalStyles.sessionItem, { marginBottom: SPACING.sm }, containerStyle]}>
+    <Pressable
+      style={[
+        globalStyles.sessionItem,
+        { marginBottom: SPACING.sm },
+        containerStyle,
+      ]}
+      onPress={handlePress}
+    >
       <View style={globalStyles.sessionInfo}>
         <Text style={globalStyles.sessionTitle}>{title}</Text>
         <Text style={globalStyles.sessionSubtitle}>{subtitle}</Text>
@@ -46,7 +76,7 @@ export default function SessionItem({ title, subtitle, duration, mode = 'normal'
         <Text style={{ color: COLORS.accent }}>{duration}</Text>
         <Text style={{ color: COLORS.accent }}>▶</Text>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

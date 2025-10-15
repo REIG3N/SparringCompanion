@@ -20,10 +20,6 @@ export default function ModalScreen(props: ModalScreenProps) {
     setIsAllTabsComplete(isAllTabsComplete);
   }
 
-  const handleViewState = () => {
-    
-  }
-
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.background, marginTop: 50, padding: SPACING.lg }}>
       <View style={{ flexDirection: "row", justifyContent: 'space-between', alignItems: 'center', paddingBottom: 16 }}>

@@ -17,12 +17,17 @@ export default function SessionHistory({ mode, sessions }: SessionHistoryProps) 
     <View style={[globalStyles.card, { marginTop: SPACING.lg }]}>
       <View style={styles.cardHeaderRow}>
         <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>Recent Sessions</Text>
-        <Link href={{ pathname: "/modals/sessionHistoryModal" }} asChild>
+        <Link href={{
+            pathname: "/modals/sessionHistoryModal", params: {
+            mode,
+          }
+        }} asChild >
           <Pressable >
             <Text style={{ color: COLORS.secondary, fontSize: 18 }}>☰</Text>
           </Pressable>
         </Link>
       </View>
+
       {mode === 'error' && (
         <View style={[styles.errorBox, { marginTop: SPACING.sm }]}>
           <Text style={styles.errorText}>Échec de chargement des sessions. Vérifiez votre connexion.</Text>
