@@ -51,6 +51,8 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
 
   // When initialData changes (e.g., after fetch by id), repopulate the form
   useEffect(() => {
+    if (!initialData || Object.keys(initialData).length === 0) return;
+    
     const emptySession = getEmptySession();
     const next = {
       date: initialData.date || emptySession.date,
@@ -80,7 +82,7 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
       confidence: initialData.confidence ?? emptySession.confidence,
     };
     setFormData(next);
-  }, [initialData]);
+  }, [initialData?.id, initialData?.date]); // Only depend on specific fields that matter
 
   useEffect(() => {
     onCompletionChange?.(isAllTabsComplete);

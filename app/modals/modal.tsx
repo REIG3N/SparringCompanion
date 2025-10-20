@@ -1,11 +1,11 @@
 import { Link, useLocalSearchParams } from 'expo-router';
-import { Text, View, Pressable, ScrollView } from 'react-native';
+import { Text, View, Pressable, ScrollView, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { PostSessionForm } from '@/src/components/forms/PostSessionForm';
 import { COLORS, globalStyles, SPACING, TEXT_STYLES } from '@/src/styles';
 import { Icons } from '@/constants/icons';
 import { ButtonPrimary } from '@/src/components/atomic/buttons/ButtonPrimary';
-import { createSession, fetchSessions, fetchSessionById, updateSession } from '@/src/repositories/sessionsRepository';
+import { createSession, fetchSessions, fetchSessionById, updateSession, deleteSession } from '@/src/repositories/sessionsRepository';
 import { useRouter } from 'expo-router';
 
 export type ModalScreenProps = {
@@ -53,6 +53,39 @@ export default function ModalScreen(props: ModalScreenProps) {
     }
   }
 
+  async function handleDelete() {
+    if (!(mode === 'edit' && typeof idParam === 'number' && !Number.isNaN(idParam))) {
+      Alert.alert('Error', 'Cannot delete session: invalid session ID.');
+      return;
+    }
+
+    Alert.alert(
+      'Delete Session',
+      'Are you sure you want to delete this session? This action cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const ok = await deleteSession(idParam);
+              if (ok) {
+                console.log('Session deleted successfully:', idParam);
+                router.replace('/(tabs)/dashboard/DashboardScreen');
+              } else {
+                Alert.alert('Error', 'Failed to delete session.');
+              }
+            } catch (e) {
+              console.log('Delete failed:', e);
+              Alert.alert('Error', 'An error occurred while deleting the session.');
+            }
+          },
+        },
+      ]
+    );
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.background, marginTop: 50, padding: SPACING.lg }}>
       <View style={{ flexDirection: "row", justifyContent: 'space-between', alignItems: 'center', paddingBottom: 16 }}>
@@ -90,9 +123,12 @@ export default function ModalScreen(props: ModalScreenProps) {
                 >
                   <Icons.Edit size={16} color={selected === 'edit' ? COLORS.background : COLORS.text} />
                 </Pressable>
+                <Pressable style={globalStyles.radioPill} onPress={handleDelete}>
+                  <Icons.Trash2 size={16} color={COLORS.primary} />
+                </Pressable>
                 <Link href={{ pathname: '/(tabs)/dashboard/DashboardScreen' }} asChild>
                   <Pressable style={globalStyles.radioPill}>
-                    <Icons.Trash2 size={16} color={COLORS.primary} />
+                    <Icons.X size={16} color={COLORS.text} />
                   </Pressable>
                 </Link>
               </View>
