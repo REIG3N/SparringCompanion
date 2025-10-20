@@ -23,7 +23,6 @@ export default function SessionItem({
   containerStyle,
   onPress,
 }: SessionItemProps) {
-  // Handler for onPress
   const handlePress = () => {
     console.log(
       'SessionItem pressed:',

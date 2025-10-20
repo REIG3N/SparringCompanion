@@ -28,7 +28,7 @@ export const mockSessions: Session[] = [
     id: 0,
     date: "2024-06-01",
     duration: "60",
-    environment: 1, // Group
+    environment: 1,
     type: 1, // Sparring
     fatigue: 4,
     fun: 5,
@@ -48,7 +48,7 @@ export const mockSessions: Session[] = [
     id: 1,
     date: "2024-05-30",
     duration: "45",
-    environment: 0, // Solo
+    environment: 0,
     type: 0, // Practice
     fatigue: 2,
     fun: 4,
@@ -68,7 +68,7 @@ export const mockSessions: Session[] = [
     id: 2,
     date: "2024-05-28",
     duration: "75",
-    environment: 1, // Group
+    environment: 1,
     type: 1, // Sparring
     fatigue: 5,
     fun: 3,
@@ -88,7 +88,7 @@ export const mockSessions: Session[] = [
     id: 3,
     date: "2024-05-25",
     duration: "30",
-    environment: 0, // Solo
+    environment: 0,
     type: 0, // Practice
     fatigue: 1,
     fun: 5,
@@ -108,7 +108,7 @@ export const mockSessions: Session[] = [
     id: 4,
     date: "2024-05-23",
     duration: "60",
-    environment: 1, // Group
+    environment: 1,
     type: 0, // Practice
     fatigue: 3,
     fun: 4,

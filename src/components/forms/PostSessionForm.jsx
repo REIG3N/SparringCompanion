@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, Text, Alert, Switch } from "react-native";
 import { COLORS, SPACING, TEXT_STYLES } from "../../styles";
 import { Icons } from "@/constants/icons";
 import { ButtonPrimary } from "../atomic/buttons/ButtonPrimary";
@@ -10,7 +10,6 @@ import { RadioPills } from "../atomic/navigation/RadioPills";
 import { RatingSelector } from "../atomic/inputs/RatingSelector";
 import { FormSection } from "./postSession/FormSection";
 import { EnvironmentSelector } from "./postSession/EnvironmentSelector";
-import { TypeSelector } from "./postSession/TypeSelector";
 import { FocusInput } from "./postSession/FocusInput";
 import { GoalProgress } from "./postSession/GoalProgress";
 import { getEmptySession } from '@/src/repositories/sessionsRepository';
@@ -32,7 +31,7 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
       soloProgress: {
         confidence: initialData.soloProgress?.confidence ?? emptySession.confidence,
       },
-      type: initialData.type ?? emptySession.type,
+
       fatigue: initialData.fatigue ?? emptySession.fatigue,
       fun: initialData.fun ?? emptySession.fun,
       successType: initialData.successType ?? emptySession.successType,
@@ -49,7 +48,12 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
     };
   });
 
-  // When initialData changes (e.g., after fetch by id), repopulate the form
+  // Toggle for sparring/confrontation presence
+  const [hadSparring, setHadSparring] = useState(() => {
+    if (typeof initialData?.environment === 'number') return initialData.environment === 1;
+    return (initialData?.oppositionLevel != null) || (initialData?.executionSuccess != null);
+  });
+
   useEffect(() => {
     if (!initialData || Object.keys(initialData).length === 0) return;
     
@@ -66,7 +70,7 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
       soloProgress: {
         confidence: initialData.soloProgress?.confidence ?? emptySession.confidence,
       },
-      type: initialData.type ?? emptySession.type,
+      // type removed
       fatigue: initialData.fatigue ?? emptySession.fatigue,
       fun: initialData.fun ?? emptySession.fun,
       successType: initialData.successType ?? emptySession.successType,
@@ -82,6 +86,9 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
       confidence: initialData.confidence ?? emptySession.confidence,
     };
     setFormData(next);
+    if (typeof initialData?.environment === 'number') {
+      setHadSparring(initialData.environment === 1);
+    }
   }, [initialData?.id, initialData?.date]); // Only depend on specific fields that matter
 
   useEffect(() => {
@@ -99,38 +106,26 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
       typeof formData.date === "string" && formData.date.trim().length > 0 &&
       formData.duration !== null &&
       typeof formData.duration === "string" && formData.duration.trim().length > 0 &&
-      formData.environment !== null &&
-      formData.environment !== undefined &&
-      formData.type !== null &&
-      formData.type !== undefined &&
+      formData.confidence !== null &&
       formData.fatigue !== null &&
       formData.fun !== null
     );
   }
   const isFocusTabComplete = () => {
-    const baseComplete = 
-      formData.successType !== null  &&
-      formData.successDomain !== null  &&
-      formData.difficultyType !== null  &&
-      formData.difficultyDomain !== null;
-    
-    if (formData.environment === null) {
-      return false;
+    if (!hadSparring) {
+      return true; // nothing required
     }
-    
-    if (formData.environment === 0) {
-      return baseComplete &&
-        formData.executionSuccess !== null &&
-        formData.consistency !== null &&
-        formData.confidence !== null;
-    }
-    
-    if (formData.environment === 1) {
+
+    if (hadSparring) {
+      const baseComplete = 
+        formData.successType !== null  &&
+        formData.successDomain !== null  &&
+        formData.difficultyType !== null  &&
+        formData.difficultyDomain !== null;
       return baseComplete &&
         formData.executionSuccess !== null &&
         formData.oppositionLevel !== null &&
-        formData.consistency !== null &&
-        formData.confidence !== null;
+        formData.consistency !== null;
     }
     
     return false;
@@ -141,17 +136,16 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
   const requiredMap = {
     date: true,
     duration: true,
-    environment: true,
-    type: true,
+    environment: false,
     fatigue: true,
     fun: true,
-    successType: true,
-    successDomain: true,
-    difficultyType: true,
-    difficultyDomain: true,
-    executionSuccess: true,
-    oppositionLevel: formData.environment === 1,
-    consistency: true,
+    successType: hadSparring,
+    successDomain: hadSparring,
+    difficultyType: hadSparring,
+    difficultyDomain: hadSparring,
+    executionSuccess: hadSparring,
+    oppositionLevel: hadSparring,
+    consistency: hadSparring,
     confidence: true,
     notes: false,
   };
@@ -159,26 +153,19 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
   const invalidMap = {
     date: !(typeof formData.date === 'string' && formData.date.trim().length > 0),
     duration: !(typeof formData.duration === 'string' && formData.duration.trim().length > 0),
-    environment: formData.environment === null || formData.environment === undefined,
-    type: formData.type === null || formData.type === undefined,
+    environment: false,
     fatigue: formData.fatigue === null,
     fun: formData.fun === null,
-    successType: formData.successType === null,
-    successDomain: formData.successDomain === null,
-    difficultyType: formData.difficultyType === null,
-    difficultyDomain: formData.difficultyDomain === null,
-    executionSuccess: formData.executionSuccess === null,
-    oppositionLevel: formData.environment === 1 ? formData.oppositionLevel === null : false,
-    consistency: formData.consistency === null,
+    successType: hadSparring ? formData.successType === null : false,
+    successDomain: hadSparring ? formData.successDomain === null : false,
+    difficultyType: hadSparring ? formData.difficultyType === null : false,
+    difficultyDomain: hadSparring ? formData.difficultyDomain === null : false,
+    executionSuccess: hadSparring ? formData.executionSuccess === null : false,
+    oppositionLevel: hadSparring ? formData.oppositionLevel === null : false,
+    consistency: hadSparring ? formData.consistency === null : false,
     confidence: formData.confidence === null,
     notes: false,
   };
-
-  console.log("isBasicTabComplete:", isBasicTabComplete());
-  console.log("isFocusTabComplete:", isFocusTabComplete());
-  console.log("isAllTabsComplete:", isAllTabsComplete);
-  console.log(formData);
-
   useEffect(() => {
     onCompletionChange?.(isAllTabsComplete);
   }, [formData])
@@ -222,23 +209,16 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
                 optional={!requiredMap.duration}
                 isInvalid={invalidMap.duration}
               />
-              <EnvironmentSelector
-                value={formData.environment}
+              <RatingSelector
+                label="Confidence (1-5)"
+                value={formData.confidence}
                 onChange={(value) =>
-                  setFormData({ ...formData, environment: value })
+                  setFormData({ ...formData, confidence: value })
                 }
                 disabled={readOnly}
-                required={requiredMap.environment}
-                optional={!requiredMap.environment}
-                isInvalid={invalidMap.environment}
-              />
-              <TypeSelector
-                value={formData.type}
-                onChange={(value) => setFormData({ ...formData, type: value })}
-                disabled={readOnly}
-                required={requiredMap.type}
-                optional={!requiredMap.type}
-                isInvalid={invalidMap.type}
+                required={requiredMap.confidence}
+                optional={!requiredMap.confidence}
+                isInvalid={invalidMap.confidence}
               />
               <RatingSelector
                 label="Fatigue (1-5)"
@@ -265,76 +245,97 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
 
           {activeTab === 1 && (
             <FormSection>
-              <FocusInput
-                type="success"
-                focusType={formData.successType}
-                domain={formData.successDomain}
-                description={formData.successDescription}
-                onTypeChange={(value) =>
-                  setFormData({ ...formData, successType: value })
-                }
-                onDomainChange={(value) =>
-                  setFormData({ ...formData, successDomain: value })
-                }
-                onDescriptionChange={(text) =>
-                  setFormData({ ...formData, successDescription: text })
-                }
-                disabled={readOnly}
-                required={requiredMap.successType || requiredMap.successDomain}
-                optional={!(requiredMap.successType || requiredMap.successDomain)}
-                isInvalid={invalidMap.successType || invalidMap.successDomain}
-                requiredType={requiredMap.successType}
-                optionalType={!requiredMap.successType}
-                isInvalidType={invalidMap.successType}
-                requiredDomain={requiredMap.successDomain}
-                optionalDomain={!requiredMap.successDomain}
-                isInvalidDomain={invalidMap.successDomain}
-              />
-              <FocusInput
-                type="difficulty"
-                focusType={formData.difficultyType}
-                domain={formData.difficultyDomain}
-                description={formData.difficultyDescription}
-                onTypeChange={(value) =>
-                  setFormData({ ...formData, difficultyType: value })
-                }
-                onDomainChange={(value) =>
-                  setFormData({ ...formData, difficultyDomain: value })
-                }
-                onDescriptionChange={(text) =>
-                  setFormData({ ...formData, difficultyDescription: text })
-                }
-                disabled={readOnly}
-                required={requiredMap.difficultyType || requiredMap.difficultyDomain}
-                optional={!(requiredMap.difficultyType || requiredMap.difficultyDomain)}
-                isInvalid={invalidMap.difficultyType || invalidMap.difficultyDomain}
-                requiredType={requiredMap.difficultyType}
-                optionalType={!requiredMap.difficultyType}
-                isInvalidType={invalidMap.difficultyType}
-                requiredDomain={requiredMap.difficultyDomain}
-                optionalDomain={!requiredMap.difficultyDomain}
-                isInvalidDomain={invalidMap.difficultyDomain}
-              />
-              <GoalProgress
-                executionSuccess={formData.executionSuccess}
-                oppositionLevel={formData.oppositionLevel}
-                consistency={formData.consistency}
-                confidence={formData.confidence}
-                onExecutionChange={(value) =>
-                  setFormData({ ...formData, executionSuccess: value })
-                }
-                onOppositionChange={(value) =>
-                  setFormData({ ...formData, oppositionLevel: value })
-                }
-                onConsistencyChange={(value) =>
-                  setFormData({ ...formData, consistency: value })
-                }
-                onConfidenceChange={(value) =>
-                  setFormData({ ...formData, confidence: value })
-                }
-                isGroupSession={formData.environment === 1}
-                disabled={readOnly}
-              />
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.md }}>
+                <Text style={{ color: COLORS.text, marginRight: SPACING.sm }}>Sparring with others?</Text>
+                <Switch
+                  value={hadSparring}
+                  onValueChange={(val) => {
+                    setHadSparring(val);
+                    setFormData(prev => ({ ...prev, environment: val ? 1 : 0 }));
+                  }}
+                  disabled={readOnly}
+                />
+              </View>
+              {!hadSparring ? (
+                <View>
+                  <Text style={{ color: COLORS.accent }}>
+                    To progress on goals, practice against other people. Focus inputs are available when sparring is on.
+                  </Text>
+                </View>
+              ) : (
+                <>
+                  <FocusInput
+                    type="success"
+                    focusType={formData.successType}
+                    domain={formData.successDomain}
+                    description={formData.successDescription}
+                    onTypeChange={(value) =>
+                      setFormData({ ...formData, successType: value })
+                    }
+                    onDomainChange={(value) =>
+                      setFormData({ ...formData, successDomain: value })
+                    }
+                    onDescriptionChange={(text) =>
+                      setFormData({ ...formData, successDescription: text })
+                    }
+                    disabled={readOnly}
+                    required={requiredMap.successType || requiredMap.successDomain}
+                    optional={!(requiredMap.successType || requiredMap.successDomain)}
+                    isInvalid={invalidMap.successType || invalidMap.successDomain}
+                    requiredType={requiredMap.successType}
+                    optionalType={!requiredMap.successType}
+                    isInvalidType={invalidMap.successType}
+                    requiredDomain={requiredMap.successDomain}
+                    optionalDomain={!requiredMap.successDomain}
+                    isInvalidDomain={invalidMap.successDomain}
+                  />
+                  <FocusInput
+                    type="difficulty"
+                    focusType={formData.difficultyType}
+                    domain={formData.difficultyDomain}
+                    description={formData.difficultyDescription}
+                    onTypeChange={(value) =>
+                      setFormData({ ...formData, difficultyType: value })
+                    }
+                    onDomainChange={(value) =>
+                      setFormData({ ...formData, difficultyDomain: value })
+                    }
+                    onDescriptionChange={(text) =>
+                      setFormData({ ...formData, difficultyDescription: text })
+                    }
+                    disabled={readOnly}
+                    required={requiredMap.difficultyType || requiredMap.difficultyDomain}
+                    optional={!(requiredMap.difficultyType || requiredMap.difficultyDomain)}
+                    isInvalid={invalidMap.difficultyType || invalidMap.difficultyDomain}
+                    requiredType={requiredMap.difficultyType}
+                    optionalType={!requiredMap.difficultyType}
+                    isInvalidType={invalidMap.difficultyType}
+                    requiredDomain={requiredMap.difficultyDomain}
+                    optionalDomain={!requiredMap.difficultyDomain}
+                    isInvalidDomain={invalidMap.difficultyDomain}
+                  />
+                  <GoalProgress
+                    executionSuccess={formData.executionSuccess}
+                    oppositionLevel={formData.oppositionLevel}
+                    consistency={formData.consistency}
+                    confidence={formData.confidence}
+                    onExecutionChange={(value) =>
+                      setFormData({ ...formData, executionSuccess: value })
+                    }
+                    onOppositionChange={(value) =>
+                      setFormData({ ...formData, oppositionLevel: value })
+                    }
+                    onConsistencyChange={(value) =>
+                      setFormData({ ...formData, consistency: value })
+                    }
+                    onConfidenceChange={(value) =>
+                      setFormData({ ...formData, confidence: value })
+                    }
+                    isGroupSession={true}
+                    disabled={readOnly}
+                  />
+                </>
+              )}
             </FormSection>
           )}
 
