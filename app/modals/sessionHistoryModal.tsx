@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
-import React from "react";
+import { StyleSheet, Text, View, Pressable, FlatList } from "react-native";
+import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter, Link } from "expo-router";
 import { COLORS, globalStyles, SPACING, TEXT_STYLES } from "@/src/styles";
 import { Icons } from "@/constants/icons";
@@ -26,35 +26,36 @@ export default function SessionHistoryModal() {
           <Icons.X size={16} color={COLORS.text} />
         </Pressable>
       </View>
-      <ScrollView>
-        {displayMode === 'error' && (
-          <View style={[styles.errorBox, { marginTop: SPACING.sm }]}>
-            <Text style={styles.errorText}>Échec de chargement des sessions. Vérifiez votre connexion.</Text>
-          </View>
-        )}
-        {displayMode === 'loading' && (
-          <>
-            <SessionItem mode="loading" />
-            <SessionItem mode="loading" />
-          </>
-        )}
-        {displayMode === 'empty' && (
-          <View style={{ paddingVertical: SPACING.xl, alignItems: 'center' }}>
-            <Text style={TEXT_STYLES.caption}>Aucune session enregistrée. Commencez votre premier entraînement pour voir votre progression.</Text>
-          </View>
-        )}
-        {displayMode === 'normal' && (
-          (sessions ?? []).map((s, i) => (
-            <Link
-              key={i}
-              href={{ pathname: "/modals/modal", params: { mode: 'edit', id: String((s as any).id ?? i) } }}
-              asChild
-            >
-              <SessionItem id={(s as any).id ?? i} title={s.title} subtitle={s.subtitle} duration={s.duration} />
-            </Link>
-          ))
-        )}
-      </ScrollView>
+      {displayMode === 'error' && (
+        <View style={[styles.errorBox, { marginTop: SPACING.sm }]}>
+          <Text style={styles.errorText}>Échec de chargement des sessions. Vérifiez votre connexion.</Text>
+        </View>
+      )}
+      {displayMode === 'loading' && (
+        <>
+          <SessionItem mode="loading" />
+          <SessionItem mode="loading" />
+        </>
+      )}
+      {displayMode === 'empty' && (
+        <View style={{ paddingVertical: SPACING.xl, alignItems: 'center' }}>
+          <Text style={TEXT_STYLES.caption}>Aucune session enregistrée. Commencez votre premier entraînement pour voir votre progression.</Text>
+        </View>
+      )}
+      {displayMode === 'normal' && (
+  <FlatList
+    data={sessions}
+    renderItem={({ item }) => (
+      <Link
+        href={{ pathname: "/modals/modal", params: { mode: 'edit', id: String(item.id) } }}
+        asChild
+      >
+        <SessionItem id={item.id} title={item.title} subtitle={item.subtitle} duration={item.duration} />
+      </Link>
+    )}
+    keyExtractor={(item, index) => String(item.id ?? index)}
+  />
+)}
     </View>
   );
 }
