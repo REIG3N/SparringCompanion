@@ -23,15 +23,6 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
       date: initialData.date || emptySession.date,
       duration: initialData.duration || emptySession.duration,
       environment: initialData.environment ?? emptySession.environment,
-      groupProgress: {
-        executionSuccess: initialData.groupProgress?.executionSuccess ?? emptySession.executionSuccess,
-        oppositionLevel: initialData.groupProgress?.oppositionLevel ?? emptySession.oppositionLevel,
-        consistency: initialData.groupProgress?.consistency ?? emptySession.consistency,
-      },
-      soloProgress: {
-        confidence: initialData.soloProgress?.confidence ?? emptySession.confidence,
-      },
-
       fatigue: initialData.fatigue ?? emptySession.fatigue,
       fun: initialData.fun ?? emptySession.fun,
       successType: initialData.successType ?? emptySession.successType,
@@ -62,15 +53,6 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
       date: initialData.date || emptySession.date,
       duration: initialData.duration || emptySession.duration,
       environment: initialData.environment ?? emptySession.environment,
-      groupProgress: {
-        executionSuccess: initialData.groupProgress?.executionSuccess ?? emptySession.executionSuccess,
-        oppositionLevel: initialData.groupProgress?.oppositionLevel ?? emptySession.oppositionLevel,
-        consistency: initialData.groupProgress?.consistency ?? emptySession.consistency,
-      },
-      soloProgress: {
-        confidence: initialData.soloProgress?.confidence ?? emptySession.confidence,
-      },
-      // type removed
       fatigue: initialData.fatigue ?? emptySession.fatigue,
       fun: initialData.fun ?? emptySession.fun,
       successType: initialData.successType ?? emptySession.successType,
