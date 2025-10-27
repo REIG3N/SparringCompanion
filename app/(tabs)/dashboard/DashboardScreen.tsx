@@ -27,13 +27,6 @@ export default function DashboardScreen() {
           </Text>
         </Pressable>
       </Link>
-      <Link href={{ pathname: "/modals/modal", params: { mode: "edit" } }} asChild>
-        <Pressable style={globalStyles.buttonPrimary}>
-          <Text style={globalStyles.buttonPrimaryText}>
-            Test Edit Session
-          </Text>
-        </Pressable>
-      </Link>
       <SessionHistory mode={mode} sessions={sessions} />
 
       {/* Debug panel (comment out to hide) */}

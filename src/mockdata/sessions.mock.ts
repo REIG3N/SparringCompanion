@@ -6,7 +6,6 @@ export function createEmptySession(): Session {
     date: new Date().toISOString().split("T")[0],
     duration: "60",
     environment: null as any,
-    type: null as any,
     fatigue: null,
     fun: null,
     successType: null,
@@ -29,7 +28,6 @@ export const mockSessions: Session[] = [
     date: "2024-06-01",
     duration: "60",
     environment: 1,
-    type: 1, // Sparring
     fatigue: 4,
     fun: 5,
     successType: 2,
@@ -49,7 +47,6 @@ export const mockSessions: Session[] = [
     date: "2024-05-30",
     duration: "45",
     environment: 0,
-    type: 0, // Practice
     fatigue: 2,
     fun: 4,
     successType: 0,
@@ -69,7 +66,6 @@ export const mockSessions: Session[] = [
     date: "2024-05-28",
     duration: "75",
     environment: 1,
-    type: 1, // Sparring
     fatigue: 5,
     fun: 3,
     successType: 1,
@@ -89,7 +85,6 @@ export const mockSessions: Session[] = [
     date: "2024-05-25",
     duration: "30",
     environment: 0,
-    type: 0, // Practice
     fatigue: 1,
     fun: 5,
     successType: 0,
@@ -109,7 +104,6 @@ export const mockSessions: Session[] = [
     date: "2024-05-23",
     duration: "60",
     environment: 1,
-    type: 0, // Practice
     fatigue: 3,
     fun: 4,
     successType: 1,

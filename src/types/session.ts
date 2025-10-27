@@ -2,8 +2,7 @@ export type Session = {
   id: number,
   date: string;
   duration: string;
-  environment: 0 | 1; // 0: Solo, 1: Group
-  type: 0 | 1; // 0: Practice, 1: Sparring
+  environment: 0 | 1; // 0: Solo Practice, 1: Group with Sparring
   fatigue: number | null;
   fun: number | null;
   successType: number | null;
