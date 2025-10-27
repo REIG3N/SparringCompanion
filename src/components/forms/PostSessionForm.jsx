@@ -71,7 +71,7 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
     if (typeof initialData?.environment === 'number') {
       setHadSparring(initialData.environment === 1);
     }
-  }, [initialData?.id, initialData?.date]); // Only depend on specific fields that matter
+  }, [initialData?.id, initialData?.date]); 
 
   useEffect(() => {
     onCompletionChange?.(isAllTabsComplete);
