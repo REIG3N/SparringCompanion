@@ -32,13 +32,10 @@ export default function StatCard({ title, value, change, changeType, mode = 'nor
     );
   }
 
-  // empty mode displays placeholders
   const displayValue = mode === 'empty' ? '--' : (value ?? '--');
   const displayChange = mode === 'empty' ? undefined : change;
 
   return (
-  <>
-  
   <View style={[styles.card, containerStyle]}>
       <Text style={globalStyles.statCardTitle}>{title}</Text>
       <Text style={globalStyles.statCardValue}>{displayValue}</Text>
@@ -48,9 +45,7 @@ export default function StatCard({ title, value, change, changeType, mode = 'nor
         </Text>
       )}
     </View>
-  
-  </>
-  );
+    );
 }
 
 const styles = StyleSheet.create({

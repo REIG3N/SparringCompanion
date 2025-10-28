@@ -5,7 +5,7 @@ export function createEmptySession(): Session {
     id: Date.now(),
     date: new Date().toISOString().split("T")[0],
     duration: "60",
-    environment: null as any,
+    environment: 0 || 1,
     fatigue: null,
     fun: null,
     successType: null,
