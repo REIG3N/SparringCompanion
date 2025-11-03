@@ -33,6 +33,10 @@ import {
   Share,
   Link,
   HelpCircle,
+  Eye,
+  EyeOff,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react-native';
 
 export const Icons = {
@@ -69,6 +73,10 @@ export const Icons = {
   Share,
   Link,
   HelpCircle,
+  Eye,
+  EyeOff,
+  ChevronDown,
+  ChevronUp,
 };
 
 
