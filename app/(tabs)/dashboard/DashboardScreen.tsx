@@ -6,6 +6,8 @@ import { StatGrid, SessionItem, CalendarWeek, SessionHistory } from '@/src/compo
 import useDashboardData from '@/src/hooks/dashboard/useDashboardData'
 import DashboardDebugPanel from '@/src/components/debug/DashboardDebugPanel';
 import { Link } from 'expo-router'
+import { Icon } from 'lucide-react-native';
+import { Icons } from '@/constants/icons';
 
 export default function DashboardScreen() {
   const { mode, stats, sessions, days, isLoading, setIsLoading, toNormal, toEmpty, toError } = useDashboardData();
@@ -14,11 +16,12 @@ export default function DashboardScreen() {
   const daysToRender = mode === 'empty' && days ? days.map(d => ({ ...d, hasSession: false })) : (days ?? []);
 
   return (
-    <ScrollView contentContainerStyle={{ paddingBottom: SPACING.xl }} style={globalStyles.appScreen}>
+    <View style={[globalStyles.appScreen, { paddingBottom: SPACING.xl }]}>
 
       <CalendarWeek days={daysToRender} mode={mode} />
-      
+
       <StatGrid stats={statsToRender} mode={mode} />
+      <SessionHistory mode={mode} sessions={sessions} />
 
       <Link href={{ pathname: "/modals/modal", params: { mode: "empty" } }} asChild>
         <Pressable style={globalStyles.buttonPrimary}>
@@ -27,7 +30,19 @@ export default function DashboardScreen() {
           </Text>
         </Pressable>
       </Link>
-      <SessionHistory mode={mode} sessions={sessions} />
+
+
+      <Link href={{ pathname: "/(tabs)/Settings/settings" }} asChild>
+        <Pressable style={globalStyles.buttonOutline}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={globalStyles.buttonOutlineText}>
+              Settings
+            </Text>
+            <Icons.Settings size={24} color={COLORS.text} style={{ marginLeft: 8 }} />
+          </View>
+        </Pressable>
+      </Link>
+
 
       {/* Debug panel (comment out to hide) */}
       {/* <DashboardDebugPanel
@@ -39,7 +54,7 @@ export default function DashboardScreen() {
           else toNormal();
         }}
       /> */}
-    
-    </ScrollView>
+
+    </View>
   );
 }

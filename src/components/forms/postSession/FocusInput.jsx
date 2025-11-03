@@ -79,6 +79,8 @@ export const FocusInput = ({
       onChangeText={onDescriptionChange}
       placeholder={`Describe ${type}...`}
       numberOfLines={4}
+      maxLength={400}
+      showCounter
       editable={!disabled}
     />
   </View>

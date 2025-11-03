@@ -86,10 +86,12 @@ export default function ModalScreen(props: ModalScreenProps) {
     );
   }
 
+  const headerTitle = mode === 'edit' ? ( 'Edit Session') : 'New Session';
+
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.background, marginTop: 50, padding: SPACING.lg }}>
       <View style={{ flexDirection: "row", justifyContent: 'space-between', alignItems: 'center', paddingBottom: 16 }}>
-        <Text style={[TEXT_STYLES.headerLG]}>New Session</Text>
+        <Text style={[TEXT_STYLES.headerLG]}>{headerTitle}</Text>
 
         <View>
           {mode === "empty" && (

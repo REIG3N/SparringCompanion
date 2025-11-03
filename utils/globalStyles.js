@@ -151,6 +151,7 @@ export const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 14,
     paddingHorizontal: 24,
+    marginTop: SPACING.md,
   },
   buttonPrimaryText: {
     color: COLORS.text,
@@ -179,6 +180,7 @@ export const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 12,
     paddingHorizontal: 20,
+    marginTop: SPACING.md,
   },
   buttonOutlineText: {
     color: COLORS.text,

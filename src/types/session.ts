@@ -12,8 +12,6 @@ export type Session = {
   difficultyDomain: number | null;
   difficultyDescription: string;
   notes: string;
-  executionSuccess: number | null;
   oppositionLevel: number | null;
-  consistency: number | null;
   confidence: number | null;
 };

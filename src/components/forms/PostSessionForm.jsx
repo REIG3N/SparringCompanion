@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView, View, Text, Alert, Switch } from "react-native";
-import { COLORS, SPACING, TEXT_STYLES } from "../../styles";
+import { COLORS, SPACING, TEXT_STYLES, globalStyles } from "../../styles";
 import { Icons } from "@/constants/icons";
 import { ButtonPrimary } from "../atomic/buttons/ButtonPrimary";
 import { TabNavigation } from "../atomic/navigation/TabNavigation";
@@ -11,10 +11,9 @@ import { RatingSelector } from "../atomic/inputs/RatingSelector";
 import { FormSection } from "./postSession/FormSection";
 import { EnvironmentSelector } from "./postSession/EnvironmentSelector";
 import { FocusInput } from "./postSession/FocusInput";
-import { GoalProgress } from "./postSession/GoalProgress";
 import { getEmptySession } from '@/src/repositories/sessionsRepository';
 
-export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialData = {}, readOnly = false }) => {
+export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialData = {}, readOnly = false }) => {
   const [activeTab, setActiveTab] = useState(0);
   // const [isAllTabsComplete, setIsAllTabsComplete] = useState(false);
   const [formData, setFormData] = useState(() => {
@@ -32,9 +31,7 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
       difficultyDomain: initialData.difficultyDomain ?? emptySession.difficultyDomain,
       difficultyDescription: initialData.difficultyDescription || emptySession.difficultyDescription,
       notes: initialData.notes || emptySession.notes,
-      executionSuccess: initialData.executionSuccess ?? emptySession.executionSuccess,
       oppositionLevel: initialData.oppositionLevel ?? emptySession.oppositionLevel,
-      consistency: initialData.consistency ?? emptySession.consistency,
       confidence: initialData.confidence ?? emptySession.confidence,
     };
   });
@@ -42,12 +39,12 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
   // Toggle for sparring/confrontation presence
   const [hadSparring, setHadSparring] = useState(() => {
     if (typeof initialData?.environment === 'number') return initialData.environment === 1;
-    return (initialData?.oppositionLevel != null) || (initialData?.executionSuccess != null);
+    return false;
   });
 
   useEffect(() => {
     if (!initialData || Object.keys(initialData).length === 0) return;
-    
+
     const emptySession = getEmptySession();
     const next = {
       date: initialData.date || emptySession.date,
@@ -62,16 +59,14 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
       difficultyDomain: initialData.difficultyDomain ?? emptySession.difficultyDomain,
       difficultyDescription: initialData.difficultyDescription || emptySession.difficultyDescription,
       notes: initialData.notes || emptySession.notes,
-      executionSuccess: initialData.executionSuccess ?? emptySession.executionSuccess,
       oppositionLevel: initialData.oppositionLevel ?? emptySession.oppositionLevel,
-      consistency: initialData.consistency ?? emptySession.consistency,
       confidence: initialData.confidence ?? emptySession.confidence,
     };
     setFormData(next);
     if (typeof initialData?.environment === 'number') {
       setHadSparring(initialData.environment === 1);
     }
-  }, [initialData?.id, initialData?.date]); 
+  }, [initialData?.id, initialData?.date]);
 
   useEffect(() => {
     onCompletionChange?.(isAllTabsComplete);
@@ -99,17 +94,14 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
     }
 
     if (hadSparring) {
-      const baseComplete = 
-        formData.successType !== null  &&
-        formData.successDomain !== null  &&
-        formData.difficultyType !== null  &&
+      const baseComplete =
+        formData.successType !== null &&
+        formData.successDomain !== null &&
+        formData.difficultyType !== null &&
         formData.difficultyDomain !== null;
-      return baseComplete &&
-        formData.executionSuccess !== null &&
-        formData.oppositionLevel !== null &&
-        formData.consistency !== null;
+      return baseComplete && formData.oppositionLevel !== null;
     }
-    
+
     return false;
   };
 
@@ -125,9 +117,7 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
     successDomain: hadSparring,
     difficultyType: hadSparring,
     difficultyDomain: hadSparring,
-    executionSuccess: hadSparring,
     oppositionLevel: hadSparring,
-    consistency: hadSparring,
     confidence: true,
     notes: false,
   };
@@ -142,16 +132,14 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
     successDomain: hadSparring ? formData.successDomain === null : false,
     difficultyType: hadSparring ? formData.difficultyType === null : false,
     difficultyDomain: hadSparring ? formData.difficultyDomain === null : false,
-    executionSuccess: hadSparring ? formData.executionSuccess === null : false,
     oppositionLevel: hadSparring ? formData.oppositionLevel === null : false,
-    consistency: hadSparring ? formData.consistency === null : false,
     confidence: formData.confidence === null,
     notes: false,
   };
   useEffect(() => {
     onCompletionChange?.(isAllTabsComplete);
   }, [formData])
-  
+
 
 
   return (
@@ -181,9 +169,10 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
               <InputField
                 label="Duration (minutes)"
                 value={formData.duration}
-                onChangeText={(text) =>
-                  setFormData({ ...formData, duration: text })
-                }
+                onChangeText={(text) => {
+                  const sanitized = (text || '').replace(/\D/g, '').slice(0, 3);
+                  setFormData({ ...formData, duration: sanitized });
+                }}
                 placeholder="45"
                 keyboardType="numeric"
                 editable={!readOnly}
@@ -246,6 +235,15 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
                 </View>
               ) : (
                 <>
+                  <View style={[globalStyles.card, { marginBottom: SPACING.md }]}>
+                    <Text style={[TEXT_STYLES.label, { marginBottom: SPACING.sm }]}>Opposition Level</Text>
+                    <RadioPills
+                      options={['Less', 'Similar', 'More']}
+                      selected={formData.oppositionLevel}
+                      onSelect={(value) => setFormData({ ...formData, oppositionLevel: value })}
+                      disabled={readOnly}
+                    />
+                  </View>
                   <FocusInput
                     type="success"
                     focusType={formData.successType}
@@ -296,26 +294,8 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
                     optionalDomain={!requiredMap.difficultyDomain}
                     isInvalidDomain={invalidMap.difficultyDomain}
                   />
-                  <GoalProgress
-                    executionSuccess={formData.executionSuccess}
-                    oppositionLevel={formData.oppositionLevel}
-                    consistency={formData.consistency}
-                    confidence={formData.confidence}
-                    onExecutionChange={(value) =>
-                      setFormData({ ...formData, executionSuccess: value })
-                    }
-                    onOppositionChange={(value) =>
-                      setFormData({ ...formData, oppositionLevel: value })
-                    }
-                    onConsistencyChange={(value) =>
-                      setFormData({ ...formData, consistency: value })
-                    }
-                    onConfidenceChange={(value) =>
-                      setFormData({ ...formData, confidence: value })
-                    }
-                    isGroupSession={true}
-                    disabled={readOnly}
-                  />
+
+
                 </>
               )}
             </FormSection>
@@ -331,6 +311,8 @@ export const PostSessionForm = ({ onCompletionChange,onFormDataChange, initialDa
                 }
                 placeholder="Observations sur votre performance, points à retenir..."
                 numberOfLines={6}
+                maxLength={800}
+                showCounter
                 editable={!readOnly}
                 required={requiredMap.notes}
                 optional={!requiredMap.notes}

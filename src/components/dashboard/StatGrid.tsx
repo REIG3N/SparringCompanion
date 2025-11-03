@@ -16,7 +16,7 @@ type StatGridProps = {
 
 export default function StatGrid({ stats = [], mode }: StatGridProps) {
   return (
-    <View style={[styles.statsGrid, { marginTop: SPACING.lg }]}>
+    <View style={[styles.statsGrid, { marginTop: SPACING.md }]}>
       {stats.map((stat, index) => (
         <View key={index} style={styles.statsGridItem}>
           <StatCard
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: SPACING.lg,
+    marginBottom: -SPACING.md,
   },
   statsGridItem: {
     width: '48%',

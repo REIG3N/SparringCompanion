@@ -14,7 +14,7 @@ export type SessionHistoryProps = {
 
 export default function SessionHistory({ mode, sessions }: SessionHistoryProps) {
   return (
-    <View style={[globalStyles.card, { marginTop: SPACING.lg }]}>
+    <View style={[globalStyles.card, { marginTop: SPACING.md }]}> 
       <View style={styles.cardHeaderRow}>
         <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>Recent Sessions</Text>
         <Link href={{

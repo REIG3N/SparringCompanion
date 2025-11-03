@@ -15,9 +15,7 @@ export function createEmptySession(): Session {
     difficultyDomain: null,
     difficultyDescription: "",
     notes: "",
-    executionSuccess: null,
     oppositionLevel: null,
-    consistency: null,
     confidence: null,
   };
 }
@@ -37,9 +35,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 0,
     difficultyDescription: "Struggled with guard passing against heavier opponents.",
     notes: "Felt strong today, but need to work on breathing under pressure.",
-    executionSuccess: 1,
     oppositionLevel: 3,
-    consistency: 2,
     confidence: 4,
   },
   {
@@ -56,9 +52,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 1,
     difficultyDescription: "Need to work on tactical positioning.",
     notes: "Great focus session, technique feels more natural.",
-    executionSuccess: null,
     oppositionLevel: null,
-    consistency: null,
     confidence: 3,
   },
   {
@@ -75,9 +69,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 1,
     difficultyDescription: "Tactical decisions under pressure were challenging.",
     notes: "Exhausting session but learned a lot about endurance.",
-    executionSuccess: 2,
     oppositionLevel: 2,
-    consistency: 1,
     confidence: 3,
   },
   {
@@ -94,9 +86,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 0,
     difficultyDescription: "Minor issues with footwork timing.",
     notes: "Short but effective practice session.",
-    executionSuccess: null,
     oppositionLevel: null,
-    consistency: null,
     confidence: 5,
   },
   {
@@ -113,9 +103,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 1,
     difficultyDescription: "Tactical understanding needs improvement.",
     notes: "Good team chemistry during practice.",
-    executionSuccess: 3,
     oppositionLevel: 1,
-    consistency: 2,
     confidence: 4,
   },
   {
@@ -132,9 +120,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 0,
     difficultyDescription: "Hard time with escapes from mount.",
     notes: "Focus on mount escapes next time.",
-    executionSuccess: 1,
     oppositionLevel: 2,
-    consistency: 3,
     confidence: 3,
   },
   {
@@ -151,9 +137,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 1,
     difficultyDescription: "Struggled maintaining pace towards end.",
     notes: "Work on endurance for longer drills.",
-    executionSuccess: null,
     oppositionLevel: null,
-    consistency: null,
     confidence: 4,
   },
   {
@@ -170,9 +154,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 0,
     difficultyDescription: "Opponent used strong grips, difficult to break.",
     notes: "Practice more grip fighting techniques.",
-    executionSuccess: 2,
     oppositionLevel: 3,
-    consistency: 2,
     confidence: 2,
   },
   {
@@ -189,9 +171,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 1,
     difficultyDescription: "Focus faded near the end.",
     notes: "Try shorter, high-intensity sessions.",
-    executionSuccess: null,
     oppositionLevel: null,
-    consistency: null,
     confidence: 5,
   },
   {
@@ -208,9 +188,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 1,
     difficultyDescription: "Found it hard to keep base when tired.",
     notes: "More balance drills needed.",
-    executionSuccess: 3,
     oppositionLevel: 2,
-    consistency: 2,
     confidence: 3,
   },
   {
@@ -227,9 +205,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 0,
     difficultyDescription: "Some mistakes in basic combinations.",
     notes: "Review fundamentals before next session.",
-    executionSuccess: null,
     oppositionLevel: null,
-    consistency: null,
     confidence: 4,
   },
   {
@@ -246,9 +222,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 1,
     difficultyDescription: "Cardio faded after first two rounds.",
     notes: "Start running twice a week.",
-    executionSuccess: 1,
     oppositionLevel: 3,
-    consistency: 1,
     confidence: 2,
   },
   {
@@ -265,9 +239,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 0,
     difficultyDescription: "Still rushing transitions.",
     notes: "Slow down and focus on each position.",
-    executionSuccess: null,
     oppositionLevel: null,
-    consistency: null,
     confidence: 3,
   },
   {
@@ -284,9 +256,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 0,
     difficultyDescription: "Gassed after first five minutes.",
     notes: "Work on pacing during live rolling.",
-    executionSuccess: 2,
     oppositionLevel: 2,
-    consistency: 3,
     confidence: 4,
   },
   {
@@ -303,9 +273,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 1,
     difficultyDescription: "Balance issues on one side.",
     notes: "Drill both sides equally.",
-    executionSuccess: null,
     oppositionLevel: null,
-    consistency: null,
     confidence: 5,
   },
   {
@@ -322,9 +290,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 0,
     difficultyDescription: "Opponent overpowered in most scrambles.",
     notes: "Work strength with new partner.",
-    executionSuccess: 3,
     oppositionLevel: 1,
-    consistency: 1,
     confidence: 2,
   },
   {
@@ -341,9 +307,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 1,
     difficultyDescription: "Timing still off on armbars.",
     notes: "Do more reps on the armbar setup.",
-    executionSuccess: null,
     oppositionLevel: null,
-    consistency: null,
     confidence: 4,
   },
   {
@@ -360,9 +324,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 1,
     difficultyDescription: "Lost position after failed pass.",
     notes: "Relax at failed attempts.",
-    executionSuccess: 2,
     oppositionLevel: 3,
-    consistency: 2,
     confidence: 3,
   },
   {
@@ -379,9 +341,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 0,
     difficultyDescription: "Off-balance on sprawls.",
     notes: "Practice basic sprawls at home.",
-    executionSuccess: null,
     oppositionLevel: null,
-    consistency: null,
     confidence: 3,
   },
   {
@@ -398,9 +358,7 @@ export const mockSessions: Session[] = [
     difficultyDomain: 0,
     difficultyDescription: "Mentally checked out halfway through.",
     notes: "Focus on mental stamina.",
-    executionSuccess: 3,
     oppositionLevel: 2,
-    consistency: 1,
     confidence: 5,
   },
 ];
