@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, ScrollView, Text, View } from 'react-native';
+import { Alert, ScrollView, Text, View, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { COLORS, SPACING, TEXT_STYLES, globalStyles } from '@/src/styles';
 import { InputField } from '@/src/components/atomic/inputs/InputField';
 import { ButtonPrimary } from '@/src/components/atomic/buttons/ButtonPrimary';
 import { supabase } from '@/utils/supabase';
+import { Icons } from '@/constants/icons';
 
 export default function ChangePasswordModal() {
   const router = useRouter();
@@ -64,7 +65,12 @@ export default function ChangePasswordModal() {
   return (
     <ScrollView style={globalStyles.appScreen} contentContainerStyle={{ paddingBottom: SPACING.xl }}>
       <View style={[globalStyles.card, { marginTop: SPACING.xl }]}> 
-        <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text, marginBottom: SPACING.md }]}>Changer le mot de passe</Text>
+        <View style={{ alignItems: 'center', justifyContent: 'center', marginBottom: SPACING.lg }}>
+          <Pressable onPress={() => router.back()} style={{ position: 'absolute', left: SPACING.md, padding: SPACING.sm }}>
+            <Icons.ArrowLeft size={16} color={COLORS.text} />
+          </Pressable>
+          <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>Changer le mot de passe</Text>
+        </View>
 
         <InputField
           label="Email"
