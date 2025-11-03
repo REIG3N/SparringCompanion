@@ -65,14 +65,16 @@ export default function CalendarWeek({
         {renderDays.map((d, idx) => {
           const dayStyle = [
             globalStyles.calendarDay,
-            d.hasSession && globalStyles.calendarDayHasSession,
             d.selected && globalStyles.calendarDaySelected,
             mode === "loading" && { opacity: 0.5 },
           ];
-          const textColor = d.selected ? "#000000" : COLORS.text;
+          const textStyle = [
+            { color: COLORS.text },
+          ];
           return (
             <View key={`${d.label}-${idx}`} style={dayStyle}>
-              <Text style={{ color: textColor }}>{d.label}</Text>
+              <Text style={textStyle as any}>{d.label}</Text>
+              {d.hasSession ? <View style={globalStyles.calendarDayDot} /> : null}
             </View>
           );
         })}

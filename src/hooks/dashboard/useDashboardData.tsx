@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import useCalendarData, { getDefaultCalendarDays } from './useCalendarData';
 import useStatsData from './useStatsData';
 import useSessionData from './useSessionData';
 
@@ -27,12 +26,48 @@ function deriveStateFromData(
   return 'normal';
 }
 
+function getDayLabelFromISO(dateStr: string): string {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  const day = dt.getUTCDay(); // 0=Sun ... 6=Sat
+  const labels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  return labels[day] ?? '';
+}
+
+function formatDateUTC(date: Date): string {
+  const y = date.getUTCFullYear();
+  const m = `${date.getUTCMonth() + 1}`.padStart(2, '0');
+  const d = `${date.getUTCDate()}`.padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
 export default function useDashboardData() {
   const [isLoading, setIsLoading] = useState(false);
   const { sessions, setSessions, rawSessions, isLoading: sessionsLoading } = useSessionData();
-  const { days, setDays } = useCalendarData();
 
   const { stats } = useStatsData(rawSessions, { weekStartsOn: 1 });
+
+  const days: Day[] = useMemo(() => {
+    const today = new Date();
+    const todayUTC = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+    const dates: string[] = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(todayUTC);
+      d.setUTCDate(todayUTC.getUTCDate() - i);
+      dates.push(formatDateUTC(d));
+    }
+
+    const sessionDates = new Set((rawSessions ?? []).map(s => s.date));
+
+    return dates.map((dateStr, idx) => {
+      const isToday = dateStr === formatDateUTC(todayUTC);
+      return {
+        label: getDayLabelFromISO(dateStr),
+        hasSession: sessionDates.has(dateStr),
+        selected: isToday,
+      } as Day;
+    });
+  }, [rawSessions?.length]);
 
   const mode: UIState = useMemo(
     () => deriveStateFromData(stats, sessions, days, isLoading || sessionsLoading),
@@ -41,18 +76,15 @@ export default function useDashboardData() {
 
   const toNormal = () => {
     setIsLoading(false);
-    setDays(getDefaultCalendarDays());
   };
 
   const toEmpty = () => {
     setIsLoading(false);
     setSessions([]);
-    setDays(prev => prev.map(d => ({ ...d, hasSession: false })));
   };
 
   const toError = () => {
     setIsLoading(false);
-    setDays(prev => prev.map(d => ({ ...d, selected: false })));
   };
 
   return {
@@ -63,7 +95,6 @@ export default function useDashboardData() {
     isLoading,
     setIsLoading,
     setSessions,
-    setDays,
     toNormal,
     toEmpty,
     toError,

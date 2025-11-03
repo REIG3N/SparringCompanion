@@ -289,8 +289,20 @@ export const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: `rgba(255,255,255,${OPACITY.o05})`,
   },
-  calendarDaySelected: { backgroundColor: COLORS.primary },
-  calendarDayHasSession: { borderWidth: 2, borderColor: COLORS.secondary },
+  calendarDaySelected: {
+    backgroundColor: `rgba(237,170,24,${OPACITY.o20})`, // subtle secondary tint
+    borderWidth: 2,
+    borderColor: COLORS.secondary,
+  },
+  calendarDayHasSession: {},
+  calendarDayDot: {
+    position: 'absolute',
+    bottom: 6,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: COLORS.success,
+  },
 
   swotSection: {
     backgroundColor: `rgba(255,255,255,${OPACITY.o05})`,

@@ -25,7 +25,7 @@ export function createEmptySession(): Session {
 export const mockSessions: Session[] = [
   {
     id: 0,
-    date: "2025-10-27",
+    date: "2025-10-28",
     duration: "60",
     environment: 1,
     fatigue: 4,
@@ -82,7 +82,7 @@ export const mockSessions: Session[] = [
   },
   {
     id: 3,
-    date: "2025-10-24",
+    date: "2025-10-20",
     duration: "30",
     environment: 0,
     fatigue: 1,
@@ -101,7 +101,7 @@ export const mockSessions: Session[] = [
   },
   {
     id: 4,
-    date: "2025-10-23",
+    date: "2025-10-21",
     duration: "60",
     environment: 1,
     fatigue: 3,
@@ -215,7 +215,7 @@ export const mockSessions: Session[] = [
   },
   {
     id: 10,
-    date: "2025-10-17",
+    date: "2025-10-26",
     duration: "50",
     environment: 0,
     fatigue: 2,
