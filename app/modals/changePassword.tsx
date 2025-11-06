@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { COLORS, SPACING, TEXT_STYLES, globalStyles } from '@/src/styles';
 import i18n from '@/src/i18n';
 import { InputField } from '@/src/components/atomic/inputs/InputField';
-import { ButtonPrimary } from '@/src/components/atomic/buttons/ButtonPrimary';
+import Button from '@/src/components/ui/Button';
 import { supabase } from '@/utils/supabase';
 import { Icons } from '@/constants/icons';
 
@@ -16,6 +16,7 @@ export default function ChangePasswordModal() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const isValid = !!email && !!currentPassword && !!newPassword && !!confirmPassword && newPassword.length >= 8 && newPassword === confirmPassword;
 
   useEffect(() => {
     (async () => {
@@ -106,10 +107,12 @@ export default function ChangePasswordModal() {
           <Text style={{ color: COLORS.primary, marginBottom: SPACING.sm }}>{errorMessage}</Text>
         ) : null}
 
-        <ButtonPrimary
+        <Button
           title={submitting ? (i18n.t('settings.change_password_fields.updating') as string) : (i18n.t('common.buttons.save') as string)}
-          disabled={submitting}
+          disabled={submitting || !isValid}
           onPress={handleSubmit}
+          variant="primary"
+          size="md"
         />
       </View>
     </ScrollView>

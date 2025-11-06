@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { PostSessionForm } from '@/src/components/forms/PostSessionForm';
 import { COLORS, globalStyles, SPACING, TEXT_STYLES } from '@/src/styles';
 import { Icons } from '@/constants/icons';
-import { ButtonPrimary } from '@/src/components/atomic/buttons/ButtonPrimary';
+import Button from '@/src/components/ui/Button';
 import { createSession, fetchSessions, fetchSessionById, updateSession, deleteSession } from '@/src/repositories/sessionsRepository';
 
 
@@ -149,10 +149,13 @@ export default function ModalScreen(props: ModalScreenProps) {
       {!isAllTabsComplete && (
         <Text style={{ color: COLORS.primary, marginTop: 8, marginBottom: 8 }}>{i18n.t('session.form.missing_required', { defaultValue: 'Some required data is missing.' }) as string}</Text>
       )}
-      <ButtonPrimary
+      <Button
         title={mode === 'edit' ? (i18n.t('common.buttons.save', { defaultValue: 'Save' }) as string) : (i18n.t('session.form.title', { defaultValue: 'Record a Session' }) as string)}
         disabled={!isAllTabsComplete || (mode === 'edit' && selected === 'view')}
         onPress={() => { if (pendingData) handleSave(pendingData); }}
+        variant="primary"
+        size="md"
+        mode = 'dark'
       />
 
 

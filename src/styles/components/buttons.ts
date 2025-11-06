@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../atomic/colors';
 import { spacing, radii } from '../atomic/spacing';
 import { typography } from '../atomic/typography';
+import { COLORS } from '@/utils/globalStyles';
 
 export const createButtonStyles = (mode: 'light' | 'dark' = 'light') =>
   StyleSheet.create({
@@ -14,7 +15,7 @@ export const createButtonStyles = (mode: 'light' | 'dark' = 'light') =>
       justifyContent: 'center',
     },
     primary: {
-      backgroundColor: colors[mode].tint,
+      backgroundColor: COLORS.primary,
     },
     secondary: {
       backgroundColor: colors[mode].card,
@@ -25,7 +26,7 @@ export const createButtonStyles = (mode: 'light' | 'dark' = 'light') =>
       backgroundColor: 'transparent',
     },
     label: {
-      color: mode === 'light' ? '#fff' : '#000',
+      color: COLORS.text,
       fontFamily: typography.families.sans,
       fontSize: typography.scale.md,
       fontWeight: typography.weights.semibold,
