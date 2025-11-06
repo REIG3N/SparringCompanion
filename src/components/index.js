@@ -1,4 +1,3 @@
-export * from './atomic/buttons';
 export * from './atomic/inputs';
 export * from './atomic/navigation';
 export * from './atomic/feedback';
