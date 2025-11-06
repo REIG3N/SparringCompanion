@@ -8,6 +8,7 @@ import { TabNavigation } from "../atomic/navigation/TabNavigation";
 import { InputField } from "../atomic/inputs/InputField";
 import { TextAreaField } from "../atomic/inputs/TextAreaField";
 import { RadioPills } from "../atomic/navigation/RadioPills";
+import FormField from '@/src/components/ui/FormField';
 import { RatingSelector } from "../atomic/inputs/RatingSelector";
 import { FormSection } from "./postSession/FormSection";
 import { EnvironmentSelector } from "./postSession/EnvironmentSelector";
@@ -236,15 +237,14 @@ export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialD
                 </View>
               ) : (
                 <>
-                  <View style={[globalStyles.card, { marginBottom: SPACING.md }]}>
-                    <Text style={[TEXT_STYLES.label, { marginBottom: SPACING.sm }]}>{i18n.t('session.focus_tab.opposition_level.label') }</Text>
+                  <FormField label={i18n.t('session.focus_tab.opposition_level.label')} required={requiredMap.oppositionLevel}>
                     <RadioPills
                       options={i18n.t('session.focus_tab.opposition_options', { defaultValue: ['Less','Similar','More'] })}
                       selected={formData.oppositionLevel}
                       onSelect={(value) => setFormData({ ...formData, oppositionLevel: value })}
                       disabled={readOnly}
                     />
-                  </View>
+                  </FormField>
                   <FocusInput
                     type="success"
                     focusType={formData.successType}
