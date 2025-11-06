@@ -3,7 +3,6 @@ import { ScrollView, View, Text, Alert, Switch } from "react-native";
 import { COLORS, SPACING, TEXT_STYLES, globalStyles } from "../../styles";
 import i18n from "@/src/i18n";
 import { Icons } from "@/constants/icons";
-import { ButtonPrimary } from "../atomic/buttons/ButtonPrimary";
 import { TabNavigation } from "../atomic/navigation/TabNavigation";
 import { InputField } from "../atomic/inputs/InputField";
 import { TextAreaField } from "../atomic/inputs/TextAreaField";
