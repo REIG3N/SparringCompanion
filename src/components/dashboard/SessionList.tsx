@@ -1,9 +1,9 @@
 import React from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, View , Text } from 'react-native';
 import { Link } from 'expo-router';
 import SessionItem, { type SessionItemProps } from './SessionItem';
 import { spacing } from '@styles/atomic/spacing';
-import { Text } from 'react-native';
+
 
 export type UIState = 'normal' | 'loading' | 'empty' | 'error';
 
