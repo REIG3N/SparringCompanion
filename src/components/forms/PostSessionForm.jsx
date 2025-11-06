@@ -192,17 +192,21 @@ export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialD
 
           {activeTab === 1 && (
             <FormSection>
-              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.md }}>
-                <Text style={{ color: COLORS.text, marginRight: SPACING.sm }}>{i18n.t('session.focus_tab.sparring_with_others', { defaultValue: 'Sparring with others?' }) }</Text>
-                <Switch
-                  value={hadSparring}
-                  onValueChange={(val) => {
-                    setHadSparring(val);
-                    setFormData(prev => ({ ...prev, environment: val ? 1 : 0 }));
-                  }}
-                  disabled={readOnly}
-                />
-              </View>
+              <FormField>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Text style={{ color: COLORS.text, marginRight: SPACING.sm }}>
+                    {i18n.t('session.focus_tab.sparring_with_others', { defaultValue: 'Sparring with others?' })}
+                  </Text>
+                  <Switch
+                    value={hadSparring}
+                    onValueChange={(val) => {
+                      setHadSparring(val);
+                      setFormData(prev => ({ ...prev, environment: val ? 1 : 0 }));
+                    }}
+                    disabled={readOnly}
+                  />
+                </View>
+              </FormField>
               {!hadSparring ? (
                 <View>
                   <Text style={{ color: COLORS.accent }}>
