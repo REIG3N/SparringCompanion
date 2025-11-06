@@ -14,10 +14,10 @@ import { FormSection } from "./postSession/FormSection";
 import { EnvironmentSelector } from "./postSession/EnvironmentSelector";
 import { FocusInput } from "./postSession/FocusInput";
 import { getEmptySession } from '@/src/repositories/sessionsRepository';
+import { usePostSessionEffects } from '@/src/hooks/forms/usePostSessionEffects';
 
 export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialData = {}, readOnly = false }) => {
   const [activeTab, setActiveTab] = useState(0);
-  // const [isAllTabsComplete, setIsAllTabsComplete] = useState(false);
   const [formData, setFormData] = useState(() => {
     const emptySession = getEmptySession();
     return {
@@ -38,45 +38,20 @@ export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialD
     };
   });
 
-  // Toggle for sparring/confrontation presence
   const [hadSparring, setHadSparring] = useState(() => {
     if (typeof initialData?.environment === 'number') return initialData.environment === 1;
     return false;
   });
 
-  useEffect(() => {
-    if (!initialData || Object.keys(initialData).length === 0) return;
-
-    const emptySession = getEmptySession();
-    const next = {
-      date: initialData.date || emptySession.date,
-      duration: initialData.duration || emptySession.duration,
-      environment: initialData.environment ?? emptySession.environment,
-      fatigue: initialData.fatigue ?? emptySession.fatigue,
-      fun: initialData.fun ?? emptySession.fun,
-      successType: initialData.successType ?? emptySession.successType,
-      successDomain: initialData.successDomain ?? emptySession.successDomain,
-      successDescription: initialData.successDescription || emptySession.successDescription,
-      difficultyType: initialData.difficultyType ?? emptySession.difficultyType,
-      difficultyDomain: initialData.difficultyDomain ?? emptySession.difficultyDomain,
-      difficultyDescription: initialData.difficultyDescription || emptySession.difficultyDescription,
-      notes: initialData.notes || emptySession.notes,
-      oppositionLevel: initialData.oppositionLevel ?? emptySession.oppositionLevel,
-      confidence: initialData.confidence ?? emptySession.confidence,
-    };
-    setFormData(next);
-    if (typeof initialData?.environment === 'number') {
-      setHadSparring(initialData.environment === 1);
-    }
-  }, [initialData?.id, initialData?.date]);
-
-  useEffect(() => {
-    onCompletionChange?.(isAllTabsComplete);
-  }, [formData]);
-
-  useEffect(() => {
-    onFormDataChange?.(formData);
-  }, [formData]);
+  usePostSessionEffects({
+    initialData,
+    formData,
+    setFormData,
+    setHadSparring,
+    onCompletionChange,
+    onFormDataChange,
+    isAllTabsComplete,
+  });
 
 
   const isBasicTabComplete = () => {
