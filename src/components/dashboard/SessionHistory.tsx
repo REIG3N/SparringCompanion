@@ -1,9 +1,9 @@
-import { Pressable, Text, View } from 'react-native'
+import { Pressable, Text } from 'react-native'
 import React from 'react'
-import { styles } from '@/src/screens/dashboard/DashboardStyle'
-import { globalStyles, SPACING, TEXT_STYLES, COLORS } from '@/utils/globalStyles'
+import { SPACING, TEXT_STYLES, COLORS } from '@/utils/globalStyles'
 import Card from '@/src/components/ui/Card'
 import CardHeader from '@/src/components/ui/CardHeader'
+import ErrorBox from '@/src/components/ui/ErrorBox'
 import type { SessionItemProps } from './SessionItem'
 import SessionList from './SessionList'
 import { Link } from 'expo-router'
@@ -30,9 +30,7 @@ export default function SessionHistory({ mode, sessions }: SessionHistoryProps) 
       />
 
       {mode === 'error' && (
-        <View style={[styles.errorBox, { marginTop: SPACING.sm }]}>
-          <Text style={styles.errorText}>Échec de chargement des sessions. Vérifiez votre connexion.</Text>
-        </View>
+        <ErrorBox style={{ marginTop: SPACING.sm }} message={'Échec de chargement des sessions. Vérifiez votre connexion.'} />
       )}
       <SessionList mode={mode} sessions={sessions} limit={2} />
     </Card>

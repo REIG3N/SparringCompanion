@@ -6,6 +6,7 @@ import i18n from "@/src/i18n";
 import { Icons } from "@/constants/icons";
 import { SessionItem } from "@/src/components/dashboard";
 import SessionList from "@/src/components/dashboard/SessionList";
+import ErrorBox from "@/src/components/ui/ErrorBox";
 import useSessionData from "@/src/hooks/dashboard/useSessionData";
 
 export default function SessionHistoryModal() {
@@ -29,9 +30,7 @@ export default function SessionHistoryModal() {
         </Pressable>
       </View>
       {displayMode === 'error' && (
-        <View style={[styles.errorBox, { marginTop: SPACING.sm }]}>
-          <Text style={styles.errorText}>{i18n.t('common.errors.network') as string}</Text>
-        </View>
+        <ErrorBox style={{ marginTop: SPACING.sm }} message={i18n.t('common.errors.network') as string} />
       )}
       <SessionList mode={displayMode} sessions={sessions} />
     </View>
@@ -59,15 +58,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold"
   },
-  errorBox: {
-    backgroundColor: 'rgba(250,45,45,0.10)',
-    borderColor: COLORS.primary,
-    borderWidth: 1,
-    borderRadius: 12,
-    padding: SPACING.md,
-  },
-  errorText: {
-    color: COLORS.text,
-    textAlign: 'center',
-  },
+  
 });
