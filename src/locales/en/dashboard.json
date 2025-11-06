@@ -1,0 +1,15 @@
+{
+  "title": "Dashboard",
+  "add_session": "New Session",
+  "recent_sessions": "Recent Sessions",
+  "last7days": "Last 7 Days",
+  "no_sessions": "No sessions recorded.",
+  "stats": {
+    "sessions_7d": "Sessions (7d)",
+    "enjoyment": "Enjoyment",
+    "confidence": "Confidence",
+    "readiness": "Readiness"
+  },
+  "days": ["M", "T", "W", "T", "F", "S", "S"]
+}
+

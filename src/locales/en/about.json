@@ -1,0 +1,48 @@
+{
+  "title": "About",
+  "sections": {
+    "vision": {
+      "title": "🎯 Our Vision",
+      "body": "SparringCompanion is not a coach, it's a companion. The app supports combat sports practitioners in autonomous development, acting as a reflective mirror rather than a prescriptive authority."
+    },
+    "philosophy": {
+      "title": "🧠 Learning Philosophy",
+      "autonomy_title": "Develop Your Autonomy",
+      "autonomy_body": "Autonomy is central. Every practitioner has a unique context (body, style, opponents, goals). The app helps you observe, analyze, and adapt your own practice.",
+      "failfast_title": "Error as a Source of Learning",
+      "failfast_body": "We encourage experimentation and failing fast. Each difficult session provides valuable information for adjusting your hypotheses.",
+      "ecological_title": "Ecological Approach & Individualization",
+      "ecological_body": "Inspired by the Constraints‑Led Approach: learning emerges from individual, environmental, and task constraints. The app surfaces difficulties and patterns to enable true individualization and helps shift from System 1 (intuitive) to System 2 (reflective)."
+    },
+    "features": {
+      "title": "📱 What the App Offers (Current Version)",
+      "journal_title": "Intelligent Sparring Journal",
+      "journal_body": "A post‑session form focused on observation and feeling; your history becomes a mirror for your patterns.",
+      "dashboard_title": "Personalized Dashboard",
+      "dashboard_body": "Frequency, trends, calendar – statistics that inform without judging.",
+      "reflection_title": "Guided Reflection",
+      "reflection_body": "Exploratory questions rather than judgment; the app asks questions, you find your own answers."
+    },
+    "whyJournal": {
+      "title": "🔬 Why a Training Journal?",
+      "metacog_title": "Metacognition: Learning to Learn",
+      "metacog_body": "Journals strengthen metacognitive skills that distinguish experts from novices.",
+      "ecodynamics_title": "Ecological Dynamics",
+      "ecodynamics_body": "Variability is not an error; it enables adaptation. Documenting sessions reveals your personal solutions.",
+      "consolidation_title": "Consolidation & Patterns",
+      "consolidation_body": "Post‑session reflection supports long‑term memory and the identification of actionable patterns."
+    },
+    "references": {
+      "title": "📚 Key Scientific References",
+      "list": [
+        "Davids et al. (2008) – Dynamics of Skill Acquisition",
+        "Schraw & Moshman (1995) – Metacognitive theories",
+        "Bashan & Holsblat (2017) – Reflective journals",
+        "Renshaw & Chow (2019) – Constraint‑led approach",
+        "MacIntyre & Moran (2010) – Metacognition in elite athletes",
+        "Kahneman (2011) – Thinking, Fast and Slow"
+      ]
+    }
+  }
+}
+

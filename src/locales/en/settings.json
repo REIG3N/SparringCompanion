@@ -1,0 +1,31 @@
+{
+  "title": "Settings",
+  "profile": "Profile",
+  "email": "Email",
+  "password": "Password",
+  "contact": "Contact",
+  "contact_text": "Questions or feedback? Reach out here: (coming soon).",
+  "about": "About",
+  "logout": "Logout",
+  "logout_confirm": "Are you sure you want to logout?",
+  "change_password": "Change Password",
+  "language": "Language",
+  "change_password_fields": {
+    "current": "Current password",
+    "current_placeholder": "********",
+    "new": "New password",
+    "new_placeholder": "********",
+    "confirm": "Confirm new password",
+    "confirm_placeholder": "********",
+    "min_length": "New password must be at least 8 characters.",
+    "mismatch": "New password and confirmation do not match.",
+    "current_invalid": "Current password is invalid.",
+    "update_failed": "Failed to update password.",
+    "success_title": "Success",
+    "success_msg": "Password updated.",
+    "updating": "Updating..."
+  },
+  "profile_placeholder": "Coming soon: manage email and password.",
+  "contact_placeholder": "Contact details and form will be added here."
+}
+

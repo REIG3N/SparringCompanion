@@ -1,35 +1,32 @@
-import { Tabs } from 'expo-router';
+import { Stack, Tabs } from 'expo-router';
 import React from 'react';
-
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Icons } from '@/constants/icons';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
 
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-    </Tabs>
+  return ( <Stack screenOptions={{ headerShown: false }} />
+    // <Tabs
+    //   screenOptions={{
+    //     headerShown: false,
+    //   }}>
+    //   <Tabs.Screen
+    //     name="dashboard/DashboardScreen"
+    //     options={{
+    //       title: 'Dashboard',
+    //       tabBarIcon: ({ color, size }) => (
+    //         <Icons.Home size={size ?? 24} color={color as string} />
+    //       ),
+    //     }}
+    //   />
+    //   <Tabs.Screen
+    //     name="Settings/settings"
+    //     options={{
+    //       title: 'Settings',
+    //       tabBarIcon: ({ color, size }) => (
+    //         <Icons.Settings size={size ?? 24} color={color as string} />
+    //       ),
+    //     }}
+    //   />
+    // </Tabs>
   );
 }
