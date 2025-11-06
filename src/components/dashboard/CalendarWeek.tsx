@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, ViewStyle } from "react-native";
 import { globalStyles, COLORS, SPACING, TEXT_STYLES } from "../../styles";
+import i18n from "@/src/i18n";
 
 export type UIState = "normal" | "loading" | "empty" | "error";
 
@@ -59,7 +60,7 @@ export default function CalendarWeek({
           { color: COLORS.text, marginBottom: SPACING.md },
         ]}
       >
-        Last 7 Days
+        {i18n.t('dashboard.last7days') as string}
       </Text>
       <View style={globalStyles.cardHeaderRow}>
         {renderDays.map((d, idx) => {

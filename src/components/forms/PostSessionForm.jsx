@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView, View, Text, Alert, Switch } from "react-native";
 import { COLORS, SPACING, TEXT_STYLES, globalStyles } from "../../styles";
+import i18n from "@/src/i18n";
 import { Icons } from "@/constants/icons";
 import { ButtonPrimary } from "../atomic/buttons/ButtonPrimary";
 import { TabNavigation } from "../atomic/navigation/TabNavigation";
@@ -146,7 +147,7 @@ export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialD
     <ScrollView style={{ flex: 1 }}>
       <View style={{}}>
         <TabNavigation
-          tabs={["Basic", "Focus", "Notes"]}
+          tabs={i18n.t('session.tabs', { defaultValue: ["Basic","Focus","Notes"] })}
           activeTab={activeTab}
           onTabPress={setActiveTab}
         />
@@ -155,7 +156,7 @@ export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialD
           {activeTab === 0 && (
             <FormSection>
               <InputField
-                label="Date"
+                label={i18n.t('session.form.date')}
                 value={formData.date}
                 onChangeText={(text) =>
                   setFormData({ ...formData, date: text })
@@ -167,7 +168,7 @@ export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialD
                 isInvalid={invalidMap.date}
               />
               <InputField
-                label="Duration (minutes)"
+                label={i18n.t('session.form.duration')}
                 value={formData.duration}
                 onChangeText={(text) => {
                   const sanitized = (text || '').replace(/\D/g, '').slice(0, 3);
@@ -181,18 +182,7 @@ export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialD
                 isInvalid={invalidMap.duration}
               />
               <RatingSelector
-                label="Confidence (1-5)"
-                value={formData.confidence}
-                onChange={(value) =>
-                  setFormData({ ...formData, confidence: value })
-                }
-                disabled={readOnly}
-                required={requiredMap.confidence}
-                optional={!requiredMap.confidence}
-                isInvalid={invalidMap.confidence}
-              />
-              <RatingSelector
-                label="Fatigue (1-5)"
+                label={i18n.t('session.form.fatigue', { defaultValue: 'Fatigue (1-5)' }) }
                 value={formData.fatigue}
                 onChange={(value) =>
                   setFormData({ ...formData, fatigue: value })
@@ -203,7 +193,7 @@ export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialD
                 isInvalid={invalidMap.fatigue}
               />
               <RatingSelector
-                label="Fun (1-5)"
+                label={i18n.t('session.form.fun', { defaultValue: 'Fun (1-5)' }) }
                 value={formData.fun}
                 onChange={(value) => setFormData({ ...formData, fun: value })}
                 disabled={readOnly}
@@ -211,13 +201,24 @@ export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialD
                 optional={!requiredMap.fun}
                 isInvalid={invalidMap.fun}
               />
+              <RatingSelector
+                label={i18n.t('session.form.confidence', { defaultValue: 'Confidence (1-5)' }) }
+                value={formData.confidence}
+                onChange={(value) =>
+                  setFormData({ ...formData, confidence: value })
+                }
+                disabled={readOnly}
+                required={requiredMap.confidence}
+                optional={!requiredMap.confidence}
+                isInvalid={invalidMap.confidence}
+              />
             </FormSection>
           )}
 
           {activeTab === 1 && (
             <FormSection>
               <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: SPACING.md }}>
-                <Text style={{ color: COLORS.text, marginRight: SPACING.sm }}>Sparring with others?</Text>
+                <Text style={{ color: COLORS.text, marginRight: SPACING.sm }}>{i18n.t('session.focus_tab.sparring_with_others', { defaultValue: 'Sparring with others?' }) }</Text>
                 <Switch
                   value={hadSparring}
                   onValueChange={(val) => {
@@ -230,15 +231,15 @@ export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialD
               {!hadSparring ? (
                 <View>
                   <Text style={{ color: COLORS.accent }}>
-                    To progress on goals, practice against other people. Focus inputs are available when sparring is on.
+                    {i18n.t('session.focus_tab.sparring_hint', { defaultValue: 'To progress on goals, practice against other people. Focus inputs are available when sparring is on.' }) }
                   </Text>
                 </View>
               ) : (
                 <>
                   <View style={[globalStyles.card, { marginBottom: SPACING.md }]}>
-                    <Text style={[TEXT_STYLES.label, { marginBottom: SPACING.sm }]}>Opposition Level</Text>
+                    <Text style={[TEXT_STYLES.label, { marginBottom: SPACING.sm }]}>{i18n.t('session.focus_tab.opposition_level.label') }</Text>
                     <RadioPills
-                      options={['Less', 'Similar', 'More']}
+                      options={i18n.t('session.focus_tab.opposition_options', { defaultValue: ['Less','Similar','More'] })}
                       selected={formData.oppositionLevel}
                       onSelect={(value) => setFormData({ ...formData, oppositionLevel: value })}
                       disabled={readOnly}
@@ -304,12 +305,12 @@ export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialD
           {activeTab === 2 && (
             <FormSection>
               <TextAreaField
-                label="Session Notes"
+                label={i18n.t('session.notes.label') }
                 value={formData.notes}
                 onChangeText={(text) =>
                   setFormData({ ...formData, notes: text })
                 }
-                placeholder="Observations sur votre performance, points à retenir..."
+                placeholder={i18n.t('session.notes.placeholder') }
                 numberOfLines={6}
                 maxLength={800}
                 showCounter

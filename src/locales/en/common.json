@@ -1,0 +1,19 @@
+{
+  "app_name": "SparringCompanion",
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "confirm": "Confirm"
+  },
+  "errors": {
+    "generic": "An error occurred",
+    "network": "Connection error",
+    "required_field": "This field is required"
+  },
+  "loading": "Loading...",
+  "no_data": "No data available"
+}
+

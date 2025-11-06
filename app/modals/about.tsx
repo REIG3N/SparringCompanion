@@ -3,6 +3,7 @@ import { ScrollView, Text, View, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { COLORS, SPACING, TEXT_STYLES, globalStyles, OPACITY } from '@/src/styles';
 import { Icons } from '@/constants/icons';
+import i18n from '@/src/i18n';
 
 function AccordionItem({ title, children, defaultOpen = false }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -30,70 +31,66 @@ export default function AboutModal() {
           <Pressable onPress={() => router.back()} style={{ position: 'absolute', left: SPACING.md, padding: SPACING.sm }}> 
             <Icons.ArrowLeft size={16} color={COLORS.text} />
           </Pressable>
-          <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>À Propos</Text>
+          <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>{i18n.t('about.title') as string}</Text>
         </View>
 
-        <AccordionItem title="🎯 Notre Vision" defaultOpen>
+        <AccordionItem title={i18n.t('about.sections.vision.title') as string} defaultOpen>
           <Text style={{ color: COLORS.text }}>
-            <Text style={{ fontWeight: '600' }}>SparringCompanion n'est pas un coach, c'est un compagnon.{'\n'}</Text>
-            L'application accompagne les pratiquants dans leur développement autonome, en servant de miroir réflectif plutôt que de prescripteur externe.
+            {i18n.t('about.sections.vision.body') as string}
           </Text>
         </AccordionItem>
 
-        <AccordionItem title="🧠 Philosophie d'Apprentissage">
-          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>Développe Ton Autonomie</Text>
+        <AccordionItem title={i18n.t('about.sections.philosophy.title') as string}>
+          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>{i18n.t('about.sections.philosophy.autonomy_title') as string}</Text>
           <Text style={{ color: COLORS.text, opacity: OPACITY.o80, marginBottom: SPACING.md }}>
-            L'autonomisation est au cœur de notre approche. Chaque pratiquant possède un contexte unique; l'application t'aide à observer, analyser et adapter ta pratique.
+            {i18n.t('about.sections.philosophy.autonomy_body') as string}
           </Text>
-          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>L'Erreur Comme Source d'Apprentissage</Text>
+          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>{i18n.t('about.sections.philosophy.failfast_title') as string}</Text>
           <Text style={{ color: COLORS.text, opacity: OPACITY.o80, marginBottom: SPACING.md }}>
-            Nous encourageons l'expérimentation et l'échec rapide. Chaque session difficile apporte des informations précieuses pour ajuster tes hypothèses.
+            {i18n.t('about.sections.philosophy.failfast_body') as string}
           </Text>
-          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>Approche Écologique & Individualisation</Text>
+          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>{i18n.t('about.sections.philosophy.ecological_title') as string}</Text>
           <Text style={{ color: COLORS.text, opacity: OPACITY.o80 }}>
-            Inspirée par la Constraints-Led Approach: l'apprentissage émerge des contraintes individuelles, environnementales et de la tâche. L'app rend visibles tes difficultés et patterns afin de favoriser une individualisation réelle. Elle facilite aussi le passage du Système 1 (intuitif) au Système 2 (réflexif).
+            {i18n.t('about.sections.philosophy.ecological_body') as string}
           </Text>
         </AccordionItem>
 
-        <AccordionItem title="📱 Ce Que Propose l'App (Version Actuelle)">
-          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>Journal de Sparring Intelligent</Text>
+        <AccordionItem title={i18n.t('about.sections.features.title') as string}>
+          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>{i18n.t('about.sections.features.journal_title') as string}</Text>
           <Text style={{ color: COLORS.text, opacity: OPACITY.o80, marginBottom: SPACING.md }}>
-            Formulaire post-session centré sur l'observation et le ressenti; l'historique devient un miroir de tes patterns.
+            {i18n.t('about.sections.features.journal_body') as string}
           </Text>
-          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>Tableau de Bord Personnalisé</Text>
+          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>{i18n.t('about.sections.features.dashboard_title') as string}</Text>
           <Text style={{ color: COLORS.text, opacity: OPACITY.o80, marginBottom: SPACING.md }}>
-            Fréquence, tendances, calendrier – des statistiques qui informent sans juger.
+            {i18n.t('about.sections.features.dashboard_body') as string}
           </Text>
-          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>Réflexion Guidée</Text>
+          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>{i18n.t('about.sections.features.reflection_title') as string}</Text>
           <Text style={{ color: COLORS.text, opacity: OPACITY.o80 }}>
-            Questions d'exploration plutôt que de jugement; l'app te pose des questions, tu trouves tes réponses.
+            {i18n.t('about.sections.features.reflection_body') as string}
           </Text>
         </AccordionItem>
 
-        <AccordionItem title="🔬 Pourquoi un Journal d'Entraînement ?">
-          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>Métacognition : Apprendre à Apprendre</Text>
+        <AccordionItem title={i18n.t('about.sections.whyJournal.title') as string}>
+          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>{i18n.t('about.sections.whyJournal.metacog_title') as string}</Text>
           <Text style={{ color: COLORS.text, opacity: OPACITY.o80, marginBottom: SPACING.md }}>
-            Les journaux renforcent les compétences métacognitives, différenciant experts et novices.
+            {i18n.t('about.sections.whyJournal.metacog_body') as string}
           </Text>
-          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>Approche Écologique</Text>
+          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>{i18n.t('about.sections.whyJournal.ecodynamics_title') as string}</Text>
           <Text style={{ color: COLORS.text, opacity: OPACITY.o80, marginBottom: SPACING.md }}>
-            La variabilité n'est pas une erreur; elle permet l'adaptation. Documenter tes sessions révèle tes solutions personnelles.
+            {i18n.t('about.sections.whyJournal.ecodynamics_body') as string}
           </Text>
-          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>Consolidation & Patterns</Text>
+          <Text style={{ color: COLORS.text, marginBottom: SPACING.sm, fontWeight: '600' }}>{i18n.t('about.sections.whyJournal.consolidation_title') as string}</Text>
           <Text style={{ color: COLORS.text, opacity: OPACITY.o80 }}>
-            La réflexion post-session aide la mémoire longue durée et l'identification de patterns actionnables.
+            {i18n.t('about.sections.whyJournal.consolidation_body') as string}
           </Text>
         </AccordionItem>
 
-        <AccordionItem title="📚 Références Scientifiques Clés">
-          <Text style={{ color: COLORS.text, opacity: OPACITY.o80 }}>
-            1. Davids et al. (2008) – Dynamics of Skill Acquisition{ '\n' }
-            2. Schraw & Moshman (1995) – Metacognitive theories{ '\n' }
-            3. Bashan & Holsblat (2017) – Reflective journals{ '\n' }
-            4. Renshaw & Chow (2019) – Constraint-led approach{ '\n' }
-            5. MacIntyre & Moran (2010) – Metacognition in elite athletes{ '\n' }
-            6. Kahneman (2011) – Thinking, Fast and Slow
-          </Text>
+        <AccordionItem title={i18n.t('about.sections.references.title') as string}>
+          <View>
+            {(i18n.t('about.sections.references.list') as unknown as string[]).map((ref, idx) => (
+              <Text key={idx} style={{ color: COLORS.text, opacity: OPACITY.o80, marginBottom: 6 }}>{ref}</Text>
+            ))}
+          </View>
         </AccordionItem>
 
       </View>

@@ -26,7 +26,7 @@ export const TextAreaField = ({
       {label && (
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 4 }}>
           {required && isInvalid && <Icons.AlertTriangle size={14} color={COLORS.primary} />}
-          <Text style={globalStyles.labelText}>{label}{!required && optional ? ' (optional)' : ''}</Text>
+          <Text style={globalStyles.labelText}>{label}</Text>
         </View>
       )}
       <TextInput

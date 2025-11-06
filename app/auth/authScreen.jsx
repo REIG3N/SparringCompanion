@@ -3,6 +3,10 @@ import React, { useState, useEffect } from 'react'
 import authStyles from './authStyle'
 import { useRouter } from 'expo-router'
 import { supabase } from "../../utils/supabase"
+import i18n, { changeLanguage, getCurrentLanguage } from '@/src/i18n'
+import { COLORS, globalStyles } from '../../utils/globalStyles'
+
+// no flags/images used on Auth anymore
 
 const AuthScreen = () => {
   const [email, setEmail] = useState('')
@@ -10,6 +14,18 @@ const AuthScreen = () => {
   const [loading, setLoading] = useState(false)
   const [showRegisterOrLogin, setShowRegisterOrLogin] = useState(false)
   const router = useRouter();
+  const [selectedLang, setSelectedLang] = useState(null)
+  useEffect(() => {
+    // Preselect based on device language if detectable
+    try {
+      const lang = getCurrentLanguage();
+      if (lang === 'fr' || lang === 'en') {
+        setSelectedLang(lang);
+      }
+    } catch {}
+  }, [])
+
+  // no asset preloading
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (state) => {
@@ -38,7 +54,7 @@ const AuthScreen = () => {
       password: password,
     })
     if (error) {
-      Alert.alert(error.message)
+      Alert.alert(i18n.t('auth.title'), i18n.t('auth.errors.generic'))
       setLoading(false)
       return
     }
@@ -62,11 +78,11 @@ const AuthScreen = () => {
     if (error) {
       if (error.message === "Invalid login credentials") {
         Alert.alert(
-          "Account not found",
-          "No account found with this email. Would you like to register?"
+          i18n.t('auth.errors.account_not_found_title'),
+          i18n.t('auth.errors.account_not_found_message')
         );
       } else {
-        Alert.alert(error.message);
+        Alert.alert(i18n.t('auth.title'), i18n.t('auth.errors.generic'));
       }
     }
 
@@ -87,41 +103,43 @@ const AuthScreen = () => {
       <View style={authStyles.inner}>
         <View style={authStyles.card}>
           <View style={authStyles.header}>
-            <Text style={authStyles.headerTitle}>SparringCompanion</Text>
-            <Text style={authStyles.headerSubtitle}>Deviens ton propre coach en sports de combat</Text>
+            <Text style={authStyles.headerTitle}>{i18n.t('common.app_name')}</Text>
+            <Text style={authStyles.headerSubtitle}>{i18n.t('auth.subtitle')}</Text>
           </View>
+
+          {/* Language selection moved to Register only (after password) */}
 
           <View style={authStyles.radioPills}>
             <TouchableOpacity
               style={[authStyles.radioPill, !showRegisterOrLogin && authStyles.radioPillSelected]}
               onPress={() => handleSwitch(false)}
             >
-              <Text style={[authStyles.radioPillText, !showRegisterOrLogin && authStyles.radioPillTextSelected]}>Login</Text>
+              <Text style={[authStyles.radioPillText, !showRegisterOrLogin && authStyles.radioPillTextSelected]}>{i18n.t('auth.login')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[authStyles.radioPill, showRegisterOrLogin && authStyles.radioPillSelected]}
               onPress={() => handleSwitch(true)}
             >
-              <Text style={[authStyles.radioPillText, showRegisterOrLogin && authStyles.radioPillTextSelected]}>Register</Text>
+              <Text style={[authStyles.radioPillText, showRegisterOrLogin && authStyles.radioPillTextSelected]}>{i18n.t('auth.register')}</Text>
             </TouchableOpacity>
           </View>
 
           {!showRegisterOrLogin ? (
             <View style={authStyles.formSection}>
               <View style={authStyles.formGroup}>
-                <Text style={authStyles.label}>Email</Text>
+                <Text style={authStyles.label}>{i18n.t('settings.email')}</Text>
                 <TextInput
                   style={authStyles.input}
                   onChangeText={(text) => setEmail(text)}
                   value={email}
-                  placeholder="votre@email.com"
+                  placeholder={i18n.t('auth.email_placeholder')}
                   placeholderTextColor={'#757575'}
                   autoCapitalize={'none'}
                   keyboardType="email-address"
                 />
               </View>
               <View style={authStyles.formGroup}>
-                <Text style={authStyles.label}>Mot de passe</Text>
+                <Text style={authStyles.label}>{i18n.t('settings.password')}</Text>
                 <TextInput
                   style={authStyles.input}
                   onChangeText={(text) => setPassword(text)}
@@ -133,30 +151,30 @@ const AuthScreen = () => {
                 />
               </View>
               <TouchableOpacity style={authStyles.buttonPrimary} disabled={loading} onPress={() => LogInWithEmail()}>
-                <Text style={authStyles.buttonPrimaryText}>Se connecter</Text>
+                <Text style={authStyles.buttonPrimaryText}>{i18n.t('auth.login_cta')}</Text>
               </TouchableOpacity>
               <View style={authStyles.bottomLinkContainer}>
                 <Text style={authStyles.bottomLinkText} onPress={() => handleSwitch(true)}>
-                  Pas encore de compte ? Créer un compte
+                {i18n.t('auth.register_redirect')}
                 </Text>
               </View>
             </View>
           ) : (
             <View style={authStyles.formSection}>
               <View style={authStyles.formGroup}>
-                <Text style={authStyles.label}>Email</Text>
+                <Text style={authStyles.label}>{i18n.t('settings.email')}</Text>
                 <TextInput
                   style={authStyles.input}
                   onChangeText={(text) => setEmail(text)}
                   value={email}
-                  placeholder="votre@email.com"
+                  placeholder={i18n.t('auth.email_placeholder')}
                   placeholderTextColor={'#757575'}
                   autoCapitalize={'none'}
                   keyboardType="email-address"
                 />
               </View>
               <View style={authStyles.formGroup}>
-                <Text style={authStyles.label}>Mot de passe</Text>
+                <Text style={authStyles.label}>{i18n.t('settings.password')}</Text>
                 <TextInput
                   style={authStyles.input}
                   onChangeText={(text) => setPassword(text)}
@@ -167,12 +185,31 @@ const AuthScreen = () => {
                   autoCapitalize={'none'}
                 />
               </View>
-              <TouchableOpacity style={authStyles.buttonPrimary} disabled={loading} onPress={() => RegisterWithEmail()}>
-                <Text style={authStyles.buttonPrimaryText}>Créer un compte</Text>
+              {/* Language selection appears here for Register only */}
+              <View style={authStyles.formGroup}>
+                <Text style={authStyles.label}>{i18n.t('auth.language')}</Text>
+                <View style={{ flexDirection: 'row', gap: 8 }}>
+                  <TouchableOpacity onPress={async () => { setSelectedLang('fr'); await changeLanguage('fr'); }} style={{ flex: 1 }}>
+                    <View style={[globalStyles.buttonOutline, selectedLang === 'fr' && { borderColor: COLORS.secondary }]}>
+                      <Text style={[globalStyles.buttonOutlineText, selectedLang === 'fr' && { color: COLORS.secondary }]}>FR</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={async () => { setSelectedLang('en'); await changeLanguage('en'); }} style={{ flex: 1 }}>
+                    <View style={[globalStyles.buttonOutline, selectedLang === 'en' && { borderColor: COLORS.secondary }]}>
+                      <Text style={[globalStyles.buttonOutlineText, selectedLang === 'en' && { color: COLORS.secondary }]}>EN</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <TouchableOpacity style={authStyles.buttonPrimary} disabled={loading || !selectedLang} onPress={() => {
+                if (!selectedLang) { Alert.alert(i18n.t('auth.title'), i18n.t('auth.required')); return; }
+                RegisterWithEmail();
+              }}>
+                <Text style={authStyles.buttonPrimaryText}>{i18n.t('auth.register_cta')}</Text>
               </TouchableOpacity>
               <View style={authStyles.bottomLinkContainer}>
                 <Text style={authStyles.bottomLinkText}>
-                  Mot de passe oublié ?
+                {i18n.t('auth.forgotten_password')}
                 </Text>
               </View>
             </View>

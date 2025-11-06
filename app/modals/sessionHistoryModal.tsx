@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Pressable, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter, Link } from "expo-router";
 import { COLORS, globalStyles, SPACING, TEXT_STYLES } from "@/src/styles";
+import i18n from "@/src/i18n";
 import { Icons } from "@/constants/icons";
 import { SessionItem } from "@/src/components/dashboard";
 import useSessionData from "@/src/hooks/dashboard/useSessionData";
@@ -21,14 +22,14 @@ export default function SessionHistoryModal() {
   return (
     <View style={[globalStyles.appScreen, styles.container]}>
       <View style={globalStyles.cardHeaderRow}>
-        <Text style={TEXT_STYLES.headerLG}>Session History</Text>
+        <Text style={TEXT_STYLES.headerLG}>{i18n.t('dashboard.recent_sessions') as string}</Text>
         <Pressable style={globalStyles.buttonOutline} onPress={() => router.back()}>
           <Icons.X size={16} color={COLORS.text} />
         </Pressable>
       </View>
       {displayMode === 'error' && (
         <View style={[styles.errorBox, { marginTop: SPACING.sm }]}>
-          <Text style={styles.errorText}>Échec de chargement des sessions. Vérifiez votre connexion.</Text>
+          <Text style={styles.errorText}>{i18n.t('common.errors.network') as string}</Text>
         </View>
       )}
       {displayMode === 'loading' && (
@@ -39,7 +40,7 @@ export default function SessionHistoryModal() {
       )}
       {displayMode === 'empty' && (
         <View style={{ paddingVertical: SPACING.xl, alignItems: 'center' }}>
-          <Text style={TEXT_STYLES.caption}>Aucune session enregistrée. Commencez votre premier entraînement pour voir votre progression.</Text>
+          <Text style={TEXT_STYLES.caption}>{i18n.t('dashboard.no_sessions', { defaultValue: 'No sessions yet.' }) as string}</Text>
         </View>
       )}
       {displayMode === 'normal' && (

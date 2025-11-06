@@ -10,7 +10,12 @@ export const TabNavigation = ({ tabs, activeTab, onTabPress }) => (
         style={[globalStyles.tabItem, activeTab === index && globalStyles.tabItemActive]}
         onPress={() => onTabPress(index)}
       >
-        <Text style={[globalStyles.tabItemText, activeTab === index && globalStyles.tabItemTextActive]}>
+        <Text style={[globalStyles.tabItemText, activeTab === index && globalStyles.tabItemTextActive]}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.85}
+        allowFontScaling
+        >
           {tab}
         </Text>
       </TouchableOpacity>

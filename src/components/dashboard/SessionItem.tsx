@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle, Pressable } from 'react-native';
+import i18n from '@/src/i18n';
 import { globalStyles, SPACING, COLORS } from '../../styles';
 
 export type UIState = 'normal' | 'loading' | 'empty' | 'error';
@@ -36,7 +37,7 @@ export default function SessionItem({
   if (mode === 'error') {
     return (
       <View style={[globalStyles.sessionItem, styles.errorItem, containerStyle]}>
-        <Text style={{ color: COLORS.text }}>Error</Text>
+        <Text style={{ color: COLORS.text }}>{i18n.t('common.errors.generic') as string}</Text>
       </View>
     );
   }

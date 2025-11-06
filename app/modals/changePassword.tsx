@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert, ScrollView, Text, View, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { COLORS, SPACING, TEXT_STYLES, globalStyles } from '@/src/styles';
+import i18n from '@/src/i18n';
 import { InputField } from '@/src/components/atomic/inputs/InputField';
 import { ButtonPrimary } from '@/src/components/atomic/buttons/ButtonPrimary';
 import { supabase } from '@/utils/supabase';
@@ -26,15 +27,15 @@ export default function ChangePasswordModal() {
   async function handleSubmit() {
     setErrorMessage(null);
     if (!email || !currentPassword || !newPassword || !confirmPassword) {
-      setErrorMessage('Merci de remplir tous les champs.');
+      setErrorMessage(i18n.t('common.errors.required_field') as string);
       return;
     }
     if (newPassword.length < 8) {
-      setErrorMessage('Le nouveau mot de passe doit contenir au moins 8 caractères.');
+      setErrorMessage(i18n.t('settings.change_password_fields.min_length') as string);
       return;
     }
     if (newPassword !== confirmPassword) {
-      setErrorMessage('Le nouveau mot de passe et la confirmation ne correspondent pas.');
+      setErrorMessage(i18n.t('settings.change_password_fields.mismatch') as string);
       return;
     }
 
@@ -42,21 +43,21 @@ export default function ChangePasswordModal() {
       setSubmitting(true);
       const { error: signInError } = await supabase.auth.signInWithPassword({ email, password: currentPassword });
       if (signInError) {
-        setErrorMessage('Mot de passe actuel invalide.');
+        setErrorMessage(i18n.t('settings.change_password_fields.current_invalid') as string);
         setSubmitting(false);
         return;
       }
       const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
       if (updateError) {
-        setErrorMessage('Échec de la mise à jour du mot de passe.');
+        setErrorMessage(i18n.t('settings.change_password_fields.update_failed') as string);
         setSubmitting(false);
         return;
       }
-      Alert.alert('Succès', 'Mot de passe mis à jour.', [
-        { text: 'OK', onPress: () => router.back() },
+      Alert.alert(i18n.t('settings.change_password_fields.success_title') as string, i18n.t('settings.change_password_fields.success_msg') as string, [
+        { text: i18n.t('common.buttons.close') as string, onPress: () => router.back() },
       ]);
     } catch (e) {
-      setErrorMessage('Une erreur est survenue.');
+      setErrorMessage(i18n.t('common.errors.generic') as string);
     } finally {
       setSubmitting(false);
     }
@@ -69,35 +70,35 @@ export default function ChangePasswordModal() {
           <Pressable onPress={() => router.back()} style={{ position: 'absolute', left: SPACING.md, padding: SPACING.sm }}>
             <Icons.ArrowLeft size={16} color={COLORS.text} />
           </Pressable>
-          <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>Changer le mot de passe</Text>
+          <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>{i18n.t('settings.change_password') as string}</Text>
         </View>
 
         <InputField
-          label="Email"
+          label={i18n.t('settings.email') as string}
           value={email}
           onChangeText={setEmail}
-          placeholder="email"
+          placeholder={i18n.t('auth.email_placeholder') as string}
           editable={false}
         />
         <InputField
-          label="Mot de passe actuel"
+          label={i18n.t('settings.change_password_fields.current') as string}
           value={currentPassword}
           onChangeText={setCurrentPassword}
-          placeholder="********"
+          placeholder={i18n.t('settings.change_password_fields.current_placeholder') as string}
           secureTextEntry
         />
         <InputField
-          label="Nouveau mot de passe"
+          label={i18n.t('settings.change_password_fields.new') as string}
           value={newPassword}
           onChangeText={setNewPassword}
-          placeholder="********"
+          placeholder={i18n.t('settings.change_password_fields.new_placeholder') as string}
           secureTextEntry
         />
         <InputField
-          label="Confirmer le nouveau mot de passe"
+          label={i18n.t('settings.change_password_fields.confirm') as string}
           value={confirmPassword}
           onChangeText={setConfirmPassword}
-          placeholder="********"
+          placeholder={i18n.t('settings.change_password_fields.confirm_placeholder') as string}
           secureTextEntry
         />
 
@@ -106,7 +107,7 @@ export default function ChangePasswordModal() {
         ) : null}
 
         <ButtonPrimary
-          title={submitting ? 'Mise à jour...' : 'Mettre à jour'}
+          title={submitting ? (i18n.t('settings.change_password_fields.updating') as string) : (i18n.t('common.buttons.save') as string)}
           disabled={submitting}
           onPress={handleSubmit}
         />

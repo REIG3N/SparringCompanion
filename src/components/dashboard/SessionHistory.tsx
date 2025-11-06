@@ -5,6 +5,7 @@ import { globalStyles, SPACING, TEXT_STYLES, COLORS } from '@/utils/globalStyles
 import SessionItem from './SessionItem'
 import type { SessionItemProps } from './SessionItem'
 import { Link } from 'expo-router'
+import i18n from '@/src/i18n'
 
 export type SessionHistoryProps = {
   mode: 'normal' | 'loading' | 'empty' | 'error';
@@ -16,7 +17,7 @@ export default function SessionHistory({ mode, sessions }: SessionHistoryProps) 
   return (
     <View style={[globalStyles.card, { marginTop: SPACING.md }]}> 
       <View style={styles.cardHeaderRow}>
-        <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>Recent Sessions</Text>
+        <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>{i18n.t('dashboard.recent_sessions') as string}</Text>
         <Link href={{
           pathname: "/modals/sessionHistoryModal", params: {
             mode,

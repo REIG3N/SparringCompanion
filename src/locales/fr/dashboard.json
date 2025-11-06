@@ -1,0 +1,15 @@
+{
+  "title": "Tableau de Bord",
+  "add_session": "Nouvelle Session",
+  "recent_sessions": "Sessions Récentes",
+  "last7days": "7 Derniers Jours",
+  "no_sessions": "Aucune session enregistrée.",
+  "stats": {
+    "weekly_avg": "Moyenne Séances",
+    "enjoyment": "Fun",
+    "confidence": "Confiance",
+    "readiness": "Niveau Fatigue"
+  },
+  "days": ["L", "M", "M", "J", "V", "S", "D"]
+}
+

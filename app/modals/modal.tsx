@@ -1,4 +1,5 @@
 import { Link, useLocalSearchParams } from 'expo-router';
+import i18n from '@/src/i18n';
 import { Text, View, Pressable, ScrollView, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { PostSessionForm } from '@/src/components/forms/PostSessionForm';
@@ -55,17 +56,17 @@ export default function ModalScreen(props: ModalScreenProps) {
 
   async function handleDelete() {
     if (!(mode === 'edit' && typeof idParam === 'number' && !Number.isNaN(idParam))) {
-      Alert.alert('Error', 'Cannot delete session: invalid session ID.');
+      Alert.alert(i18n.t('common.errors.generic') as string, i18n.t('session.delete.error_invalid') as string);
       return;
     }
 
     Alert.alert(
-      'Delete Session',
-      'Are you sure you want to delete this session? This action cannot be undone.',
+      i18n.t('session.delete.title') as string,
+      i18n.t('session.delete.message') as string,
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: i18n.t('common.buttons.cancel') as string, style: 'cancel' },
         {
-          text: 'Delete',
+          text: i18n.t('common.buttons.delete') as string,
           style: 'destructive',
           onPress: async () => {
             try {
@@ -74,11 +75,11 @@ export default function ModalScreen(props: ModalScreenProps) {
                 console.log('Session deleted successfully:', idParam);
                 router.replace('/(tabs)/dashboard/DashboardScreen');
               } else {
-                Alert.alert('Error', 'Failed to delete session.');
+                Alert.alert(i18n.t('common.errors.generic') as string, i18n.t('session.delete.failed') as string);
               }
             } catch (e) {
               console.log('Delete failed:', e);
-              Alert.alert('Error', 'An error occurred while deleting the session.');
+              Alert.alert(i18n.t('common.errors.generic') as string, i18n.t('common.errors.generic') as string);
             }
           },
         },
@@ -86,7 +87,7 @@ export default function ModalScreen(props: ModalScreenProps) {
     );
   }
 
-  const headerTitle = mode === 'edit' ? ( 'Edit Session') : 'New Session';
+  const headerTitle = mode === 'edit' ? ( i18n.t('session.edit_title') as string) : (i18n.t('session.new_title') as string);
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.background, marginTop: 50, padding: SPACING.lg }}>
@@ -146,10 +147,10 @@ export default function ModalScreen(props: ModalScreenProps) {
         readOnly={mode === 'edit' && selected === 'view'}
       />
       {!isAllTabsComplete && (
-        <Text style={{ color: COLORS.primary, marginTop: 8, marginBottom: 8 }}>Certaines données requises sont manquantes.</Text>
+        <Text style={{ color: COLORS.primary, marginTop: 8, marginBottom: 8 }}>{i18n.t('session.form.missing_required', { defaultValue: 'Some required data is missing.' }) as string}</Text>
       )}
       <ButtonPrimary
-        title={mode === 'edit' ? "Mettre à jour" : "Enregistrer Session"}
+        title={mode === 'edit' ? (i18n.t('common.buttons.save', { defaultValue: 'Save' }) as string) : (i18n.t('session.form.title', { defaultValue: 'Record a Session' }) as string)}
         disabled={!isAllTabsComplete || (mode === 'edit' && selected === 'view')}
         onPress={() => { if (pendingData) handleSave(pendingData); }}
       />

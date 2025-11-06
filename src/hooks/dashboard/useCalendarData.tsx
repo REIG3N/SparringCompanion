@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import i18n from '@/src/i18n';
 
 export type CalendarDay = {
     label: string;
@@ -8,15 +9,9 @@ export type CalendarDay = {
 
 // Expose a single source of truth for default days
 export function getDefaultCalendarDays(): CalendarDay[] {
-  return [
-    { label: 'M', hasSession: false, selected: false },
-    { label: 'T', hasSession: true, selected: false },
-    { label: 'W', hasSession: false, selected: false },
-    { label: 'T', hasSession: true, selected: false },
-    { label: 'F', hasSession: false, selected: false },
-    { label: 'S', hasSession: true, selected: true },
-    { label: 'S', hasSession: false, selected: false },
-  ];
+  const days = i18n.t('dashboard.days', { defaultValue: ['M','T','W','T','F','S','S'] }) as unknown as string[];
+  const labels = Array.isArray(days) ? days : ['M','T','W','T','F','S','S'];
+  return labels.map((label, idx) => ({ label, hasSession: idx % 2 === 1, selected: idx === 6 }));
 }
 
 export default function useCalendarData() {

@@ -6,6 +6,7 @@ import { StatGrid, SessionItem, CalendarWeek, SessionHistory } from '@/src/compo
 import useDashboardData from '@/src/hooks/dashboard/useDashboardData'
 import DashboardDebugPanel from '@/src/components/debug/DashboardDebugPanel';
 import { Link } from 'expo-router'
+import i18n from '@/src/i18n'
 import { Icon } from 'lucide-react-native';
 import { Icons } from '@/constants/icons';
 
@@ -26,7 +27,7 @@ export default function DashboardScreen() {
       <Link href={{ pathname: "/modals/modal", params: { mode: "empty" } }} asChild>
         <Pressable style={globalStyles.buttonPrimary}>
           <Text style={globalStyles.buttonPrimaryText}>
-            Add New Session
+            {i18n.t('dashboard.add_session') as string}
           </Text>
         </Pressable>
       </Link>
@@ -36,7 +37,7 @@ export default function DashboardScreen() {
         <Pressable style={globalStyles.buttonOutline}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={globalStyles.buttonOutlineText}>
-              Settings
+              {i18n.t('settings.title') as string}
             </Text>
             <Icons.Settings size={24} color={COLORS.text} style={{ marginLeft: 8 }} />
           </View>

@@ -53,6 +53,32 @@ const authStyles = StyleSheet.create({
     color: COLORS.accent,
     textDecorationLine: 'underline',
   },
+  // Outline button reused here for language pills with flags only
+  buttonOutline: {
+    borderWidth: 2,
+    borderColor: COLORS.accent,
+    borderRadius: RADIUS.sm,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.md,
+    minWidth: 80,
+    height: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    alignSelf: 'stretch',
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  buttonOutlineText: {
+    color: COLORS.accent,
+    fontSize: 24,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  flagText: {
+    fontSize: 28,
+    textAlign: 'center',
+  },
 });
 
 export default authStyles;

@@ -1,0 +1,60 @@
+{
+  "form": {
+    "title": "Enregistrer une Session",
+    "basic_info": "Informations Générales",
+    "date": "Date",
+    "duration": "Durée (minutes)",
+    "confidence": "Confiance (1-5)",
+    "fatigue": "Fatigue (1-5)",
+    "fun": "Fun (1-5)",
+    "type": {
+      "label": "Type de session",
+      "practice": "Entraînement",
+      "sparring": "Sparring"
+    },
+    "environment": {
+      "label": "Environnement"
+    }
+  },
+  "focus_tab": {
+    "sparring_with_others": "Sparring avec d'autres ?",
+    "sparring_hint": "Pour progresser, pratique avec d'autres personnes. Les champs Focus apparaissent quand le sparring est activé.",
+    "opposition_level": { "label": "Niveau d'Opposition" },
+    "opposition_options": ["Moins", "Similaire", "Plus"],
+    "missing_required": "Certaines données requises sont manquantes."
+  },
+  "focus_input": {
+    "success": { "title": "Qu'est-ce qui a bien fonctionné durant cette session ?" },
+    "difficulty": { "title": "Qu'est-ce qui a été difficile durant cette session ?" },
+    "type": {
+      "label": "Type (quel type de situation ?)",
+      "proaction": "Proaction",
+      "reaction": "Réaction"
+    },
+    "domain": {
+      "label": "Domaine (technique ou tactique ?)",
+      "technical": "Technique",
+      "tactical": "Tactique"
+    },
+    "placeholder_success": "Décris brièvement ce qui a bien fonctionné...",
+    "placeholder_difficulty": "Décris brièvement ce qui a été difficile..."
+  },
+  "new_title": "Nouvelle Session",
+  "edit_title": "Modifier la Session",
+  "tabs": ["Informations", "Sparring", "Notes"],
+  "notes": {
+    "label": "Note libre",
+    "placeholder": "Observations, rappels..."
+  },
+  "delete": {
+    "title": "Supprimer la session",
+    "message": "Voulez-vous vraiment supprimer cette session ? Cette action est irréversible.",
+    "error_invalid": "Suppression impossible : ID de session invalide.",
+    "failed": "Échec de la suppression de la session."
+  },
+  "env": {
+    "solo": "Pratique Solo",
+    "group": "Pratique avec Sparring"
+  }
+}
+

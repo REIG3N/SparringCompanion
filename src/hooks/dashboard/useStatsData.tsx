@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { Session } from '@/src/types/session';
+import i18n from '@/src/i18n';
 
 export type ChangeType = 'positive' | 'negative';
 export type Stat = { title: string; value: string; change?: string; changeType?: ChangeType };
@@ -24,10 +25,10 @@ function toUTCDate(dateStr: string) {
 
 export function getDefaultStats(): Stat[] {
   return [
-    { title: 'Weekly Avg', value: '0.0', change: '+0.0', changeType: 'positive' },
-    { title: 'Enjoyment', value: '0.0', change: '+0.0', changeType: 'positive' },
-    { title: 'Confidence', value: '0%', change: '+0%', changeType: 'positive' },
-    { title: 'Readiness', value: '0%', change: '+0%', changeType: 'positive' },
+    { title: i18n.t('dashboard.stats.weekly_avg') as string, value: '0.0', change: '+0.0', changeType: 'positive' },
+    { title: i18n.t('dashboard.stats.enjoyment') as string, value: '0.0', change: '+0.0', changeType: 'positive' },
+    { title: i18n.t('dashboard.stats.confidence') as string, value: '0%', change: '+0%', changeType: 'positive' },
+    { title: i18n.t('dashboard.stats.readiness') as string, value: '0%', change: '+0%', changeType: 'positive' },
   ];
 }
 
@@ -77,10 +78,10 @@ export default function useStatsData(rawSessions: Session[] | undefined, opts: O
     const dReadiness = readinessLast2 - readinessPrev2;
 
     return [
-      { title: 'Weekly Avg', value: avgLast2Weekly.toFixed(1), change: signed(dWeekly), changeType: dWeekly >= 0 ? 'positive' : 'negative' },
-      { title: 'Enjoyment', value: avgFunLast2.toFixed(1), change: signed(dFun), changeType: dFun >= 0 ? 'positive' : 'negative' },
-      { title: 'Confidence', value: pct(confPctLast2), change: signedPct(dConf), changeType: dConf >= 0 ? 'positive' : 'negative' },
-      { title: 'Readiness', value: pct(readinessLast2), change: signedPct(dReadiness), changeType: dReadiness >= 0 ? 'positive' : 'negative' },
+      { title: i18n.t('dashboard.stats.weekly_avg') as string, value: avgLast2Weekly.toFixed(1), change: signed(dWeekly), changeType: dWeekly >= 0 ? 'positive' : 'negative' },
+      { title: i18n.t('dashboard.stats.enjoyment') as string, value: avgFunLast2.toFixed(1), change: signed(dFun), changeType: dFun >= 0 ? 'positive' : 'negative' },
+      { title: i18n.t('dashboard.stats.confidence') as string, value: pct(confPctLast2), change: signedPct(dConf), changeType: dConf >= 0 ? 'positive' : 'negative' },
+      { title: i18n.t('dashboard.stats.readiness') as string, value: pct(readinessLast2), change: signedPct(dReadiness), changeType: dReadiness >= 0 ? 'positive' : 'negative' },
     ];
   }, [rawSessions, opts.weekStartsOn]);
 
