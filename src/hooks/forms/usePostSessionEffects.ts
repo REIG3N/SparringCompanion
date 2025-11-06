@@ -49,13 +49,11 @@ export function usePostSessionEffects({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialData?.id, initialData?.date]);
 
-  // Notify completion changes
   useEffect(() => {
     onCompletionChange?.(isAllTabsComplete);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAllTabsComplete]);
 
-  // Notify data changes
   useEffect(() => {
     onFormDataChange?.(formData);
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -19,7 +19,6 @@ export const TextAreaField = ({
   const screenHeight = Dimensions.get('window').height || 800;
   const baseMinHeight = 80;
   const maxAutoHeight = useMemo(() => Math.max(140, Math.floor(screenHeight * 0.90)), [screenHeight]);
-  // Avoid state updates to prevent render loops; rely on min/max height only
 
   return (
     <View style={{ marginBottom: SPACING.md }}>

@@ -20,7 +20,6 @@ export default function CalendarWeek({
   mode = "normal",
   containerStyle,
 }: CalendarWeekProps) {
-  // Subscribe to language changes to force re-render when language is updated
   useLanguage();
   
   if (mode === "error") {

@@ -18,7 +18,6 @@ export default function useSessionData() {
         setIsLoading(true);
         setError(null);
         const fetched = await fetchSessions();
-        // Sort by most recent ISO date first
         const sortedByDateDesc = [...fetched].sort((a, b) => {
           const at = new Date(a.date).getTime();
           const bt = new Date(b.date).getTime();

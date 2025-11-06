@@ -5,7 +5,7 @@
   "last7days": "Last 7 Days",
   "no_sessions": "No sessions recorded.",
   "stats": {
-    "weekly_avg": "Weekly Avg",
+    "sessions_7d": "Sessions (7d)",
     "enjoyment": "Enjoyment",
     "confidence": "Confidence",
     "readiness": "Readiness"

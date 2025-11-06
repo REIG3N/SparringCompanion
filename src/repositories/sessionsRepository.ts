@@ -3,9 +3,6 @@ import { createEmptySession } from '@/src/mockdata/sessions.mock';
 import { supabase } from '@/utils/supabase';
 import { domainToDb, dbToDomain, storeIdMapping, getUuidFromNumericId } from './sessionDbMapper';
 
-/**
- * Fetch all sessions for the current user from Supabase
- */
 export async function fetchSessions(): Promise<Session[]> {
   try {
     const { data, error } = await supabase
@@ -22,7 +19,6 @@ export async function fetchSessions(): Promise<Session[]> {
       return [];
     }
 
-    // Convert DB rows to domain sessions and store ID mappings
     const sessions = data.map((row) => {
       const domainSession = dbToDomain(row);
       storeIdMapping(domainSession.id, row.id);
@@ -32,19 +28,14 @@ export async function fetchSessions(): Promise<Session[]> {
     return sessions;
   } catch (error) {
     console.error('Failed to fetch sessions:', error);
-    // Return empty array on error to prevent UI breakage
     return [];
   }
 }
 
-/**
- * Fetch a single session by numeric ID
- */
 export async function fetchSessionById(id: number): Promise<Session | null> {
   try {
     const uuid = getUuidFromNumericId(id);
     if (!uuid) {
-      // If UUID not found in cache, try to fetch all and find it
       const allSessions = await fetchSessions();
       const found = allSessions.find(s => s.id === id);
       return found ?? null;
@@ -74,27 +65,20 @@ export async function fetchSessionById(id: number): Promise<Session | null> {
   }
 }
 
-/**
- * Create a new session in Supabase
- */
 export async function createSession(session: Session): Promise<Session> {
   try {
-    // Get current user
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
       throw new Error('User not authenticated');
     }
 
-    // Convert domain session to DB payload
     const dbPayload = domainToDb(session, user.id);
 
-    // Include user_id in the insert payload (required for RLS policy)
     const insertPayload = {
       ...dbPayload,
       user_id: user.id,
     };
 
-    // Insert into Supabase
     const { data, error } = await supabase
       .from('sessions')
       .insert(insertPayload)
@@ -110,7 +94,6 @@ export async function createSession(session: Session): Promise<Session> {
       throw new Error('No data returned from insert');
     }
 
-    // Convert back to domain and store ID mapping
     const createdSession = dbToDomain(data);
     storeIdMapping(createdSession.id, data.id);
     return createdSession;
@@ -120,9 +103,6 @@ export async function createSession(session: Session): Promise<Session> {
   }
 }
 
-/**
- * Update an existing session in Supabase
- */
 export async function updateSession(id: number, session: Session): Promise<Session> {
   try {
     const uuid = getUuidFromNumericId(id);
@@ -130,16 +110,13 @@ export async function updateSession(id: number, session: Session): Promise<Sessi
       throw new Error(`Session with id ${id} not found in cache`);
     }
 
-    // Get current user to ensure ownership
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
       throw new Error('User not authenticated');
     }
 
-    // Convert domain session to DB payload (only changed fields)
     const dbPayload = domainToDb(session, user.id);
 
-    // Update in Supabase
     const { data, error } = await supabase
       .from('sessions')
       .update(dbPayload)
@@ -156,7 +133,6 @@ export async function updateSession(id: number, session: Session): Promise<Sessi
       throw new Error('No data returned from update');
     }
 
-    // Convert back to domain
     const updatedSession = dbToDomain(data);
     storeIdMapping(updatedSession.id, data.id);
     return updatedSession;
@@ -166,9 +142,6 @@ export async function updateSession(id: number, session: Session): Promise<Sessi
   }
 }
 
-/**
- * Delete a session from Supabase
- */
 export async function deleteSession(id: number): Promise<boolean> {
   try {
     const uuid = getUuidFromNumericId(id);
@@ -194,9 +167,6 @@ export async function deleteSession(id: number): Promise<boolean> {
   }
 }
 
-/**
- * Get an empty session template
- */
 export function getEmptySession(): Session {
   return createEmptySession();
 }

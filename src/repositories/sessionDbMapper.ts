@@ -1,8 +1,5 @@
 import { Session } from '@/src/types/session';
 
-/**
- * Database row type from Supabase sessions table
- */
 export type DbSessionRow = {
   id: string; // UUID
   user_id: string; // UUID
@@ -28,27 +25,17 @@ export type DbSessionRow = {
   updated_at: string;
 };
 
-/**
- * Convert a UUID string to a numeric hash for domain ID
- * This allows us to keep the domain Session.id as number
- */
 function uuidToNumber(uuid: string): number {
-  // Simple hash: sum of character codes modulo a large number
   let hash = 0;
   for (let i = 0; i < uuid.length; i++) {
     const char = uuid.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
+    hash = hash & hash;
   }
-  // Return positive number
   return Math.abs(hash);
 }
 
-/**
- * Convert domain Session to database payload
- */
 export function domainToDb(session: Session, userId: string): Omit<DbSessionRow, 'id' | 'user_id' | 'created_at' | 'updated_at'> {
-  // Build success JSONB object
   const success = (session.successType !== null || session.successDomain !== null || session.successDescription) 
     ? {
         successType: session.successType,
@@ -57,7 +44,6 @@ export function domainToDb(session: Session, userId: string): Omit<DbSessionRow,
       }
     : null;
 
-  // Build difficulty JSONB object
   const difficulty = (session.difficultyType !== null || session.difficultyDomain !== null || session.difficultyDescription)
     ? {
         difficultyType: session.difficultyType,
@@ -80,9 +66,6 @@ export function domainToDb(session: Session, userId: string): Omit<DbSessionRow,
   };
 }
 
-/**
- * Convert database row to domain Session
- */
 export function dbToDomain(row: DbSessionRow): Session {
   return {
     id: uuidToNumber(row.id),
@@ -103,29 +86,16 @@ export function dbToDomain(row: DbSessionRow): Session {
   };
 }
 
-/**
- * Store UUID to numeric ID mapping for reverse lookup
- * This is needed for UPDATE and DELETE operations
- */
 const uuidToNumericIdMap = new Map<number, string>();
 
-/**
- * Store a mapping from numeric ID to UUID
- */
 export function storeIdMapping(numericId: number, uuid: string): void {
   uuidToNumericIdMap.set(numericId, uuid);
 }
 
-/**
- * Get UUID from numeric ID
- */
 export function getUuidFromNumericId(numericId: number): string | null {
   return uuidToNumericIdMap.get(numericId) || null;
 }
 
-/**
- * Clear all ID mappings (useful on logout)
- */
 export function clearIdMappings(): void {
   uuidToNumericIdMap.clear();
 }

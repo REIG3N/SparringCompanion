@@ -6,84 +6,149 @@ export type ChangeType = 'positive' | 'negative';
 export type Stat = { title: string; value: string; change?: string; changeType?: ChangeType };
 
 type Options = {
-  weekStartsOn?: 0 | 1; // 0=dimanche, 1=lundi
+  weekStartsOn?: 0 | 1;
 };
-
-function startOfWeek(d: Date, weekStartsOn: 0 | 1) {
-  const date = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
-  const day = date.getUTCDay();
-  const diff = (day - weekStartsOn + 7) % 7;
-  date.setUTCDate(date.getUTCDate() - diff);
-  date.setUTCHours(0, 0, 0, 0);
-  return date;
-}
 
 function toUTCDate(dateStr: string) {
   const [y, m, d] = dateStr.split('-').map(Number);
   return new Date(Date.UTC(y, m - 1, d));
 }
 
+function getSessionsInDateRange(sessions: Session[], startDate: Date, endDate: Date): Session[] {
+  return sessions.filter(s => {
+    if (!s.date) return false;
+    const sessionDate = toUTCDate(s.date);
+    return sessionDate >= startDate && sessionDate <= endDate;
+  });
+}
+
+function safeMedian(values: (number | null)[]): number | null {
+  const validValues = values.filter((v): v is number => v !== null && !isNaN(v)).sort((a, b) => a - b);
+  if (validValues.length === 0) return null;
+  const mid = Math.floor(validValues.length / 2);
+  if (validValues.length % 2 === 0) {
+    return (validValues[mid - 1] + validValues[mid]) / 2;
+  }
+  return validValues[mid];
+}
+
+function safeAvg(values: (number | null)[]): number | null {
+  const validValues = values.filter((v): v is number => v !== null && !isNaN(v));
+  if (validValues.length === 0) return null;
+  return validValues.reduce((a, b) => a + b, 0) / validValues.length;
+}
+
+function safeCentralTendency(values: (number | null)[], useMedian: boolean): number | null {
+  return useMedian ? safeMedian(values) : safeAvg(values);
+}
+
+function formatStatValue(value: number | null, unit: 'count' | 'rating'): string {
+  if (value === null) return '—';
+  if (unit === 'count') {
+    return Math.round(value).toString();
+  }
+  return `${value.toFixed(1)}/5`;
+}
+
+function formatChange(delta: number | null, unit: 'count' | 'rating'): string {
+  if (delta === null || isNaN(delta)) return '—';
+  if (unit === 'count') {
+    return `${delta >= 0 ? '+' : ''}${Math.round(delta)}`;
+  }
+  return `${delta >= 0 ? '+' : ''}${delta.toFixed(1)}`;
+}
+
 export function getDefaultStats(): Stat[] {
   return [
-    { title: i18n.t('dashboard.stats.weekly_avg') as string, value: '0.0', change: '+0.0', changeType: 'positive' },
-    { title: i18n.t('dashboard.stats.enjoyment') as string, value: '0.0', change: '+0.0', changeType: 'positive' },
-    { title: i18n.t('dashboard.stats.confidence') as string, value: '0%', change: '+0%', changeType: 'positive' },
-    { title: i18n.t('dashboard.stats.readiness') as string, value: '0%', change: '+0%', changeType: 'positive' },
+    { title: i18n.t('dashboard.stats.sessions_7d') as string, value: '0', change: '+0', changeType: 'positive' },
+    { title: i18n.t('dashboard.stats.enjoyment') as string, value: '0.0/5', change: '+0.0', changeType: 'positive' },
+    { title: i18n.t('dashboard.stats.confidence') as string, value: '0.0/5', change: '+0.0', changeType: 'positive' },
+    { title: i18n.t('dashboard.stats.readiness') as string, value: '0.0/5', change: '+0.0', changeType: 'positive' },
   ];
 }
 
 export default function useStatsData(rawSessions: Session[] | undefined, opts: Options = { weekStartsOn: 1 }) {
-  // Subscribe to language to regenerate memoized labels when language changes
   const { language } = useLanguage();
   const stats = useMemo<Stat[]>(() => {
     if (!rawSessions || rawSessions.length === 0) return getDefaultStats();
 
-    const weekStartsOn = opts.weekStartsOn ?? 1;
+    const totalSessions = rawSessions.length;
+    const useMedian = totalSessions < 10;
+
     const now = new Date();
-    const thisWeekStart = startOfWeek(now, weekStartsOn);
+    const todayUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+    
+    const last7End = new Date(todayUTC);
+    const last7Start = new Date(todayUTC);
+    last7Start.setUTCDate(todayUTC.getUTCDate() - 6);
+    last7Start.setUTCHours(0, 0, 0, 0);
+    last7End.setUTCHours(23, 59, 59, 999);
 
-    // 4 semaines: 0..1 = dernières 2 semaines, 2..3 = 2 semaines précédentes
-    const weeksCount = 4;
-    const buckets: Session[][] = Array.from({ length: weeksCount }, () => []);
-    for (const s of rawSessions) {
-      if (!s.date) continue;
-      const d = toUTCDate(s.date);
-      const dStart = startOfWeek(d, weekStartsOn);
-      const deltaWeeks = Math.floor((thisWeekStart.getTime() - dStart.getTime()) / 604800000);
-      if (deltaWeeks >= 0 && deltaWeeks < weeksCount) buckets[deltaWeeks].push(s);
-    }
+    const prev7End = new Date(last7Start);
+    prev7End.setUTCDate(prev7End.getUTCDate() - 1);
+    prev7End.setUTCHours(23, 59, 59, 999);
+    const prev7Start = new Date(prev7End);
+    prev7Start.setUTCDate(prev7Start.getUTCDate() - 6);
+    prev7Start.setUTCHours(0, 0, 0, 0);
 
-    const safeAvg = (arr: number[]) => (arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0);
-    const pct = (n: number) => `${Math.round(n)}%`;
-    const signed = (x: number, digits = 1) => `${x >= 0 ? '+' : ''}${x.toFixed(digits)}`;
-    const signedPct = (x: number) => `${x >= 0 ? '+' : ''}${Math.round(x)}%`;
+    const last7Sessions = getSessionsInDateRange(rawSessions, last7Start, last7End);
+    const prev7Sessions = getSessionsInDateRange(rawSessions, prev7Start, prev7End);
 
-    const last2 = buckets.slice(0, 2).flat();
-    const prev2 = buckets.slice(2, 4).flat();
+    const sessionsLast7 = last7Sessions.length;
+    const sessionsPrev7 = prev7Sessions.length;
+    const dSessions = sessionsLast7 - sessionsPrev7;
+    const sessionsValue = formatStatValue(sessionsLast7, 'count');
+    const sessionsChange = formatChange(dSessions, 'count');
+    const sessionsChangeType: ChangeType | undefined = sessionsChange !== '—' ? (dSessions >= 0 ? 'positive' : 'negative') : undefined;
 
-    const avgLast2Weekly = (last2.length) / 2;
-    const avgPrev2Weekly = (prev2.length) / 2;
-    const dWeekly = avgLast2Weekly - avgPrev2Weekly;
+    const funLast7 = safeCentralTendency(last7Sessions.map(s => s.fun), useMedian);
+    const funPrev7 = safeCentralTendency(prev7Sessions.map(s => s.fun), useMedian);
+    const dFun = funLast7 !== null && funPrev7 !== null ? funLast7 - funPrev7 : null;
+    const enjoymentValue = formatStatValue(funLast7, 'rating');
+    const enjoymentChange = formatChange(dFun, 'rating');
+    const enjoymentChangeType: ChangeType | undefined = enjoymentChange !== '—' ? (dFun !== null && dFun >= 0 ? 'positive' : 'negative') : undefined;
 
-    const avgFunLast2 = safeAvg(last2.map(s => s.fun ?? 0));
-    const avgFunPrev2 = safeAvg(prev2.map(s => s.fun ?? 0));
-    const dFun = avgFunLast2 - avgFunPrev2;
+    const confLast7 = safeCentralTendency(last7Sessions.map(s => s.confidence), useMedian);
+    const confPrev7 = safeCentralTendency(prev7Sessions.map(s => s.confidence), useMedian);
+    const dConf = confLast7 !== null && confPrev7 !== null ? confLast7 - confPrev7 : null;
+    const confidenceValue = formatStatValue(confLast7, 'rating');
+    const confidenceChange = formatChange(dConf, 'rating');
+    const confidenceChangeType: ChangeType | undefined = confidenceChange !== '—' ? (dConf !== null && dConf >= 0 ? 'positive' : 'negative') : undefined;
 
-    const confPctLast2 = (safeAvg(last2.map(s => s.confidence ?? 0)) / 5) * 100;
-    const confPctPrev2 = (safeAvg(prev2.map(s => s.confidence ?? 0)) / 5) * 100;
-    const dConf = confPctLast2 - confPctPrev2;
-
-    const fatigueLast2 = safeAvg(last2.map(s => s.fatigue ?? 0));
-    const fatiguePrev2 = safeAvg(prev2.map(s => s.fatigue ?? 0));
-    const readinessLast2 = Math.max(0, 100 - (fatigueLast2 / 5) * 100);
-    const readinessPrev2 = Math.max(0, 100 - (fatiguePrev2 / 5) * 100);
-    const dReadiness = readinessLast2 - readinessPrev2;
+    const fatigueLast7 = safeCentralTendency(last7Sessions.map(s => s.fatigue), useMedian);
+    const fatiguePrev7 = safeCentralTendency(prev7Sessions.map(s => s.fatigue), useMedian);
+    const readinessLast7 = fatigueLast7 !== null ? Math.max(0, Math.min(5, 5 - fatigueLast7)) : null;
+    const readinessPrev7 = fatiguePrev7 !== null ? Math.max(0, Math.min(5, 5 - fatiguePrev7)) : null;
+    const dReadiness = readinessLast7 !== null && readinessPrev7 !== null ? readinessLast7 - readinessPrev7 : null;
+    const readinessValue = formatStatValue(readinessLast7, 'rating');
+    const readinessChange = formatChange(dReadiness, 'rating');
+    const readinessChangeType: ChangeType | undefined = readinessChange !== '—' ? (dReadiness !== null && dReadiness >= 0 ? 'positive' : 'negative') : undefined;
 
     return [
-      { title: i18n.t('dashboard.stats.weekly_avg') as string, value: avgLast2Weekly.toFixed(1), change: signed(dWeekly), changeType: dWeekly >= 0 ? 'positive' : 'negative' },
-      { title: i18n.t('dashboard.stats.enjoyment') as string, value: avgFunLast2.toFixed(1), change: signed(dFun), changeType: dFun >= 0 ? 'positive' : 'negative' },
-      { title: i18n.t('dashboard.stats.confidence') as string, value: pct(confPctLast2), change: signedPct(dConf), changeType: dConf >= 0 ? 'positive' : 'negative' },
-      { title: i18n.t('dashboard.stats.readiness') as string, value: pct(readinessLast2), change: signedPct(dReadiness), changeType: dReadiness >= 0 ? 'positive' : 'negative' },
+      { 
+        title: i18n.t('dashboard.stats.sessions_7d') as string, 
+        value: sessionsValue, 
+        change: sessionsChange, 
+        changeType: sessionsChangeType 
+      },
+      { 
+        title: i18n.t('dashboard.stats.enjoyment') as string, 
+        value: enjoymentValue, 
+        change: enjoymentChange, 
+        changeType: enjoymentChangeType 
+      },
+      { 
+        title: i18n.t('dashboard.stats.confidence') as string, 
+        value: confidenceValue, 
+        change: confidenceChange, 
+        changeType: confidenceChangeType 
+      },
+      { 
+        title: i18n.t('dashboard.stats.readiness') as string, 
+        value: readinessValue, 
+        change: readinessChange, 
+        changeType: readinessChangeType 
+      },
     ];
   }, [rawSessions, opts.weekStartsOn, language]);
 

@@ -3,15 +3,12 @@ import * as ExpoLocalization from 'expo-localization';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as React from 'react';
 
-// Import translation JSON (will be created below)
-// FR
 import frCommon from '../locales/fr/common.json';
 import frDashboard from '../locales/fr/dashboard.json';
 import frSession from '../locales/fr/session.json';
 import frSettings from '../locales/fr/settings.json';
 import frAbout from '../locales/fr/about.json';
 import frAuth from '../locales/fr/auth.json';
-// EN
 import enCommon from '../locales/en/common.json';
 import enDashboard from '../locales/en/dashboard.json';
 import enSession from '../locales/en/session.json';
@@ -38,7 +35,6 @@ export const initI18n = async () => {
     const deviceLang = deviceTag.split('-')[0];
     i18n.locale = ['fr', 'en'].includes(deviceLang) ? deviceLang : 'en';
   } catch (e) {
-    // fallback
     i18n.locale = 'en';
   }
 };
@@ -53,8 +49,6 @@ export const changeLanguage = async (language: 'fr' | 'en') => {
 export const getCurrentLanguage = () => (i18n.locale || 'en').split('-')[0];
 
 export default i18n;
-
-// Lightweight language context to force global re-render on language change
 
 type LanguageContextValue = {
   language: string;
@@ -73,7 +67,6 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const updateLanguage = React.useCallback(async (lang: 'fr' | 'en') => {
     await changeLanguage(lang);
     setLanguage(lang);
-    // Force a complete app re-render by changing the key
     setRefreshKey(prev => prev + 1);
   }, []);
 

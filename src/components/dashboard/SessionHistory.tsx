@@ -16,7 +16,6 @@ export type SessionHistoryProps = {
 
 
 export default function SessionHistory({ mode, sessions }: SessionHistoryProps) {
-  // Subscribe to language changes to force re-render when language is updated
   useLanguage();
   
   return (

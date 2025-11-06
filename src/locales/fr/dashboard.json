@@ -5,10 +5,10 @@
   "last7days": "7 Derniers Jours",
   "no_sessions": "Aucune session enregistrée.",
   "stats": {
-    "weekly_avg": "Moyenne Séances",
+    "sessions_7d": "Sessions (7j)",
     "enjoyment": "Fun",
     "confidence": "Confiance",
-    "readiness": "Niveau Fatigue"
+    "readiness": "Vigueur"
   },
   "days": ["L", "M", "M", "J", "V", "S", "D"]
 }

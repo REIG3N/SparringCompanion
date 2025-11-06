@@ -36,13 +36,14 @@ export default function StatCard({ title, value, change, changeType, mode = 'nor
 
   const displayValue = mode === 'empty' ? '--' : (value ?? '--');
   const displayChange = mode === 'empty' ? undefined : change;
+  const isPlaceholder = displayChange === '—';
 
   return (
   <View style={[styles.card, containerStyle]}>
       <Text style={globalStyles.statCardTitle}>{title}</Text>
       <Text style={globalStyles.statCardValue}>{displayValue}</Text>
       {!!displayChange && (
-        <Text style={changeType === 'negative' ? globalStyles.statCardChangeNegative : globalStyles.statCardChangePositive}>
+        <Text style={isPlaceholder ? globalStyles.statCardTitle : (changeType === 'negative' ? globalStyles.statCardChangeNegative : globalStyles.statCardChangePositive)}>
           {displayChange}
         </Text>
       )}
