@@ -2,8 +2,10 @@ import { Pressable, Text, View } from 'react-native'
 import React from 'react'
 import { styles } from '@/src/screens/dashboard/DashboardStyle'
 import { globalStyles, SPACING, TEXT_STYLES, COLORS } from '@/utils/globalStyles'
-import SessionItem from './SessionItem'
+import Card from '@/src/components/ui/Card'
+import CardHeader from '@/src/components/ui/CardHeader'
 import type { SessionItemProps } from './SessionItem'
+import SessionList from './SessionList'
 import { Link } from 'expo-router'
 import i18n from '@/src/i18n'
 
@@ -15,53 +17,25 @@ export type SessionHistoryProps = {
 
 export default function SessionHistory({ mode, sessions }: SessionHistoryProps) {
   return (
-    <View style={[globalStyles.card, { marginTop: SPACING.md }]}> 
-      <View style={styles.cardHeaderRow}>
-        <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>{i18n.t('dashboard.recent_sessions') as string}</Text>
-        <Link href={{
-          pathname: "/modals/sessionHistoryModal", params: {
-            mode,
-          }
-        }} asChild >
-          <Pressable >
-            <Text style={{ color: COLORS.secondary, fontSize: 18 }}>☰</Text>
-          </Pressable>
-        </Link>
-      </View>
+    <Card style={{ marginTop: SPACING.md }}>
+      <CardHeader
+        title={i18n.t('dashboard.recent_sessions') as string}
+        right={(
+          <Link href={{ pathname: "/modals/sessionHistoryModal", params: { mode } }} asChild>
+            <Pressable>
+              <Text style={{ color: COLORS.secondary, fontSize: 18 }}>☰</Text>
+            </Pressable>
+          </Link>
+        )}
+      />
 
       {mode === 'error' && (
         <View style={[styles.errorBox, { marginTop: SPACING.sm }]}>
           <Text style={styles.errorText}>Échec de chargement des sessions. Vérifiez votre connexion.</Text>
         </View>
       )}
-      {mode === 'loading' && (
-        <>
-          <SessionItem mode="loading" />
-          <SessionItem mode="loading" />
-        </>
-      )}
-      {mode === 'empty' && (
-        <View style={{ paddingVertical: SPACING.xl, alignItems: 'center' }}>
-          <Text style={TEXT_STYLES.caption}>Aucune session enregistrée. Commencez votre premier entraînement pour voir votre progression.</Text>
-        </View>
-      )}
-      {mode === 'normal' && (
-        (sessions ?? []).slice(0, 2).map((s, i) => (
-          <Link
-            key={i}
-            href={{ pathname: "/modals/modal", params: { mode: 'edit', id: String(s.id ?? i) } }}
-            asChild
-          >
-            <SessionItem
-              id={s.id ?? i}
-              title={s.title}
-              subtitle={s.subtitle}
-              duration={s.duration}
-            />
-          </Link>
-        ))
-      )}
-    </View>
+      <SessionList mode={mode} sessions={sessions} limit={2} />
+    </Card>
   )
 }
 

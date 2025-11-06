@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, ViewStyle } from "react-native";
 import { globalStyles, COLORS, SPACING, TEXT_STYLES } from "../../styles";
+import Card from '@/src/components/ui/Card';
+import CardHeader from '@/src/components/ui/CardHeader';
 import i18n from "@/src/i18n";
 
 export type UIState = "normal" | "loading" | "empty" | "error";
@@ -20,30 +22,16 @@ export default function CalendarWeek({
 }: CalendarWeekProps) {
   if (mode === "error") {
     return (
-      <View
-        style={[
-          globalStyles.card,
-          containerStyle,
-          {
-            marginTop: SPACING.xl,
-            backgroundColor: "rgba(250,45,45,0.10)",
-            borderColor: COLORS.primary,
-            borderWidth: 1,
-          },
-        ]}
-      >
-        <Text
-          style={[
-            TEXT_STYLES.headerLG,
-            { color: COLORS.text, marginBottom: SPACING.md },
-          ]}
-        >
-          Last 7 Days
-        </Text>
+      <Card style={[{ marginTop: SPACING.xl }, containerStyle, { backgroundColor: 'rgba(250,45,45,0.10)', borderColor: COLORS.primary, borderWidth: 1 }]}>
+        <CardHeader>
+          <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>
+            Last 7 Days
+          </Text>
+        </CardHeader>
         <Text style={styles.errorText}>
           Impossible de charger les données du calendrier
         </Text>
-      </View>
+      </Card>
     );
   }
 
@@ -51,17 +39,12 @@ export default function CalendarWeek({
     mode === "empty" ? days.map((d) => ({ ...d, hasSession: false })) : days;
 
   return (
-    <View
-      style={[globalStyles.card, containerStyle, { marginTop: SPACING.xl }]}
-    >
-      <Text
-        style={[
-          TEXT_STYLES.headerLG,
-          { color: COLORS.text, marginBottom: SPACING.md },
-        ]}
-      >
-        {i18n.t('dashboard.last7days') as string}
-      </Text>
+    <Card style={[containerStyle, { marginTop: SPACING.xl }] }>
+      <CardHeader>
+        <Text style={[TEXT_STYLES.headerLG, { color: COLORS.text }]}>
+          {i18n.t('dashboard.last7days') as string}
+        </Text>
+      </CardHeader>
       <View style={globalStyles.cardHeaderRow}>
         {renderDays.map((d, idx) => {
           const dayStyle = [
@@ -80,7 +63,7 @@ export default function CalendarWeek({
           );
         })}
       </View>
-    </View>
+    </Card>
   );
 }
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, ViewStyle } from 'react-native';
-import { globalStyles, SPACING, TEXT_STYLES, COLORS } from '../../styles';
+import { SPACING, TEXT_STYLES, COLORS } from '../../styles';
+import Card from '@/src/components/ui/Card';
+import CardHeader from '@/src/components/ui/CardHeader';
 
 export type DebugPanelProps = {
   title?: string;
@@ -10,11 +12,11 @@ export type DebugPanelProps = {
 
 export default function DebugPanel({ title = 'Debug Panel', style, children }: DebugPanelProps) {
   return (
-    <View style={[globalStyles.card, { marginTop: SPACING.md }, style]}>
-      <View style={{ marginBottom: SPACING.sm }}>
+    <Card style={[{ marginTop: SPACING.md }, style]}>
+      <CardHeader>
         <Text style={[TEXT_STYLES.caption, { color: COLORS.secondary }]}>{title}</Text>
-      </View>
+      </CardHeader>
       {children}
-    </View>
+    </Card>
   );
 }

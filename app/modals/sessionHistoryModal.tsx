@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, Pressable, FlatList } from "react-native";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
-import { useLocalSearchParams, useRouter, Link } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { COLORS, globalStyles, SPACING, TEXT_STYLES } from "@/src/styles";
 import i18n from "@/src/i18n";
 import { Icons } from "@/constants/icons";
 import { SessionItem } from "@/src/components/dashboard";
+import SessionList from "@/src/components/dashboard/SessionList";
 import useSessionData from "@/src/hooks/dashboard/useSessionData";
 
 export default function SessionHistoryModal() {
@@ -32,31 +33,7 @@ export default function SessionHistoryModal() {
           <Text style={styles.errorText}>{i18n.t('common.errors.network') as string}</Text>
         </View>
       )}
-      {displayMode === 'loading' && (
-        <>
-          <SessionItem mode="loading" />
-          <SessionItem mode="loading" />
-        </>
-      )}
-      {displayMode === 'empty' && (
-        <View style={{ paddingVertical: SPACING.xl, alignItems: 'center' }}>
-          <Text style={TEXT_STYLES.caption}>{i18n.t('dashboard.no_sessions', { defaultValue: 'No sessions yet.' }) as string}</Text>
-        </View>
-      )}
-      {displayMode === 'normal' && (
-  <FlatList
-    data={sessions}
-    renderItem={({ item }) => (
-      <Link
-        href={{ pathname: "/modals/modal", params: { mode: 'edit', id: String(item.id) } }}
-        asChild
-      >
-        <SessionItem id={item.id} title={item.title} subtitle={item.subtitle} duration={item.duration} />
-      </Link>
-    )}
-    keyExtractor={(item, index) => String(item.id ?? index)}
-  />
-)}
+      <SessionList mode={displayMode} sessions={sessions} />
     </View>
   );
 }
