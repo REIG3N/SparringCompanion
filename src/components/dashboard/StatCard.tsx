@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
-import { globalStyles, SPACING, COLORS } from '../../styles';
+import { globalStyles } from '../../styles';
+import { spacing } from '@styles/atomic/spacing';
+import { colors } from '@styles/atomic/colors';
 
 export type UIState = 'normal' | 'loading' | 'empty' | 'error';
 
@@ -54,16 +56,16 @@ const styles = StyleSheet.create({
     borderColor: `rgba(255,255,255,0.10)`,
     borderWidth: 1,
     borderRadius: 12,
-    padding: SPACING.md,
+    padding: spacing.md,
     minHeight: 100,
     justifyContent: 'space-between',
   },
   errorCard: {
     backgroundColor: 'rgba(250,45,45,0.10)',
-    borderColor: COLORS.primary,
+    borderColor: colors.light.danger,
   },
   errorTextSmall: {
-    color: COLORS.text,
+    color: colors.light.text,
   },
 });
 

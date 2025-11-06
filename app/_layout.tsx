@@ -1,8 +1,8 @@
 import { Stack } from 'expo-router';
 import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
 import { initI18n, LanguageProvider } from '@/src/i18n';
 export const unstable_settings = {
   anchor: '(tabs)',

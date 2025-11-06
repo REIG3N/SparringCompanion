@@ -1,4 +1,4 @@
-import { Link, useLocalSearchParams } from 'expo-router';
+import { Link, useLocalSearchParams , useRouter } from 'expo-router';
 import i18n from '@/src/i18n';
 import { Text, View, Pressable, ScrollView, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
@@ -7,7 +7,7 @@ import { COLORS, globalStyles, SPACING, TEXT_STYLES } from '@/src/styles';
 import { Icons } from '@/constants/icons';
 import { ButtonPrimary } from '@/src/components/atomic/buttons/ButtonPrimary';
 import { createSession, fetchSessions, fetchSessionById, updateSession, deleteSession } from '@/src/repositories/sessionsRepository';
-import { useRouter } from 'expo-router';
+
 
 export type ModalScreenProps = {
   mode?: 'empty' | 'edit' | 'error';

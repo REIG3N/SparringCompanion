@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { SPACING } from '../../styles';
+import { spacing } from '@styles/atomic/spacing';
 import StatCard, { UIState } from './StatCard';
 
 type StatItem = {
@@ -16,7 +16,7 @@ type StatGridProps = {
 
 export default function StatGrid({ stats = [], mode }: StatGridProps) {
   return (
-    <View style={[styles.statsGrid, { marginTop: SPACING.md }]}>
+    <View style={[styles.statsGrid, { marginTop: spacing.md }]}>
       {stats.map((stat, index) => (
         <View key={index} style={styles.statsGridItem}>
           <StatCard
@@ -37,11 +37,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: -SPACING.md,
+    marginBottom: -spacing.md,
   },
   statsGridItem: {
     width: '48%',
-    marginBottom: SPACING.md,
+    marginBottom: spacing.md,
   },
 });
 
