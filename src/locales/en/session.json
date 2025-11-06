@@ -52,6 +52,12 @@
     "error_invalid": "Cannot delete session: invalid session ID.",
     "failed": "Failed to delete session."
   },
+  "save": {
+    "error_create": "Failed to create session. Please try again.",
+    "error_update": "Failed to update session. Please try again.",
+    "error_network": "Network error. Please check your connection and try again.",
+    "error_auth": "You must be logged in to save sessions."
+  },
   "env": {
     "solo": "Solo Practice",
     "group": "Group with Sparring"

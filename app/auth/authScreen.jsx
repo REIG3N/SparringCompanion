@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import authStyles from './authStyle'
 import { useRouter } from 'expo-router'
 import { supabase } from "../../utils/supabase"
-import i18n, { changeLanguage, getCurrentLanguage } from '@/src/i18n'
+import i18n, { changeLanguage } from '@/src/i18n'
 import { COLORS, globalStyles } from '../../utils/globalStyles'
 
 // no flags/images used on Auth anymore
@@ -15,15 +15,7 @@ const AuthScreen = () => {
   const [showRegisterOrLogin, setShowRegisterOrLogin] = useState(false)
   const router = useRouter();
   const [selectedLang, setSelectedLang] = useState(null)
-  useEffect(() => {
-    // Preselect based on device language if detectable
-    try {
-      const lang = getCurrentLanguage();
-      if (lang === 'fr' || lang === 'en') {
-        setSelectedLang(lang);
-      }
-    } catch {}
-  }, [])
+  // No default language selection - user must choose explicitly
 
   // no asset preloading
 

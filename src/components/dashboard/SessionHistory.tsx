@@ -7,7 +7,7 @@ import ErrorBox from '@/src/components/ui/ErrorBox'
 import type { SessionItemProps } from './SessionItem'
 import SessionList from './SessionList'
 import { Link } from 'expo-router'
-import i18n from '@/src/i18n'
+import i18n, { useLanguage } from '@/src/i18n'
 
 export type SessionHistoryProps = {
   mode: 'normal' | 'loading' | 'empty' | 'error';
@@ -16,6 +16,9 @@ export type SessionHistoryProps = {
 
 
 export default function SessionHistory({ mode, sessions }: SessionHistoryProps) {
+  // Subscribe to language changes to force re-render when language is updated
+  useLanguage();
+  
   return (
     <Card style={{ marginTop: SPACING.md }}>
       <CardHeader

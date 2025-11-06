@@ -68,13 +68,20 @@ const LanguageContext = React.createContext<LanguageContextValue>({
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = React.useState<string>(getCurrentLanguage());
+  const [refreshKey, setRefreshKey] = React.useState(0);
 
   const updateLanguage = React.useCallback(async (lang: 'fr' | 'en') => {
     await changeLanguage(lang);
     setLanguage(lang);
+    // Force a complete app re-render by changing the key
+    setRefreshKey(prev => prev + 1);
   }, []);
 
-  return React.createElement(LanguageContext.Provider, { value: { language, updateLanguage } }, children);
+  return React.createElement(
+    LanguageContext.Provider,
+    { value: { language, updateLanguage } },
+    React.createElement(React.Fragment, { key: refreshKey }, children)
+  );
 };
 
 export const useLanguage = () => React.useContext(LanguageContext);

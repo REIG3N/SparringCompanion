@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ViewStyle } from "react-native";
 import { globalStyles, COLORS, SPACING, TEXT_STYLES } from "../../styles";
 import Card from '@/src/components/ui/Card';
 import CardHeader from '@/src/components/ui/CardHeader';
-import i18n from "@/src/i18n";
+import i18n, { useLanguage } from "@/src/i18n";
 
 export type UIState = "normal" | "loading" | "empty" | "error";
 
@@ -20,6 +20,9 @@ export default function CalendarWeek({
   mode = "normal",
   containerStyle,
 }: CalendarWeekProps) {
+  // Subscribe to language changes to force re-render when language is updated
+  useLanguage();
+  
   if (mode === "error") {
     return (
       <Card style={[{ marginTop: SPACING.xl }, containerStyle, { backgroundColor: 'rgba(250,45,45,0.10)', borderColor: COLORS.primary, borderWidth: 1 }]}>

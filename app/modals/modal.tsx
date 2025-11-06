@@ -17,19 +17,36 @@ export default function ModalScreen(props: ModalScreenProps) {
   const params = useLocalSearchParams();
   const mode = props.mode ?? (typeof params.mode === 'string' ? params.mode : 'empty');
   const [isAllTabsComplete, setIsAllTabsComplete] = useState(false);
-  const [selected, setSelected] = useState<'view' | 'edit'>('edit');
+  const [selected, setSelected] = useState<'view' | 'edit'>('view');
   const router = useRouter();
 
   const [pendingData, setPendingData] = useState<any | null>(null);
   const [initialData, setInitialData] = useState<any | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isLoadingSession, setIsLoadingSession] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const idParam = typeof params.id === 'string' ? Number(params.id) : undefined;
 
   useEffect(() => {
     const load = async () => {
       if (mode === 'edit' && typeof idParam === 'number' && !Number.isNaN(idParam)) {
-        const s = await fetchSessionById(idParam);
-        if (s) setInitialData(s);
+        try {
+          setIsLoadingSession(true);
+          setError(null);
+          const s = await fetchSessionById(idParam);
+          if (s) {
+            setInitialData(s);
+          } else {
+            setError(i18n.t('session.delete.error_invalid') as string);
+          }
+        } catch (e) {
+          console.error('Failed to load session:', e);
+          setError(i18n.t('common.errors.generic') as string);
+        } finally {
+          setIsLoadingSession(false);
+        }
       }
     };
     load();
@@ -40,7 +57,12 @@ export default function ModalScreen(props: ModalScreenProps) {
   }
 
   async function handleSave(sessionData: any) {
+    if (isSaving) return; // Prevent double submission
+    
     try {
+      setIsSaving(true);
+      setError(null);
+      
       if (mode === 'edit' && typeof idParam === 'number' && !Number.isNaN(idParam)) {
         await updateSession(idParam, { ...sessionData, id: idParam });
         console.log('Updated session:', idParam);
@@ -49,8 +71,25 @@ export default function ModalScreen(props: ModalScreenProps) {
         console.log('Created session:', created);
       }
       router.replace('/(tabs)/dashboard/DashboardScreen');
-    } catch (e) {
-      console.log('Save failed:', e);
+    } catch (e: any) {
+      console.error('Save failed:', e);
+      // Determine error message based on error type
+      let errorMessage = i18n.t('session.save.error_update') as string;
+      if (mode !== 'edit') {
+        errorMessage = i18n.t('session.save.error_create') as string;
+      }
+      if (e?.message?.includes('authenticated') || e?.message?.includes('auth')) {
+        errorMessage = i18n.t('session.save.error_auth') as string;
+      } else if (e?.message?.includes('network') || e?.code === 'ECONNABORTED') {
+        errorMessage = i18n.t('session.save.error_network') as string;
+      }
+      setError(errorMessage);
+      Alert.alert(
+        i18n.t('common.errors.generic') as string,
+        errorMessage
+      );
+    } finally {
+      setIsSaving(false);
     }
   }
 
@@ -59,6 +98,8 @@ export default function ModalScreen(props: ModalScreenProps) {
       Alert.alert(i18n.t('common.errors.generic') as string, i18n.t('session.delete.error_invalid') as string);
       return;
     }
+
+    if (isDeleting) return; // Prevent double submission
 
     Alert.alert(
       i18n.t('session.delete.title') as string,
@@ -70,6 +111,8 @@ export default function ModalScreen(props: ModalScreenProps) {
           style: 'destructive',
           onPress: async () => {
             try {
+              setIsDeleting(true);
+              setError(null);
               const ok = await deleteSession(idParam);
               if (ok) {
                 console.log('Session deleted successfully:', idParam);
@@ -78,8 +121,10 @@ export default function ModalScreen(props: ModalScreenProps) {
                 Alert.alert(i18n.t('common.errors.generic') as string, i18n.t('session.delete.failed') as string);
               }
             } catch (e) {
-              console.log('Delete failed:', e);
-              Alert.alert(i18n.t('common.errors.generic') as string, i18n.t('common.errors.generic') as string);
+              console.error('Delete failed:', e);
+              Alert.alert(i18n.t('common.errors.generic') as string, i18n.t('session.delete.failed') as string);
+            } finally {
+              setIsDeleting(false);
             }
           },
         },
@@ -149,9 +194,19 @@ export default function ModalScreen(props: ModalScreenProps) {
       {!isAllTabsComplete && (
         <Text style={{ color: COLORS.primary, marginTop: 8, marginBottom: 8 }}>{i18n.t('session.form.missing_required', { defaultValue: 'Some required data is missing.' }) as string}</Text>
       )}
+      {(isLoadingSession || isSaving || isDeleting) && (
+        <Text style={{ color: COLORS.text, marginTop: 8, marginBottom: 8, textAlign: 'center' }}>
+          {i18n.t('common.loading') as string}
+        </Text>
+      )}
+      {error && (
+        <Text style={{ color: COLORS.primary, marginTop: 8, marginBottom: 8, textAlign: 'center' }}>
+          {error}
+        </Text>
+      )}
       <Button
         title={mode === 'edit' ? (i18n.t('common.buttons.save', { defaultValue: 'Save' }) as string) : (i18n.t('session.form.title', { defaultValue: 'Record a Session' }) as string)}
-        disabled={!isAllTabsComplete || (mode === 'edit' && selected === 'view')}
+        disabled={!isAllTabsComplete || (mode === 'edit' && selected === 'view') || isSaving || isDeleting || isLoadingSession}
         onPress={() => { if (pendingData) handleSave(pendingData); }}
         variant="primary"
         size="md"

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Alert, ScrollView, Text, View, Pressable } from 'react-native';
+import { Alert, ScrollView, Text, View, Pressable, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { COLORS, SPACING, TEXT_STYLES, globalStyles, OPACITY } from '@/src/styles';
 import i18n, { getCurrentLanguage, useLanguage } from '@/src/i18n';
 import { Icons } from '@/constants/icons';
 import { supabase } from '@/utils/supabase';
+import { clearIdMappings } from '@/src/repositories/sessionDbMapper';
 
 function SettingsItem({ title, onPress }: { title: string; onPress: () => void }) {
   return (
@@ -21,6 +22,7 @@ function SettingsItem({ title, onPress }: { title: string; onPress: () => void }
 export default function SettingsScreen() {
   const router = useRouter();
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [isChangingLanguage, setIsChangingLanguage] = useState(false);
   const { language, updateLanguage } = useLanguage();
   
 
@@ -34,6 +36,21 @@ export default function SettingsScreen() {
       }
     })();
   }, []);
+  
+  async function handleLanguageChange(lang: 'fr' | 'en') {
+    if (isChangingLanguage) return; // Prevent double clicks
+    try {
+      setIsChangingLanguage(true);
+      await updateLanguage(lang);
+    } catch (error) {
+      console.error('Failed to change language:', error);
+    } finally {
+      // Small delay to show loading state
+      setTimeout(() => {
+        setIsChangingLanguage(false);
+      }, 300);
+    }
+  }
 
   async function handleLogout() {
     Alert.alert(i18n.t('settings.logout') as string, i18n.t('settings.logout_confirm', { defaultValue: 'Are you sure you want to logout?' }) as string, [
@@ -44,6 +61,7 @@ export default function SettingsScreen() {
         onPress: async () => {
           try {
             await supabase.auth.signOut();
+            clearIdMappings(); // Clear session ID mappings on logout
           } catch (e) {
             // ignore for now; navigation still proceeds
           }
@@ -90,13 +108,27 @@ export default function SettingsScreen() {
         {/* Language toggle */}
         <View style={{ marginTop: SPACING.md, paddingHorizontal: SPACING.md }}>
           <Text style={{ color: COLORS.secondary, marginBottom: SPACING.xs, fontSize: 16, fontWeight: '600' }}>{i18n.t('settings.language') as string}</Text>
-          <View style={{ flexDirection: 'row', gap: SPACING.sm }}>
-            <Pressable onPress={async () => { await updateLanguage('fr'); }}>
+          {isChangingLanguage && (
+            <View style={{ alignItems: 'center', paddingVertical: SPACING.sm }}>
+              <ActivityIndicator size="small" color={COLORS.secondary} />
+              <Text style={{ color: COLORS.text, marginTop: SPACING.xs, fontSize: 14, opacity: 0.7 }}>
+                {i18n.t('common.loading') as string}
+              </Text>
+            </View>
+          )}
+          <View style={{ flexDirection: 'row', gap: SPACING.sm, opacity: isChangingLanguage ? 0.5 : 1 }}>
+            <Pressable 
+              onPress={() => handleLanguageChange('fr')}
+              disabled={isChangingLanguage}
+            >
               <View style={[globalStyles.buttonOutline, language === 'fr' && { borderColor: COLORS.secondary }]}> 
                 <Text style={[globalStyles.buttonOutlineText, language === 'fr' && { color: COLORS.secondary }]}>FR</Text>
               </View>
             </Pressable>
-            <Pressable onPress={async () => { await updateLanguage('en'); }}>
+            <Pressable 
+              onPress={() => handleLanguageChange('en')}
+              disabled={isChangingLanguage}
+            >
               <View style={[globalStyles.buttonOutline, language === 'en' && { borderColor: COLORS.secondary }]}> 
                 <Text style={[globalStyles.buttonOutlineText, language === 'en' && { color: COLORS.secondary }]}>EN</Text>
               </View>

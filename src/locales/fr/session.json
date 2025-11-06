@@ -52,6 +52,12 @@
     "error_invalid": "Suppression impossible : ID de session invalide.",
     "failed": "Échec de la suppression de la session."
   },
+  "save": {
+    "error_create": "Échec de la création de la session. Veuillez réessayer.",
+    "error_update": "Échec de la mise à jour de la session. Veuillez réessayer.",
+    "error_network": "Erreur réseau. Vérifiez votre connexion et réessayez.",
+    "error_auth": "Vous devez être connecté pour enregistrer des sessions."
+  },
   "env": {
     "solo": "Pratique Solo",
     "group": "Pratique avec Sparring"

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import type { Session } from '@/src/types/session';
-import i18n from '@/src/i18n';
+import i18n, { useLanguage } from '@/src/i18n';
 
 export type ChangeType = 'positive' | 'negative';
 export type Stat = { title: string; value: string; change?: string; changeType?: ChangeType };
@@ -33,6 +33,8 @@ export function getDefaultStats(): Stat[] {
 }
 
 export default function useStatsData(rawSessions: Session[] | undefined, opts: Options = { weekStartsOn: 1 }) {
+  // Subscribe to language to regenerate memoized labels when language changes
+  const { language } = useLanguage();
   const stats = useMemo<Stat[]>(() => {
     if (!rawSessions || rawSessions.length === 0) return getDefaultStats();
 
@@ -83,7 +85,7 @@ export default function useStatsData(rawSessions: Session[] | undefined, opts: O
       { title: i18n.t('dashboard.stats.confidence') as string, value: pct(confPctLast2), change: signedPct(dConf), changeType: dConf >= 0 ? 'positive' : 'negative' },
       { title: i18n.t('dashboard.stats.readiness') as string, value: pct(readinessLast2), change: signedPct(dReadiness), changeType: dReadiness >= 0 ? 'positive' : 'negative' },
     ];
-  }, [rawSessions, opts.weekStartsOn]);
+  }, [rawSessions, opts.weekStartsOn, language]);
 
   return { stats, isLoading: false, error: null as Error | null };
 }
