@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { fetchSessions } from '@/src/repositories/sessionsRepository';
 import { toListItem } from '@/src/mappers/sessionMappers';
 import type { Session as DomainSession } from '@/src/types/session';
@@ -18,8 +18,14 @@ export default function useSessionData() {
         setIsLoading(true);
         setError(null);
         const fetched = await fetchSessions();
-        setRawSessions(fetched)
-        setSessions(fetched.map(toListItem));
+        // Sort by most recent ISO date first
+        const sortedByDateDesc = [...fetched].sort((a, b) => {
+          const at = new Date(a.date).getTime();
+          const bt = new Date(b.date).getTime();
+          return bt - at;
+        });
+        setRawSessions(sortedByDateDesc);
+        setSessions(sortedByDateDesc.map(toListItem));
       } catch (err) {
         setError(err as Error);
       } finally {
