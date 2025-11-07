@@ -1,50 +1,43 @@
-# Welcome to your Expo app 👋
+# SparringCompanion
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+SparringCompanion is a reflective training journal for combat-sport practitioners. It behaves like a sparring partner for your decision-making: capture each training session, notice emerging patterns, and design your next experiment instead of chasing generic programs.
 
-## Get started
+---
 
-1. Install dependencies
+## What’s Inside
 
-   ```bash
-   npm install
-   ```
+- **Session logging** – date, environment, intensity, fatigue/fun/confidence ratings, successes, difficulties, free-form notes.
+- **Dashboard** – four-card StatGrid, calendar timeline, and chronological log so you can review short-term trends at a glance.
+- **Two-language experience** – French and English, auto-detected with a manual switch in Settings.
+- **Supabase backbone** – secure email/password auth, per-user data isolation (Row Level Security), cloud storage for all training notes.
+- **Guided settings** – password change, about/vision recap, direct contact at `sparring-companion@protonmail.com`.
 
-2. Start the app
+This MVP is purpose-built for fighters who want to own their learning process. The app provides structure and mirrors back what you observe; it never tells you what to do.
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## Test the App
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Android (Preview)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **Build link:** _coming soon — first EAS Android build in progress._
+- Installation flow once available:
+  1. Open the Expo build URL (APK download) on your device.
+  2. Allow installations from unknown sources if Android prompts you.
+  3. Install, launch, and log your next training session.
 
-## Get a fresh project
+### Apple (TestFlight)
 
-When you're ready, run:
+- _Placeholder — distribution planned after Android preview validation._
 
-```bash
-npm run reset-project
-```
+You will not need source code access to try the experience; links above will deliver installable builds when ready.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## Using SparringCompanion
 
-To learn more about developing your project with Expo, look at the following resources:
+- Start with a fresh training session: capture the context, the result you’re proud of, and the obstacle you want to revisit.
+- Return to the dashboard to review trends in enjoyment, confidence, and freshness week-over-week.
+- Need support or feature requests? Email `sparring-companion@protonmail.com`.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
