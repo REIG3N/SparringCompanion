@@ -1,15 +1,25 @@
 {
   "expo": {
     "name": "SparringCompanion",
-    "slug": "SparringCompanion",
+    "slug": "v2-sparring-companion",
     "version": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/ad6216a4-080a-426c-b9c9-4b3f9af9483d"
+    },
     "orientation": "portrait",
     "icon": "./assets/images/sparring-companion-icon.png",
     "scheme": "sparringcompanion",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.reig3n.SparringCompanion",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -17,7 +27,8 @@
         "foregroundImage": "./assets/images/sparring-companion-icon.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.reig3n.SparringCompanion"
     },
     "web": {
       "output": "static",
@@ -43,6 +54,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "ad6216a4-080a-426c-b9c9-4b3f9af9483d"
+      }
     }
   }
 }
