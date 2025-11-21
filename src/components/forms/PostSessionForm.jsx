@@ -42,17 +42,6 @@ export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialD
     return false;
   });
 
-  usePostSessionEffects({
-    initialData,
-    formData,
-    setFormData,
-    setHadSparring,
-    onCompletionChange,
-    onFormDataChange,
-    isAllTabsComplete,
-  });
-
-
   const isBasicTabComplete = () => {
     return (
       formData.date !== null &&
@@ -82,6 +71,16 @@ export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialD
   };
 
   const isAllTabsComplete = isBasicTabComplete() && isFocusTabComplete();
+
+  usePostSessionEffects({
+    initialData,
+    formData,
+    setFormData,
+    setHadSparring,
+    onCompletionChange,
+    onFormDataChange,
+    isAllTabsComplete,
+  });
 
   const requiredMap = {
     date: true,
@@ -114,7 +113,7 @@ export const PostSessionForm = ({ onCompletionChange, onFormDataChange, initialD
   };
   useEffect(() => {
     onCompletionChange?.(isAllTabsComplete);
-  }, [formData])
+  }, [isAllTabsComplete, onCompletionChange])
 
 
 

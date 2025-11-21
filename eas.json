@@ -12,15 +12,23 @@
     "preview": {
       "distribution": "internal",
       "node": "20.18.0",
+      "channel": "preview",
       "env": {
         "NPM_CONFIG_LEGACY_PEER_DEPS": "true"
+      },
+      "android": {
+        "buildType": "apk"
       }
     },
     "production": {
       "autoIncrement": true,
       "node": "20.18.0",
+      "channel": "production",
       "env": {
         "NPM_CONFIG_LEGACY_PEER_DEPS": "true"
+      },
+      "android": {
+        "buildType": "apk"
       }
     }
   },

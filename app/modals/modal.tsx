@@ -52,8 +52,8 @@ export default function ModalScreen(props: ModalScreenProps) {
     load();
   }, [mode, idParam]);
 
-  function CompletedForm(isAllTabsComplete: boolean) {
-    setIsAllTabsComplete(isAllTabsComplete);
+  function CompletedForm(completed: boolean) {
+    setIsAllTabsComplete(completed);
   }
 
   async function handleSave(sessionData: any) {

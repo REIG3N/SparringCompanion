@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { Alert, ScrollView, Text, View, Pressable, ActivityIndicator } from 'react-native';
+import { Alert, ScrollView, Text, View, Pressable, ActivityIndicator, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { COLORS, SPACING, TEXT_STYLES, globalStyles, OPACITY } from '@/src/styles';
 import i18n, { getCurrentLanguage, useLanguage } from '@/src/i18n';
@@ -52,23 +52,64 @@ export default function SettingsScreen() {
     }
   }
 
+  async function performLogout() {
+    try {
+      // Sign out from Supabase
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Sign out error:', error);
+      }
+      
+      // Clear session ID mappings
+      clearIdMappings();
+      
+      // Clear localStorage on web (additional cleanup)
+      if (typeof window !== 'undefined' && window.localStorage) {
+        try {
+          // Clear all Supabase-related keys
+          const keys = Object.keys(window.localStorage);
+          keys.forEach(key => {
+            if (key.startsWith('sb-') || key.includes('supabase')) {
+              window.localStorage.removeItem(key);
+            }
+          });
+        } catch (e) {
+          console.warn('Failed to clear localStorage:', e);
+        }
+      }
+    } catch (e) {
+      console.error('Logout error:', e);
+      // Continue with navigation even if signOut fails
+    }
+    
+    // Navigate to auth screen
+    router.replace('/auth/authScreen' as any);
+  }
+
   async function handleLogout() {
-    Alert.alert(i18n.t('settings.logout') as string, i18n.t('settings.logout_confirm', { defaultValue: 'Are you sure you want to logout?' }) as string, [
-      { text: i18n.t('common.buttons.cancel') as string, style: 'cancel' },
-      {
-        text: i18n.t('settings.logout') as string,
-        style: 'destructive',
-        onPress: async () => {
-          try {
-            await supabase.auth.signOut();
-            clearIdMappings(); // Clear session ID mappings on logout
-          } catch (e) {
-            // ignore for now; navigation still proceeds
-          }
-          router.replace('/auth/authScreen' as any);
-        },
-      },
-    ]);
+    const confirmMessage = i18n.t('settings.logout_confirm', { defaultValue: 'Are you sure you want to logout?' });
+    
+    // Sur le web, utiliser window.confirm
+    if (Platform.OS === 'web' || (typeof window !== 'undefined' && typeof window.confirm === 'function')) {
+      const confirmed = window.confirm(confirmMessage);
+      if (confirmed) {
+        await performLogout();
+      }
+    } else {
+      // Sur mobile, utiliser Alert.alert
+      Alert.alert(
+        i18n.t('settings.logout') as string,
+        confirmMessage,
+        [
+          { text: i18n.t('common.buttons.cancel') as string, style: 'cancel' },
+          {
+            text: i18n.t('settings.logout') as string,
+            style: 'destructive',
+            onPress: performLogout,
+          },
+        ]
+      );
+    }
   }
 
   return (

@@ -41,18 +41,27 @@ const AuthScreen = () => {
 
   async function LogInWithEmail() {
     setLoading(true)
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    })
-    if (error) {
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password: password,
+      })
+      if (error) {
+        console.error('Login error:', error);
+        // Afficher un message d'erreur plus détaillé en développement
+        const errorMessage = __DEV__ ? error.message : i18n.t('auth.errors.generic');
+        Alert.alert(i18n.t('auth.title'), errorMessage)
+        setLoading(false)
+        return
+      }
+      setLoading(false)
+      if (data && data.session) {
+        router.replace('/(tabs)/dashboard/DashboardScreen')
+      }
+    } catch (err) {
+      console.error('Login exception:', err);
       Alert.alert(i18n.t('auth.title'), i18n.t('auth.errors.generic'))
       setLoading(false)
-      return
-    }
-    setLoading(false)
-    if (data && data.session) {
-      router.replace('/(tabs)/dashboard/DashboardScreen')
     }
   }
 
