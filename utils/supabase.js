@@ -2,8 +2,8 @@ import { createClient } from '@supabase/supabase-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 
-const supabaseUrl = "https://fkhtvcnffawfzpmvjklw.supabase.co"
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZraHR2Y25mZmF3ZnpwbXZqa2x3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg1MzE4MDEsImV4cCI6MjA3NDEwNzgwMX0.IFKn13GXDWYchAJoD6GGXke-gb8d-RXZuFk6XoeR6oE";
+const supabaseUrl = "https://mmgtrjhdgjutdfviupnw.supabase.co"
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1tZ3RyamhkZ2p1dGRmdml1cG53Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NTM2NjYsImV4cCI6MjA5NjEyOTY2Nn0.oSF1X7jbMQZEulCz_ay75KN-NvapDSob-fxofTYtUNU";
 
 // Détecter si on est sur le web (évalué dynamiquement)
 const isWeb = () => {
